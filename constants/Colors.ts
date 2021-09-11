@@ -1,5 +1,7 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
+const placeholderColorLight = 'lightgray'
+const placeholderColorDark = 'lightgray'
 
 export default {
   light: {
@@ -8,6 +10,7 @@ export default {
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
+    placeholderColor: placeholderColorLight
   },
   dark: {
     text: '#fff',
@@ -15,5 +18,6 @@ export default {
     tint: tintColorDark,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
+    placeholderColor: placeholderColorDark,
   },
 };
