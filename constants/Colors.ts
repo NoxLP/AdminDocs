@@ -10,7 +10,11 @@ export default {
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
-    placeholderColor: placeholderColorLight
+    input: {
+      background: 'transparent',
+      placeholderColor: placeholderColorLight,
+      underlineColor: '#000'
+    }
   },
   dark: {
     text: '#fff',
@@ -18,6 +22,10 @@ export default {
     tint: tintColorDark,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
-    placeholderColor: placeholderColorDark,
+    input: {
+      background: 'transparent',
+      placeholderColor: placeholderColorDark,
+      underlineColor: '#fff'
+    }
   },
 };

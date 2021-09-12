@@ -28,12 +28,12 @@ export interface InputProps {
   /**
    * Optional container style overrides useful for margins & padding.
    */
-  style?: StyleProp<ViewProps>
+  style?: ViewStyle
 
   /**
    * Optional style overrides for the input.
    */
-  inputStyle?: StyleProp<TextProps>
+  inputStyle?: TextStyle
 
   /**
    * Various look & feels.

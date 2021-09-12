@@ -3,7 +3,7 @@ import { TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import COLORS from '../../constants/Colors';
 import TYPOGRAPHY from '../../constants/Typography';
 import { InputProps } from './InputProps'
-import { Text, useThemeColor } from "../Themed";
+import { Text, useThemeColors } from "../Themed";
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
@@ -15,7 +15,7 @@ const INPUT: TextStyle = {
   fontSize: TYPOGRAPHY.fontSize.primary,
   fontFamily: TYPOGRAPHY.fontFamily.primary,
   color: COLORS.dark.text,
-  backgroundColor: COLORS.dark.background,
+  backgroundColor: 'transparent',
   minHeight: 44,
   width: "85%",
   minWidth: "85%",
@@ -39,7 +39,7 @@ export default function Input(props: InputProps) {
     password,
   } = props
 
-  const placeholderColor = useThemeColor({}, 'placeholderColor')
+  const themeColors = useThemeColors()
 
   const containerStyles = [CONTAINER, styleOverride]
   const inputStyles = [INPUT, inputStyleOverride]
@@ -49,8 +49,8 @@ export default function Input(props: InputProps) {
       {label ? <Text text={label} /> : null}
       <TextInput
         placeholder={placeholder}
-        placeholderTextColor={placeholderColor}
-        underlineColorAndroid='transparent'
+        placeholderTextColor={themeColors.input.placeholderColor}
+        underlineColorAndroid={themeColors.input.underlineColor}
         style={inputStyles}
         ref={forwardedRef}
         keyboardType={keyboardType ?? "default"}

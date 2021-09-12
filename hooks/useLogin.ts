@@ -4,7 +4,7 @@ import { useQueryClient } from "react-query"
 import { login as loginService } from "../services/api"
 
 export default function useLogin(): Array<any> {
-  const [emailInput, setEmailInput] = useState<string>("")
+  const [phoneInput, setPhoneInput] = useState<string>("")
   const [pwdInput, setPwdInput] = useState<string>("")
 
   const queryClient = useQueryClient()
@@ -14,7 +14,7 @@ export default function useLogin(): Array<any> {
     // TODO: here check if token already exists on asyncstorage before call
     // the api
     if (!AsyncStorage.getItem("token")) {
-      const response = await loginService(emailInput, pwdInput)
+      const response = await loginService(phoneInput, pwdInput)
       console.log(response)
       // if (!isError) navigation.navigate("dashboard")
 
@@ -29,5 +29,5 @@ export default function useLogin(): Array<any> {
     return !!AsyncStorage.getItem("token")
   }
 
-  return [isUserLogged, emailInput, setEmailInput, pwdInput, setPwdInput, login]
+  return [isUserLogged, phoneInput, setPhoneInput, pwdInput, setPwdInput, login]
 }
