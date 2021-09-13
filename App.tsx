@@ -9,6 +9,8 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
+import { useFonts, Montserrat_400Regular as montserratRegular } from "@expo-google-fonts/montserrat";
+
 const CUSTOM_FONTS = {
   montserratRegular: require('./assets/fonts/Montserrat-Regular.ttf'),
 }
@@ -16,14 +18,7 @@ const CUSTOM_FONTS = {
 export default function App() {
   const queryClient = new QueryClient()
 
-  const [fontsLoaded, setFontsLoaded] = useState(false)
-  useEffect(() => {
-    const loadFontsAsync = async() => {
-      await Font.loadAsync(CUSTOM_FONTS);
-      setFontsLoaded(true);
-    }
-    loadFontsAsync()
-  }, [])
+  const [fontsLoaded] = useFonts({montserratRegular})
   const isLoadingComplete = useCachedResources() && fontsLoaded;
   const colorScheme = useColorScheme();
 
