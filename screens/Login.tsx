@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { Image, ImageStyle, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import { ViewProps } from '../components/Themed';
 import Layout from "../constants/Layout";
@@ -55,6 +56,7 @@ export default function Login({ navigation }: RootStackScreenProps<'Login'>) {
           value={pwdInput}
           onChangeText={setPwdInput}
         />
+        <Button style={{ marginTop: '5%' }} text='Log in'/>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   )

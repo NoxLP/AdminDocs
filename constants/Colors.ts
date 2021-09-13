@@ -1,7 +1,5 @@
 const tintColorLight = '#2f95dc';
 const tintColorDark = '#fff';
-const placeholderColorLight = 'lightgray'
-const placeholderColorDark = 'lightgray'
 
 export default {
   light: {
@@ -12,8 +10,12 @@ export default {
     tabIconSelected: tintColorLight,
     input: {
       background: 'transparent',
-      placeholderColor: placeholderColorLight,
+      placeholderColor: 'lightgray',
       underlineColor: '#000'
+    },
+    button: {
+      text: '#fff',
+      background: '#5e9cff'
     }
   },
   dark: {
@@ -24,8 +26,12 @@ export default {
     tabIconSelected: tintColorDark,
     input: {
       background: 'transparent',
-      placeholderColor: placeholderColorDark,
+      placeholderColor: 'lightgray',
       underlineColor: '#fff'
+    },
+    button: {
+      text: '#',
+      background: '#'
     }
   },
 };

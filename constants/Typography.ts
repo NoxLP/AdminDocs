@@ -1,11 +1,11 @@
-const fontFamily = 'Montserrat'
-const fontSize = 16
+const fontFamily = 'montserratRegular'
 
 export default {
   fontFamily: {
     primary: fontFamily
   },
   fontSize: {
-    primary: fontSize
+    primary: 18,
+    button: 22
   },
 }
