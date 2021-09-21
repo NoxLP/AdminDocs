@@ -8,26 +8,26 @@ export default function useLogin(): Array<any> {
   const [pwdInput, setPwdInput] = useState<string>("")
 
   const queryClient = useQueryClient()
-  const login = async (): Promise<boolean> => {
+  const loginAsync = async (): Promise<boolean> => {
     console.log("login")
 
     // TODO: here check if token already exists on asyncstorage before call
     // the api
-    if (!AsyncStorage.getItem("token")) {
+    if (!await AsyncStorage.getItem("token")) {
       const response = await loginService(phoneInput, pwdInput)
       console.log(response)
       // if (!isError) navigation.navigate("dashboard")
 
-      if (response.correct) AsyncStorage.setItem("token", response.data.token)
+      if (response.correct) await AsyncStorage.setItem("token", response.data.token)
 
       return response.correct
     }
 
     return true
   }
-  const isUserLogged = (): boolean => {
-    return !!AsyncStorage.getItem("token")
+  const isUserLoggedAsync = async (): Promise<boolean> => {
+    return !!await AsyncStorage.getItem("token")
   }
 
-  return [isUserLogged, phoneInput, setPhoneInput, pwdInput, setPwdInput, login]
+  return [isUserLoggedAsync, phoneInput, setPhoneInput, pwdInput, setPwdInput, loginAsync]
 }

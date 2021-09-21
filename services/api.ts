@@ -1,20 +1,34 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios"
-import { DEFAULT_API_CONFIG } from "./api-config"
+// import axios, { AxiosInstance, AxiosResponse } from "axios"
+import { ApiResponse } from "apisauce"
+import { api } from "./api-config"
 
 export interface RequestResult {
   correct: boolean
   data: any
 }
-const axiosInstance = axios.create(DEFAULT_API_CONFIG)
 
-export const login = async (phone: string, password: string): Promise<RequestResult> => {
-  console.log(`login: ${phone} ${password}`)
+export const login = async (mobile: string, password: string): Promise<RequestResult> => {
+  console.log(`login: ${mobile} ${password}`)
+  
   try {
-    console.log({ phone, password })
+    console.log({ mobile, password })
 
-    const response: AxiosResponse<any> = await axiosInstance.post("/auth/login", { phone, password })
-
-    if (response.status > 299) {
+    /*
+    const response: AxiosResponse<any> = await axiosInstance.post("auth/login", { mobile, password })
+    */
+    const response = await api.post("/auth/login", { mobile, password })
+    /*
+    const response: Response = await fetch(DEFAULT_API_CONFIG.url+ "/auth/login",
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          mobile, password
+        })
+    })
+    */
+    console.log('RESPONSE: '+JSON.stringify(response, null, 4));
+    
+    if (!response.ok) {
       console.log("response NO ok")
       // const problem = getGeneralApiProblem(response)
       return { correct: false, data: response }
