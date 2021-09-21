@@ -1,22 +1,47 @@
-// import axios, { AxiosInstance, AxiosResponse } from "axios"
-import { ApiResponse } from "apisauce"
-import { api } from "./api-config"
+import { ApiResponse } from "apisauce";
+import { api } from "./api-config";
 
 export interface RequestResult {
-  correct: boolean
-  data: any
+  correct: boolean;
+  data: any;
+  response?: ApiResponse<any>;
 }
 
-export const login = async (mobile: string, password: string): Promise<RequestResult> => {
-  console.log(`login: ${mobile} ${password}`)
-  
+const getRequestResult = (
+  response: ApiResponse<any>,
+  dataProperty?: string
+): RequestResult => {
+  if (!response.ok) {
+    console.log("response NO ok");
+    return { correct: false, data: response.problem, response };
+  }
+
+  return {
+    correct: true,
+    data:
+      dataProperty && dataProperty !== ""
+        ? response.data[dataProperty]
+        : response.data,
+    response,
+  };
+};
+
+export const login = async (
+  mobile: string,
+  password: string
+): Promise<RequestResult> => {
+  console.log(`login: ${mobile} ${password}`);
+
   try {
-    console.log({ mobile, password })
+    console.log({ mobile, password });
 
     /*
     const response: AxiosResponse<any> = await axiosInstance.post("auth/login", { mobile, password })
     */
-    const response = await api.post("/auth/login", { mobile, password })
+    const response: ApiResponse<any> = await api.post("/auth/login", {
+      mobile,
+      password,
+    });
     /*
     const response: Response = await fetch(DEFAULT_API_CONFIG.url+ "/auth/login",
       {
@@ -26,17 +51,13 @@ export const login = async (mobile: string, password: string): Promise<RequestRe
         })
     })
     */
-    console.log('RESPONSE: '+JSON.stringify(response, null, 4));
-    
-    if (!response.ok) {
-      console.log("response NO ok")
-      // const problem = getGeneralApiProblem(response)
-      return { correct: false, data: response }
-    }
+    console.log("RESPONSE: " + JSON.stringify(response, null, 4));
 
-    return { correct: true, data: response.data.token }
+    return getRequestResult(response, "token");
   } catch (err) {
-    console.log(`ERROR in login: ${err.message} \n ${JSON.stringify(err, null, 4)}`)
-    return { correct: false, data: err.message }
+    console.log(
+      `ERROR in login: ${err.message} \n ${JSON.stringify(err, null, 4)}`
+    );
+    return { correct: false, data: err.message };
   }
-}
+};
