@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  FlatList,
-  ViewStyle,
-} from "react-native";
+import { FlatList, ViewStyle } from "react-native";
 import { FlatListCustomProps } from "./FlatListCustomProps";
 
 const CONTAINER: ViewStyle = {
@@ -10,9 +7,7 @@ const CONTAINER: ViewStyle = {
   height: "100%",
 };
 
-export function FlatListCustom (
-  props: FlatListCustomProps
-) {
+export function FlatListCustom(props: FlatListCustomProps) {
   const { style, items, renderItem, horizontal, keyExtractor } = props;
   const styles = [CONTAINER, style];
   const defaultKeyExtractor = (item: any, idx: number): string =>
@@ -27,4 +22,4 @@ export function FlatListCustom (
       keyExtractor={keyExtractor ?? defaultKeyExtractor}
     />
   );
-});
+}

@@ -47,15 +47,17 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
   ] = useLogin();
 
   const loginButtonOnPress = async () => {
-    //if (await loginAsync()) navigation.navigate("dashboard");
-    if (await loginAsync()) alert("logged");
+    if (await loginAsync()) {
+      alert("logged");
+      navigation.navigate("Dashboard");
+    }
   };
 
   useEffect(() => {
     (async function checkUserIsLogged() {
       if (await isUserLoggedAsync()) {
-        //navigation.navigate("dashboard");
         alert("logged");
+        navigation.navigate("Dashboard");
       }
     })();
   }, []);
