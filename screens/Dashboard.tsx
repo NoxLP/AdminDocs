@@ -2,13 +2,19 @@ import React from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
 import { RootStackScreenProps } from "../types";
+import { icons } from "../components/Icon/icons/index";
+import { useThemeColors } from "../components/Themed";
+import { Image, ImageStyle, View, ViewStyle } from "react-native";
 import { Icon } from "../components/Icon/Icon";
-import { icons, IconTypes } from "../components/Icon/icons/index";
-import { Text, useThemeColors } from "../components/Themed";
-import { View, ViewStyle } from "react-native";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
+  height: 150,
+};
+
+const IMAGE: ImageStyle = {
+  height: "70%",
+  resizeMode: "contain",
 };
 
 const ITEMS: Array<any> = [
@@ -30,16 +36,19 @@ export default function Dashboard({
   navigation,
 }: RootStackScreenProps<"Login">) {
   const themeColors = useThemeColors();
-  const buttonStyle = [{ color: themeColors.text }, BUTTON];
+  const buttonStyle = { color: themeColors.text, ...BUTTON };
 
-  const renderItem = (item: any) => {
-    const content = (
-      <View>
-        <Icon icon={item.icon} />
-        <Text text={item.text} />
-      </View>
+  const renderItem = ({ item }) => {
+    console.log("ITEM: ", item);
+    return (
+      <Button
+        children={<Image source={item.icon} style={IMAGE} />}
+        style={buttonStyle}
+        text={item.text}
+        preset="icon"
+      />
     );
-    return <Button children={content} style={buttonStyle} />;
   };
+
   return <FlatListCustom items={ITEMS} renderItem={renderItem} />;
 }

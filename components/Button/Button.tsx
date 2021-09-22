@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import Typography from "../../constants/Typography";
-import { useThemeColors } from "../Themed";
+import { useThemeColors, View } from "../Themed";
 import { ButtonProps } from "./ButtonProps";
 
 const CONTAINER: ViewStyle = {
@@ -23,6 +23,7 @@ export function Button(props: ButtonProps) {
     style: styleOverride,
     textStyle: textStyleOverride,
     children,
+    preset,
     ...rest
   } = props;
 
@@ -33,16 +34,26 @@ export function Button(props: ButtonProps) {
     styleOverride,
   ];
   const textStyles = [
-    { color: themeColors.background },
+    {
+      color:
+        !preset || preset === "default"
+          ? themeColors.background
+          : themeColors.text,
+    },
     TEXT,
     textStyleOverride,
   ];
 
-  const content = children || <Text style={textStyles}>{text}</Text>;
-
   return (
     <TouchableOpacity style={viewStyles} {...rest}>
-      {content}
+      {!preset || preset === "default" ? (
+        <Text style={textStyles}>{text}</Text>
+      ) : (
+        <>
+          {children}
+          {text ? <Text style={textStyles}>{text}</Text> : null}
+        </>
+      )}
     </TouchableOpacity>
   );
 }
