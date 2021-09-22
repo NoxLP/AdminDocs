@@ -7,7 +7,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Anchor } from "../components/anchor/Anchor";
+import { Anchor } from "../components/Anchor/Anchor";
 import { Button } from "../components/Button/Button";
 import Input from "../components/Input/Input";
 import Layout from "../constants/Layout";

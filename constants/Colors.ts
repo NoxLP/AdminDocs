@@ -16,7 +16,7 @@ export default {
     },
     button: {
       text: "#fff",
-      background: "#5e9cff",
+      background: "hsl(120,77%,30%)",
     },
   },
   dark: {
