@@ -7,11 +7,9 @@ import {
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Anchor } from "../components/anchor/Anchor";
 import { Button } from "../components/Button/Button";
 import Input from "../components/Input/Input";
-import { ViewProps } from "../components/Themed";
 import Layout from "../constants/Layout";
 import useLogin from "../hooks/useLogin";
 import { RootStackScreenProps } from "../types";
@@ -49,7 +47,7 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
   ] = useLogin();
 
   const loginButtonOnPress = async () => {
-    //if (await login()) navigation.navigate("dashboard");
+    //if (await loginAsync()) navigation.navigate("dashboard");
     if (await loginAsync()) alert("logged");
   };
 
@@ -88,10 +86,11 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
           onChangeText={setPwdInput}
         />
         <Button
-          style={{ marginTop: "8%" }}
+          style={{ marginTop: "10%" }}
           text="Log in"
           onPress={loginButtonOnPress}
         />
+        <Anchor text="¿Olvidaste tu contraseña?" style={{ marginTop: "3%" }} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

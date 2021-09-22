@@ -5,9 +5,8 @@ import {
   ViewStyle,
 } from "react-native";
 
-export interface ButtonProps extends TouchableOpacityProps {
+export interface AnchorProps extends TouchableOpacityProps {
   text?: string;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  children?: React.ReactNode;
 }
