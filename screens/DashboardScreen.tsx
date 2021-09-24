@@ -6,8 +6,9 @@ import { icons } from "../components/Icon/icons/index";
 import { useThemeColors } from "../components/Themed";
 import { Image, ImageStyle, ViewStyle } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as ImagePicker from "expo-image-picker";
+import * as DocumentPicker from "expo-document-picker";
+import useUserNewDocument from "../hooks/useUserNewDocument";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
@@ -19,17 +20,16 @@ const IMAGE: ImageStyle = {
   resizeMode: "contain",
 };
 
-interface DashboardItem {
+interface IDashboardItem {
   icon: any;
   text: string;
   onPressItem: (...args: any[]) => void;
 }
-const ITEMS_DASHBOARD: Array<DashboardItem> = [
+const ITEMS_DASHBOARD: Array<IDashboardItem> = [
   {
     icon: icons.dashboardUploadDocs,
     text: "Subir documento",
-    onPressItem: (navigation, setImage) =>
-      navigation.navigate("UploadDocument"),
+    onPressItem: (navigation) => navigation.navigate("UploadDocument"),
   },
   {
     icon: icons.dashboardMyDocs,
@@ -42,11 +42,11 @@ const ITEMS_DASHBOARD: Array<DashboardItem> = [
     onPressItem: () => {},
   },
 ];
-const ITEMS_UPLOAD_DOCUMENT: Array<DashboardItem> = [
+const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
   {
     icon: icons.uploadDocumentCamera,
     text: "Foto",
-    onPressItem: (navigation, setImage) => {
+    onPressItem: (navigation, setNewDocumentAsync) => {
       (async function () {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== "granted") {
@@ -60,7 +60,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<DashboardItem> = [
         });
 
         if (!result.cancelled) {
-          setImage(result.uri);
+          await setNewDocumentAsync(result.uri);
           console.log(JSON.stringify(result));
         }
       })();
@@ -69,7 +69,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<DashboardItem> = [
   {
     icon: icons.uploadDocumentGallery,
     text: "Galería",
-    onPressItem: (navigation, setImage) => {
+    onPressItem: (navigation, setNewDocumentAsync) => {
       (async function () {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -84,16 +84,55 @@ const ITEMS_UPLOAD_DOCUMENT: Array<DashboardItem> = [
         });
 
         if (!result.cancelled) {
-          setImage(result.uri);
+          await setNewDocumentAsync(result.uri);
           console.log(JSON.stringify(result));
         }
       })();
     },
   },
   {
+    /*
+    TODO:
+    Configuration
+  > Managed workflow
+  For iOS, outside of the Expo Go app, the DocumentPicker module requires the iCloud entitlement to work properly. You need to set the usesIcloudStorage key to true in your app.json file as specified here.
+  In addition, you'll also need to enable the iCloud Application Service in your App identifier. This can be done in the detail of your App ID in the Apple developer interface.
+  Enable iCloud service with CloudKit support, create one iCloud Container, and name it iCloud.<your_bundle_identifier>.
+  And finally, to apply those changes, you'll need to revoke your existing provisioning profile and run expo build:ios -c
+  > Bare workflow
+  For iOS bare projects, the DocumentPicker module requires the iCloud entitlement to work properly. If your app doesn't have it already, you can add it by opening the project in Xcode and following these steps:
+  In the project, go to the Capabilities tab
+  Set the iCloud switch to on
+  Check the iCloud Documents checkbox
+    */
     icon: icons.uploadDocumentFiles,
     text: "Ficheros",
-    onPressItem: () => {},
+    onPressItem: (navigation, setNewDocumentAsync) => {
+      (async function () {
+        /*
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera permissions!");
+          return null;
+        }
+        
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          quality: 1,
+        });
+        */
+        const result = await DocumentPicker.getDocumentAsync({
+          type: "image/jpeg, image/gif, image/tiff, image/png, application/pdf",
+        });
+
+        if (result.type === "success") {
+          await setNewDocumentAsync(result.uri);
+          console.log(JSON.stringify(result));
+        }
+      })();
+    },
   },
 ];
 
@@ -112,13 +151,12 @@ export default function DashboardScreen({
 }: RootStackScreenProps<"Dashboard">) {
   const themeColors = useThemeColors();
   const route = useRoute();
+  const [document, setNewDocumentAsync] = useUserNewDocument();
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);
 
-  const [image, setImage] = useState<string | null>(null);
-
-  const renderItem = ({ item }: { item: DashboardItem }) => {
+  const renderItem = ({ item }: { item: IDashboardItem }) => {
     console.log("ITEM: ", item);
     return (
       <Button
@@ -126,7 +164,7 @@ export default function DashboardScreen({
         style={buttonStyle}
         text={item.text}
         preset="icon"
-        onPress={(e) => item.onPressItem(navigation, setImage)}
+        onPress={(e) => item.onPressItem(navigation, setNewDocumentAsync)}
       />
     );
   };
