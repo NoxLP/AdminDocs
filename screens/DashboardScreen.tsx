@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
 import { RootStackParamList, RootStackScreenProps } from "../types";
@@ -22,45 +22,78 @@ const IMAGE: ImageStyle = {
 interface DashboardItem {
   icon: any;
   text: string;
-  onPressItem: (
-    navigation: NativeStackNavigationProp<
-      RootStackParamList,
-      keyof RootStackParamList
-    >
-  ) => void;
+  onPressItem: (...args: any[]) => void;
 }
 const ITEMS_DASHBOARD: Array<DashboardItem> = [
   {
     icon: icons.dashboardUploadDocs,
     text: "Subir documento",
-    onPressItem: (navigation) => navigation.navigate("UploadDocument"),
+    onPressItem: (navigation, setImage) =>
+      navigation.navigate("UploadDocument"),
   },
   {
     icon: icons.dashboardMyDocs,
     text: "Mis documentos",
-    onPressItem: (navigation) => {},
+    onPressItem: () => {},
   },
   {
     icon: icons.dashboardCommunityDocs,
     text: "Documentos de mi comunidad",
-    onPressItem: (navigation) => {},
+    onPressItem: () => {},
   },
 ];
 const ITEMS_UPLOAD_DOCUMENT: Array<DashboardItem> = [
   {
     icon: icons.uploadDocumentCamera,
     text: "Foto",
-    onPressItem: (navigation) => {},
+    onPressItem: (navigation, setImage) => {
+      (async function () {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera permissions!");
+          return null;
+        }
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          quality: 1,
+        });
+
+        if (!result.cancelled) {
+          setImage(result.uri);
+          console.log(JSON.stringify(result));
+        }
+      })();
+    },
   },
   {
     icon: icons.uploadDocumentGallery,
     text: "Galería",
-    onPressItem: (navigation) => {},
+    onPressItem: (navigation, setImage) => {
+      (async function () {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera permissions!");
+          return null;
+        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          quality: 1,
+        });
+
+        if (!result.cancelled) {
+          setImage(result.uri);
+          console.log(JSON.stringify(result));
+        }
+      })();
+    },
   },
   {
     icon: icons.uploadDocumentFiles,
     text: "Ficheros",
-    onPressItem: (navigation) => {},
+    onPressItem: () => {},
   },
 ];
 
@@ -83,24 +116,7 @@ export default function DashboardScreen({
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);
 
-  const [image, setImage] = useState(null);
-
-  const takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need camera permissions!");
-      return null;
-    }
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
+  const [image, setImage] = useState<string | null>(null);
 
   const renderItem = ({ item }: { item: DashboardItem }) => {
     console.log("ITEM: ", item);
@@ -110,7 +126,7 @@ export default function DashboardScreen({
         style={buttonStyle}
         text={item.text}
         preset="icon"
-        onPress={(e) => item.onPressItem(navigation)}
+        onPress={(e) => item.onPressItem(navigation, setImage)}
       />
     );
   };
