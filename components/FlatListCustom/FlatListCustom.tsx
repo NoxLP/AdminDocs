@@ -16,7 +16,6 @@ export function FlatListCustom(props: FlatListCustomProps) {
   const styles = [CONTAINER, style];
   const defaultKeyExtractor = (item: any, idx: number): string =>
     item.id ?? `${JSON.stringify(item)}.${idx}`;
-  console.log("LIST: ", items);
 
   return (
     <FlatList

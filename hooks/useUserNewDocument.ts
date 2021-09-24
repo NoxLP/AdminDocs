@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getInfoAsync } from "expo-file-system";
 import Document from "../models/Document";
 import DocumentCategory from "../models/DocumentCategory";
 
@@ -24,17 +23,27 @@ export default function useUserNewDocument(): Array<any> {
         return "image/png";
     }
   };
-  const setNewDocumentAsync = async (uri: string) => {
-    const fileInfo = await getInfoAsync(uri);
+  const setNewDocumentAsync = async ({
+    uri,
+    name,
+  }: {
+    uri: string;
+    name: string;
+  }) => {
+    console.log("URI: ", uri);
 
-    const filename = fileInfo.uri.split("/").pop()!;
-    const extArr = /\.(\w+)$/.exec(filename);
+    const extArr = /\.(\w+)$/.exec(uri);
+    console.log("extArr: ", extArr);
     if (!extArr) {
       // TODO: error in case no extension
       alert("The file has no extension");
       return;
     }
+
     const type = getMimeType(extArr[1]);
+    const now = new Date();
+    const fileName =
+      name && name.length > 0 ? name : `${now.toString()}.${extArr[1]}`;
 
     // Partial document to be finished later in a form by the user
     const document: Document = {
@@ -42,11 +51,12 @@ export default function useUserNewDocument(): Array<any> {
       contentType: type,
       community: "",
       user: "",
-      date: new Date(),
+      date: now,
       category: DocumentCategory.Others,
-      name: filename,
+      name: fileName,
       comments: "",
     };
+
     setDocument(document);
   };
 

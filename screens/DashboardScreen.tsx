@@ -60,7 +60,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          await setNewDocumentAsync(result.uri);
+          await setNewDocumentAsync(result);
           console.log(JSON.stringify(result));
         }
       })();
@@ -84,7 +84,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          await setNewDocumentAsync(result.uri);
+          await setNewDocumentAsync(result);
           console.log(JSON.stringify(result));
         }
       })();
@@ -109,28 +109,13 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
     text: "Ficheros",
     onPressItem: (navigation, setNewDocumentAsync) => {
       (async function () {
-        /*
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera permissions!");
-          return null;
-        }
-        
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          quality: 1,
-        });
-        */
+        // TODO: Only pdf files right now. Later I need to include xls, word/txt, etc.
         const result = await DocumentPicker.getDocumentAsync({
-          type: "image/jpeg, image/gif, image/tiff, image/png, application/pdf",
+          type: "application/pdf",
         });
+        console.log("RESULT: " + JSON.stringify(result));
 
-        if (result.type === "success") {
-          await setNewDocumentAsync(result.uri);
-          console.log(JSON.stringify(result));
-        }
+        if (result.type === "success") await setNewDocumentAsync(result);
       })();
     },
   },
@@ -152,22 +137,20 @@ export default function DashboardScreen({
   const themeColors = useThemeColors();
   const route = useRoute();
   const [document, setNewDocumentAsync] = useUserNewDocument();
+  console.log("document: " + JSON.stringify(document, null, 4));
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);
 
-  const renderItem = ({ item }: { item: IDashboardItem }) => {
-    console.log("ITEM: ", item);
-    return (
-      <Button
-        children={<Image source={item.icon} style={IMAGE} />}
-        style={buttonStyle}
-        text={item.text}
-        preset="icon"
-        onPress={(e) => item.onPressItem(navigation, setNewDocumentAsync)}
-      />
-    );
-  };
+  const renderItem = ({ item }: { item: IDashboardItem }) => (
+    <Button
+      children={<Image source={item.icon} style={IMAGE} />}
+      style={buttonStyle}
+      text={item.text}
+      preset="icon"
+      onPress={(e) => item.onPressItem(navigation, setNewDocumentAsync)}
+    />
+  );
 
   return <FlatListCustom items={items} renderItem={renderItem} />;
 }
