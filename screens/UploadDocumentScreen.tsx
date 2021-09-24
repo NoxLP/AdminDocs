@@ -1,11 +1,10 @@
 import React from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { RootStackScreenProps } from "../types";
-import { icons } from "../components/Icon/icons/index";
+import { icons } from "../components/Icon/icons";
 import { useThemeColors } from "../components/Themed";
-import { Image, ImageStyle, View, ViewStyle } from "react-native";
-import { Icon } from "../components/Icon/Icon";
+import { RootStackScreenProps } from "../types";
+import { Image, ImageStyle, ViewStyle } from "react-native";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
@@ -19,22 +18,22 @@ const IMAGE: ImageStyle = {
 
 const ITEMS: Array<any> = [
   {
-    icon: icons.dashboardUploadDocs,
-    text: "Subir documento",
+    icon: icons.uploadDocumentCamera,
+    text: "Foto",
   },
   {
-    icon: icons.dashboardMyDocs,
-    text: "Mis documentos",
+    icon: icons.uploadDocumentGallery,
+    text: "Galería",
   },
   {
-    icon: icons.dashboardCommunityDocs,
-    text: "Documentos de mi comunidad",
+    icon: icons.uploadDocumentFiles,
+    text: "Ficheros",
   },
 ];
 
-export default function Dashboard({
+export default function UploadDocumentScreen({
   navigation,
-}: RootStackScreenProps<"Login">) {
+}: RootStackScreenProps<"UploadDocument">) {
   const themeColors = useThemeColors();
   const buttonStyle = { color: themeColors.text, ...BUTTON };
 

@@ -16,12 +16,13 @@ import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import Dashboard from "../screens/Dashboard";
+import DashboardScreen from "../screens/DashboardScreen";
 import Login from "../screens/Login";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
+import UploadDocumentScreen from "../screens/UploadDocumentScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -54,7 +55,8 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Dashboard" component={Dashboard} />
+      <Stack.Screen name="Dashboard" component={DashboardScreen} />
+      <Stack.Screen name="UploadDocument" component={DashboardScreen} />
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
