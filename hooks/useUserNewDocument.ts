@@ -2,7 +2,7 @@ import { useState } from "react";
 import Document from "../models/Document";
 import DocumentCategory from "../models/DocumentCategory";
 
-export default function useUserNewDocument(): Array<any> {
+export default function useUserNewDocument() {
   const [document, setDocument] = useState<Document>();
 
   const getMimeType = (ext: string): string => {
@@ -60,5 +60,5 @@ export default function useUserNewDocument(): Array<any> {
     setDocument(document);
   };
 
-  return [document, setNewDocumentAsync];
+  return { document, setNewDocumentAsync };
 }

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { RootStackParamList, RootStackScreenProps } from "../types";
+import { RootStackScreenProps } from "../types";
 import { icons } from "../components/Icon/icons/index";
 import { useThemeColors } from "../components/Themed";
 import { Image, ImageStyle, ViewStyle } from "react-native";
@@ -9,7 +9,15 @@ import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import useUserNewDocument from "../hooks/useUserNewDocument";
+import { useBetween } from "use-between";
 
+interface IDashboardItem {
+  icon: any;
+  text: string;
+  onPressItem: (...args: any[]) => void;
+}
+
+//#region constants
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
   height: 150,
@@ -20,11 +28,6 @@ const IMAGE: ImageStyle = {
   resizeMode: "contain",
 };
 
-interface IDashboardItem {
-  icon: any;
-  text: string;
-  onPressItem: (...args: any[]) => void;
-}
 const ITEMS_DASHBOARD: Array<IDashboardItem> = [
   {
     icon: icons.dashboardUploadDocs,
@@ -62,6 +65,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         if (!result.cancelled) {
           await setNewDocumentAsync(result);
           console.log(JSON.stringify(result));
+          navigation.navigate("NewDocumentModal");
         }
       })();
     },
@@ -86,6 +90,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         if (!result.cancelled) {
           await setNewDocumentAsync(result);
           console.log(JSON.stringify(result));
+          navigation.navigate("NewDocumentModal");
         }
       })();
     },
@@ -115,11 +120,15 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
         console.log("RESULT: " + JSON.stringify(result));
 
-        if (result.type === "success") await setNewDocumentAsync(result);
+        if (result.type === "success") {
+          await setNewDocumentAsync(result);
+          navigation.navigate("NewDocumentModal");
+        }
       })();
     },
   },
 ];
+//#endregion
 
 const getRouteItems = (routeName: string) => {
   switch (routeName) {
@@ -136,7 +145,7 @@ export default function DashboardScreen({
 }: RootStackScreenProps<"Dashboard">) {
   const themeColors = useThemeColors();
   const route = useRoute();
-  const [document, setNewDocumentAsync] = useUserNewDocument();
+  const { document, setNewDocumentAsync } = useBetween(useUserNewDocument);
   console.log("document: " + JSON.stringify(document, null, 4));
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };

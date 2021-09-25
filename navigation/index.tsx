@@ -19,10 +19,10 @@ import useColorScheme from "../hooks/useColorScheme";
 import DashboardScreen from "../screens/DashboardScreen";
 import Login from "../screens/Login";
 import ModalScreen from "../screens/ModalScreen";
+import NewDocumentModalScreen from "../screens/NewDocumentModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
-import UploadDocumentScreen from "../screens/UploadDocumentScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -69,6 +69,10 @@ function RootNavigator() {
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen
+          name="NewDocumentModal"
+          component={NewDocumentModalScreen}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );

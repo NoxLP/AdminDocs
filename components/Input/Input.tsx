@@ -36,6 +36,8 @@ export default function Input(props: InputProps) {
     forwardedRef,
     keyboardType,
     password,
+    multiline,
+    numberOfLines,
   } = props;
 
   const themeColors = useThemeColors();
@@ -56,6 +58,8 @@ export default function Input(props: InputProps) {
         secureTextEntry={password}
         value={value}
         onChangeText={(text) => onChangeText(text)}
+        multiline={!!multiline}
+        numberOfLines={numberOfLines ?? 1}
       />
     </View>
   );
