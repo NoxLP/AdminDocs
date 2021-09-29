@@ -15,6 +15,7 @@ import Layout from "../constants/Layout";
 import Document from "../models/Document";
 import { useBetween } from "use-between";
 import Form from "../components/Form/Form";
+import Input from "../components/Input/Input";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -60,10 +61,16 @@ const VALIDATION = {};
 //#endregion
 
 export default function NewDocumentModalScreen({ navigation }) {
-  const { document } = useBetween(useUserNewDocument);
+  const {
+    document,
+    setNewDocumentCommunity,
+    setNewDocumentUser,
+    setNewDocumentCategory,
+    setNewDocumentName,
+    setNewDocumentComments,
+  } = useBetween(useUserNewDocument);
   console.log("doc: ", document);
 
-  //const { control, handleSubmit, errors, register, setValue } = useForm();
   const {
     register,
     handleSubmit,
@@ -89,7 +96,13 @@ export default function NewDocumentModalScreen({ navigation }) {
         <View style={IMAGE_CONTAINER}>
           <Image source={headerImage} style={IMAGE} />
         </View>
-        <Form register={register} setValue={setValue} errors={errors}></Form>
+        <Form register={register} setValue={setValue} errors={errors}>
+          <Input
+            placeholder="Nombre"
+            value={document.name}
+            onChangeText={setNewDocumentName}
+          />
+        </Form>
       </ScrollView>
     </KeyboardAvoidingView>
   );

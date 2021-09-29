@@ -49,7 +49,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
   {
     icon: icons.uploadDocumentCamera,
     text: "Foto",
-    onPressItem: (navigation, setNewDocumentAsync) => {
+    onPressItem: (navigation, setNewDocumentFile) => {
       (async function () {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== "granted") {
@@ -63,7 +63,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          await setNewDocumentAsync(result);
+          setNewDocumentFile(result);
           console.log(JSON.stringify(result));
           navigation.navigate("NewDocumentModal");
         }
@@ -73,7 +73,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
   {
     icon: icons.uploadDocumentGallery,
     text: "Galería",
-    onPressItem: (navigation, setNewDocumentAsync) => {
+    onPressItem: (navigation, setNewDocumentFile) => {
       (async function () {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -88,7 +88,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          await setNewDocumentAsync(result);
+          setNewDocumentFile(result);
           console.log(JSON.stringify(result));
           navigation.navigate("NewDocumentModal");
         }
@@ -112,7 +112,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
     */
     icon: icons.uploadDocumentFiles,
     text: "Ficheros",
-    onPressItem: (navigation, setNewDocumentAsync) => {
+    onPressItem: (navigation, setNewDocumentFile) => {
       (async function () {
         // TODO: Only pdf files right now. Later I need to include xls, word/txt, etc.
         const result = await DocumentPicker.getDocumentAsync({
@@ -121,7 +121,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         console.log("RESULT: " + JSON.stringify(result));
 
         if (result.type === "success") {
-          await setNewDocumentAsync(result);
+          setNewDocumentFile(result);
           navigation.navigate("NewDocumentModal");
         }
       })();
@@ -145,7 +145,7 @@ export default function DashboardScreen({
 }: RootStackScreenProps<"Dashboard">) {
   const themeColors = useThemeColors();
   const route = useRoute();
-  const { document, setNewDocumentAsync } = useBetween(useUserNewDocument);
+  const { document, setNewDocumentFile } = useBetween(useUserNewDocument);
   console.log("document: " + JSON.stringify(document, null, 4));
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
@@ -157,7 +157,7 @@ export default function DashboardScreen({
       style={buttonStyle}
       text={item.text}
       preset="icon"
-      onPress={(e) => item.onPressItem(navigation, setNewDocumentAsync)}
+      onPress={(e) => item.onPressItem(navigation, setNewDocumentFile)}
     />
   );
 

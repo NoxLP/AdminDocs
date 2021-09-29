@@ -3,7 +3,16 @@ import Document from "../models/Document";
 import DocumentCategory from "../models/DocumentCategory";
 
 export default function useUserNewDocument() {
-  const [document, setDocument] = useState<Document>();
+  const [document, setDocument] = useState<Document>({
+    uri: "",
+    contentType: "",
+    community: "",
+    user: "",
+    date: new Date(),
+    category: DocumentCategory.Others,
+    name: "",
+    comments: "",
+  });
 
   const getMimeType = (ext: string): string => {
     // mime type mapping
@@ -23,42 +32,75 @@ export default function useUserNewDocument() {
         return "image/png";
     }
   };
-  const setNewDocumentAsync = async ({
-    uri,
-    name,
-  }: {
-    uri: string;
-    name: string;
-  }) => {
+  const setNewDocumentFile = ({ uri, name }: { uri: string; name: string }) => {
     console.log("URI: ", uri);
 
-    const extArr = /\.(\w+)$/.exec(uri);
-    console.log("extArr: ", extArr);
-    if (!extArr) {
+    const uriExtensionArray = /\.(\w+)$/.exec(uri);
+    console.log("uriExtensionArray: ", uriExtensionArray);
+    if (!uriExtensionArray) {
       // TODO: error in case no extension
       alert("The file has no extension");
       return;
     }
 
-    const type = getMimeType(extArr[1]);
+    const type = getMimeType(uriExtensionArray[1]);
     const now = new Date();
-    const fileName =
-      name && name.length > 0 ? name : `${now.toString()}.${extArr[1]}`;
 
-    // Partial document to be finished later in a form by the user
-    const document: Document = {
+    // Depending on the file, it could provide a name or not, if no name,
+    // is provided, simply use now date and the extension built
+    // from the uri
+    const fileName =
+      name && name.length > 0
+        ? name
+        : `${now.toString()}.${uriExtensionArray[1]}`;
+
+    const newDocument: Document = {
+      ...document,
       uri,
       contentType: type,
-      community: "",
-      user: "",
-      date: now,
-      category: DocumentCategory.Others,
-      name: fileName,
-      comments: "",
+      name: document.name === "" ? fileName : document.name,
     };
 
-    setDocument(document);
+    setDocument(newDocument);
+  };
+  const setNewDocumentCommunity = (communityId: string) => {
+    setDocument({
+      ...document,
+      community: communityId,
+    });
+  };
+  const setNewDocumentUser = (userId: string) => {
+    setDocument({
+      ...document,
+      user: userId,
+    });
+  };
+  const setNewDocumentCategory = (category: DocumentCategory) => {
+    setDocument({
+      ...document,
+      category,
+    });
+  };
+  const setNewDocumentName = (name: string) => {
+    setDocument({
+      ...document,
+      name,
+    });
+  };
+  const setNewDocumentComments = (comments: string) => {
+    setDocument({
+      ...document,
+      comments,
+    });
   };
 
-  return { document, setNewDocumentAsync };
+  return {
+    document,
+    setNewDocumentFile,
+    setNewDocumentCommunity,
+    setNewDocumentUser,
+    setNewDocumentCategory,
+    setNewDocumentName,
+    setNewDocumentComments,
+  };
 }
