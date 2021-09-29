@@ -20,9 +20,9 @@ export type RootStackParamList = {
   Login: undefined;
   Dashboard: undefined;
   UploadDocument: undefined;
+  NewDocumentModal: undefined;
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
-  NewDocumentModal: undefined;
   NotFound: undefined;
 };
 
@@ -32,7 +32,6 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type RootTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
-  NewDocumentModal: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

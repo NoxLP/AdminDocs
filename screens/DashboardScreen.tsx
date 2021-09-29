@@ -11,13 +11,6 @@ import * as DocumentPicker from "expo-document-picker";
 import useUserNewDocument from "../hooks/useUserNewDocument";
 import { useBetween } from "use-between";
 
-interface IDashboardItem {
-  icon: any;
-  text: string;
-  onPressItem: (...args: any[]) => void;
-}
-
-//#region constants
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
   height: 150,
@@ -28,6 +21,13 @@ const IMAGE: ImageStyle = {
   resizeMode: "contain",
 };
 
+interface IDashboardItem {
+  icon: any;
+  text: string;
+  onPressItem: (...args: any[]) => void;
+}
+
+//#region constants
 const ITEMS_DASHBOARD: Array<IDashboardItem> = [
   {
     icon: icons.dashboardUploadDocs,

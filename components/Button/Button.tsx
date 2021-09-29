@@ -9,7 +9,7 @@ const CONTAINER: ViewStyle = {
   width: "85%",
   justifyContent: "center",
   alignItems: "center",
-  borderRadius: 6,
+  borderRadius: 10,
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,

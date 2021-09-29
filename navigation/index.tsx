@@ -58,6 +58,10 @@ function RootNavigator() {
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="UploadDocument" component={DashboardScreen} />
       <Stack.Screen
+        name="NewDocumentModal"
+        component={NewDocumentModalScreen}
+      />
+      <Stack.Screen
         name="Root"
         component={BottomTabNavigator}
         options={{ headerShown: false }}
@@ -69,10 +73,6 @@ function RootNavigator() {
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
-        <Stack.Screen
-          name="NewDocumentModal"
-          component={NewDocumentModalScreen}
-        />
       </Stack.Group>
     </Stack.Navigator>
   );
