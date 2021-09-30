@@ -28,25 +28,31 @@ export function Button(props: ButtonProps) {
   } = props;
 
   const themeColors = useThemeColors();
+  const viewPresets = {
+    success: { backgroundColor: themeColors.button.success },
+    error: { backgroundColor: themeColors.button.error },
+    icon: { backgroundColor: "transparent" },
+  };
+  const textPresets = {
+    success: { color: themeColors.button.text },
+    error: { color: themeColors.button.text },
+    icon: { color: themeColors.text },
+  };
+
   const viewStyles = [
-    { backgroundColor: themeColors.button.background },
+    viewPresets[preset || "success"],
     CONTAINER,
     styleOverride,
   ];
   const textStyles = [
-    {
-      color:
-        !preset || preset === "default"
-          ? themeColors.background
-          : themeColors.text,
-    },
+    textPresets[preset || "success"],
     TEXT,
     textStyleOverride,
   ];
 
   return (
     <TouchableOpacity style={viewStyles} {...rest}>
-      {!preset || preset === "default" ? (
+      {!preset || preset !== "icon" ? (
         <Text style={textStyles}>{text}</Text>
       ) : (
         <>

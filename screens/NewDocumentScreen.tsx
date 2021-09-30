@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import DocumentCategory from "../models/DocumentCategory";
 import { Picker } from "../components/Picker/Picker";
 import { PickerItemProps } from "../components/Picker/PickerProps";
+import { Button } from "../components/Button/Button";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -74,7 +75,16 @@ const INPUT_CONTAINER: ViewStyle = {
 };
 const PICKER_CONTAINER: ViewStyle = {
   paddingVertical: "1%",
-  marginTop: "5%",
+  marginTop: "7%",
+};
+const SUBMIT_BUTTONS_CONTAINER: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-around",
+  width: "100%",
+  marginTop: "9%",
+};
+const SUBMIT_BUTTONS: ViewStyle = {
+  width: "40%",
 };
 //#endregion
 
@@ -146,8 +156,8 @@ export default function NewDocumentScreen({ navigation }) {
             numberOfLines={2}
           />
           <Input
-            style={INPUT_CONTAINER}
-            inputStyle={INPUT}
+            style={{ ...INPUT_CONTAINER, marginTop: "2%" }}
+            inputStyle={{ ...INPUT, paddingTop: "2%" }}
             name="comments"
             defaultValue={document.comments}
             placeholder="Comentarios"
@@ -159,6 +169,10 @@ export default function NewDocumentScreen({ navigation }) {
             style={PICKER_CONTAINER}
             items={categoryItems}
           />
+          <View style={SUBMIT_BUTTONS_CONTAINER}>
+            <Button style={SUBMIT_BUTTONS} preset="success" text="Aceptar" />
+            <Button style={SUBMIT_BUTTONS} preset="error" text="Cancelar" />
+          </View>
         </Form>
       </ScrollView>
     </KeyboardAvoidingView>

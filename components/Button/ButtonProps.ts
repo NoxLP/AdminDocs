@@ -10,5 +10,5 @@ export interface ButtonProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   children?: React.ReactNode;
-  preset?: "default" | "icon";
+  preset?: "success" | "error" | "icon";
 }
