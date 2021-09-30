@@ -5,10 +5,8 @@ import TYPOGRAPHY from "../../constants/Typography";
 import { InputProps } from "./InputProps";
 import { Text, useThemeColors } from "../Themed";
 
-// the base styling for the container
 const CONTAINER: ViewStyle = {};
 
-// the base styling for the TextInput
 const INPUT: TextStyle = {
   alignSelf: "center",
   fontSize: TYPOGRAPHY.fontSize.primary,
@@ -22,18 +20,18 @@ const INPUT: TextStyle = {
   borderRadius: 6,
 };
 
-export default function Input(props: InputProps) {
+export const Input = React.forwardRef(function Input(
+  props: InputProps,
+  ref: any
+) {
   const {
-    // placeholderTx,
     placeholder,
     value,
+    defaultValue,
     onChangeText,
-    // labelTx,
     label,
-    // preset = "default",
     style: styleOverride,
     inputStyle: inputStyleOverride,
-    forwardedRef,
     keyboardType,
     password,
     multiline,
@@ -53,14 +51,15 @@ export default function Input(props: InputProps) {
         placeholderTextColor={themeColors.input.placeholderColor}
         underlineColorAndroid={themeColors.input.underlineColor}
         style={inputStyles}
-        ref={forwardedRef}
+        ref={ref}
         keyboardType={keyboardType ?? "default"}
         secureTextEntry={password}
         value={value}
-        onChangeText={(text) => onChangeText(text)}
+        onChangeText={onChangeText ? (text) => onChangeText(text) : undefined}
         multiline={!!multiline}
         numberOfLines={numberOfLines ?? 1}
+        defaultValue={defaultValue || ""}
       />
     </View>
   );
-}
+});

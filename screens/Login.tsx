@@ -9,7 +9,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { Anchor } from "../components/Anchor/Anchor";
 import { Button } from "../components/Button/Button";
-import Input from "../components/Input/Input";
+import { Input } from "../components/Input/Input";
 import Layout from "../constants/Layout";
 import useLogin from "../hooks/useLogin";
 import { RootStackScreenProps } from "../types";

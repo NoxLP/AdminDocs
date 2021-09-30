@@ -2,14 +2,15 @@ import * as React from "react";
 import { TextInput } from "react-native";
 import { FormProps } from "./FormProps";
 
-export default ({
-  register,
-  errors,
-  setValue,
-  validation,
-  children,
-}: FormProps) => {
+export default ({ register, errors, setValue, children }: FormProps) => {
   const Inputs = React.useRef<Array<TextInput>>([]);
+  React.useEffect(() => {
+    (Array.isArray(children) ? children : [children]).forEach((child) => {
+      if (child.props.name) {
+        register(child.props.name);
+      }
+    });
+  }, [register]);
 
   return (
     <>
@@ -20,10 +21,6 @@ export default ({
                 ...{
                   ...child.props,
                   ref: (e: TextInput) => {
-                    register(
-                      { name: child.props.name },
-                      validation[child.props.name]
-                    );
                     Inputs.current[i] = e;
                   },
                   onChangeText: (v: string) =>

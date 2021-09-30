@@ -1,21 +1,16 @@
-import {
-  KeyboardTypeOptions,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
-import { TextProps, ViewProps } from "../Themed";
+import { KeyboardTypeOptions, TextStyle, ViewStyle } from "react-native";
 
 export interface InputProps {
   placeholder?: string;
-  value: string;
-  onChangeText: (text: string) => void;
+  value?: string;
+  defaultValue?: string;
+  onChangeText?: (text: string) => void;
   label?: string;
   style?: ViewStyle;
   inputStyle?: TextStyle;
-  forwardedRef?: any;
   keyboardType?: KeyboardTypeOptions;
   password?: boolean;
   multiline?: boolean;
   numberOfLines?: number;
+  name?: string;
 }

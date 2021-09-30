@@ -1,6 +1,6 @@
 // enum: ["Factura", "Correspondencia", "Aviso", "Otros"];
 
-const enum DocumentCategory {
+enum DocumentCategory {
   Invoice = "Factura",
   Mail = "Correspondencia",
   Notice = "Aviso",

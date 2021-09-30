@@ -19,7 +19,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import DashboardScreen from "../screens/DashboardScreen";
 import Login from "../screens/Login";
 import ModalScreen from "../screens/ModalScreen";
-import NewDocumentModalScreen from "../screens/NewDocumentModalScreen";
+import NewDocumentScreen from "../screens/NewDocumentScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
@@ -57,10 +57,7 @@ function RootNavigator() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="UploadDocument" component={DashboardScreen} />
-      <Stack.Screen
-        name="NewDocumentModal"
-        component={NewDocumentModalScreen}
-      />
+      <Stack.Screen name="NewDocumentModal" component={NewDocumentScreen} />
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

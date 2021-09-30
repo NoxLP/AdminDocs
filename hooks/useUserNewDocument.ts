@@ -87,10 +87,21 @@ export default function useUserNewDocument() {
       name,
     });
   };
-  const setNewDocumentComments = (comments: string) => {
+  const setNewDocumentComments = (newComments: string) => {
+    console.log(
+      JSON.stringify(
+        {
+          ...document,
+          comments: document.comments + newComments,
+        },
+        null,
+        4
+      )
+    );
+
     setDocument({
       ...document,
-      comments,
+      comments: document.comments + newComments,
     });
   };
 
