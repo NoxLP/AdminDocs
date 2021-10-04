@@ -36,6 +36,7 @@ export const Input = React.forwardRef(function Input(
     password,
     multiline,
     numberOfLines,
+    error,
   } = props;
 
   const themeColors = useThemeColors();

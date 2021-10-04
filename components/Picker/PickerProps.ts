@@ -2,12 +2,13 @@ import { PickerProps as RNPickerProps } from "@react-native-picker/picker";
 import { TextStyle, ViewStyle } from "react-native";
 
 export interface PickerItemProps {
-  label: string;
+  key: string;
   value: any;
 }
 export interface PickerProps {
-  name: string;
+  name?: string;
   selectedValue?: any;
+  defaultValue?: PickerItemProps;
   onValueChange?: (itemValue: any, itemIndex: number) => void | undefined;
   label?: string;
   style?: ViewStyle;

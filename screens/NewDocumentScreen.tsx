@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import useUserNewDocument from "../hooks/useUserNewDocument";
 import {
   Image,
@@ -23,6 +23,8 @@ import DocumentCategory from "../models/DocumentCategory";
 import { Picker } from "../components/Picker/Picker";
 import { PickerItemProps } from "../components/Picker/PickerProps";
 import { Button } from "../components/Button/Button";
+import { useEffect } from "react";
+import useYupValidationResolver from "../hooks/useYupValidationResolver";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -95,7 +97,7 @@ export default function NewDocumentScreen({ navigation }) {
     setNewDocumentName,
     setNewDocumentComments,
   } = useBetween(useUserNewDocument);
-  console.log("doc: ", document);
+  //console.log("doc: ", document);
 
   // Errors messages must be set before schema
   Yup.setLocale({
@@ -114,24 +116,44 @@ export default function NewDocumentScreen({ navigation }) {
     comments: Yup.string(),
     category: Yup.mixed().oneOf(Object.keys(DocumentCategory)),
   });
-  // useForm with validation
+  // Validation resolver
+  const yupResolver = useYupValidationResolver(validationSchema);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({ resolver: yupResolver(validationSchema) });
+    reset,
+  } = useForm<Document>({ resolver: yupResolver });
 
-  const headerImage =
+  const documentImage =
     document!.contentType === "application/json"
       ? require("../assets/images/pdf-file-thumbnail-placeholder.png")
       : { uri: document!.uri };
   const categoryItems: PickerItemProps[] = Object.keys(DocumentCategory).map(
     (key) => ({
-      label: DocumentCategory[key as keyof typeof DocumentCategory],
+      key: DocumentCategory[key as keyof typeof DocumentCategory],
       value: key,
     })
   );
+  const defaultCategory: PickerItemProps = {
+    key: DocumentCategory.Others,
+    value: "Others",
+  };
+
+  const onSubmit: SubmitHandler<Document> = (data) => {
+    console.log("SUBMIT: ", data);
+  };
+
+  // react-hook-form can't catch the default value
+  useEffect(() => {
+    console.log("RESET: " + JSON.stringify(document, null, 4));
+    reset(document);
+  }, []);
+  // react-hook-form errors
+  useEffect(() => {
+    console.log("ERRORS: " + JSON.stringify(errors, null, 4));
+  }, [errors]);
 
   return (
     <KeyboardAvoidingView
@@ -143,7 +165,7 @@ export default function NewDocumentScreen({ navigation }) {
         contentContainerStyle={CONTAINER_CONTENT}
       >
         <View style={IMAGE_CONTAINER}>
-          <Image source={headerImage} style={IMAGE} />
+          <Image source={documentImage} style={IMAGE} />
         </View>
         <Form register={register} setValue={setValue} errors={errors}>
           <Input
@@ -168,9 +190,15 @@ export default function NewDocumentScreen({ navigation }) {
             name="category"
             style={PICKER_CONTAINER}
             items={categoryItems}
+            defaultValue={defaultCategory}
           />
           <View style={SUBMIT_BUTTONS_CONTAINER}>
-            <Button style={SUBMIT_BUTTONS} preset="success" text="Aceptar" />
+            <Button
+              style={SUBMIT_BUTTONS}
+              preset="success"
+              text="Aceptar"
+              onPress={handleSubmit(onSubmit)}
+            />
             <Button style={SUBMIT_BUTTONS} preset="error" text="Cancelar" />
           </View>
         </Form>

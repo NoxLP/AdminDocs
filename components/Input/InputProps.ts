@@ -1,6 +1,8 @@
+import { FieldError } from "react-hook-form";
 import { KeyboardTypeOptions, TextStyle, ViewStyle } from "react-native";
 
 export interface InputProps {
+  controlled?: boolean;
   placeholder?: string;
   value?: string;
   defaultValue?: string;
@@ -13,4 +15,5 @@ export interface InputProps {
   multiline?: boolean;
   numberOfLines?: number;
   name?: string;
+  error?: FieldError | undefined;
 }

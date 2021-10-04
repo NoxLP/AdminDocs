@@ -1,5 +1,6 @@
 import { ApiResponse } from "apisauce";
 import { api } from "./api-config";
+import Document from "../models/Document";
 
 export interface RequestResult {
   correct: boolean;
@@ -60,4 +61,12 @@ export const login = async (
     );
     return { correct: false, data: err.message };
   }
+};
+
+export const addDocument = async (data: Document) => {
+  try {
+    const response: ApiResponse<any> = await api.post("/documents", data);
+
+    return getRequestResult(response);
+  } catch (err) {}
 };

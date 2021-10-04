@@ -22,6 +22,7 @@ export const Picker = React.forwardRef(function Picker(
   const {
     name,
     selectedValue,
+    defaultValue,
     onValueChange,
     label,
     style: styleOverride,
@@ -45,13 +46,30 @@ export const Picker = React.forwardRef(function Picker(
         selectedValue={selectedValue}
         onValueChange={onValueChange}
       >
-        {items.map((item) => (
-          <RNPicker.Item
-            key={item.label}
-            label={item.label}
-            value={item.value}
-          />
-        ))}
+        {!defaultValue
+          ? items.map((item) => (
+              <RNPicker.Item
+                key={item.key}
+                label={item.key}
+                value={item.value}
+              />
+            ))
+          : [
+              <RNPicker.Item
+                key={defaultValue.key}
+                label={defaultValue.key}
+                value={defaultValue.value}
+              />,
+              ...items
+                .filter((item) => item.value !== defaultValue.value)
+                .map((item) => (
+                  <RNPicker.Item
+                    key={item.key}
+                    label={item.key}
+                    value={item.value}
+                  />
+                )),
+            ]}
       </RNPicker>
     </View>
   );

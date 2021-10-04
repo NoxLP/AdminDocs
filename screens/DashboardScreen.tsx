@@ -146,7 +146,7 @@ export default function DashboardScreen({
   const themeColors = useThemeColors();
   const route = useRoute();
   const { document, setNewDocumentFile } = useBetween(useUserNewDocument);
-  console.log("document: " + JSON.stringify(document, null, 4));
+  // console.log("document: " + JSON.stringify(document, null, 4));
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);

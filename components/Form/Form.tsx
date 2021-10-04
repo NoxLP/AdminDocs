@@ -4,10 +4,14 @@ import { FormProps } from "./FormProps";
 
 export default ({ register, errors, setValue, children }: FormProps) => {
   const Inputs = React.useRef<Array<TextInput>>([]);
+  //console.log("REFS: " + JSON.stringify(Inputs, null, 4));
+  //console.log("REFS: " + Inputs);
+
   React.useEffect(() => {
     (Array.isArray(children) ? children : [children]).forEach((child) => {
       if (child.props.name) {
         register(child.props.name);
+        console.log("REGISTER: " + child.props.name);
       }
     });
   }, [register]);
@@ -24,7 +28,7 @@ export default ({ register, errors, setValue, children }: FormProps) => {
                     Inputs.current[i] = e;
                   },
                   onChangeText: (v: string) =>
-                    setValue(child.props.name, v, true),
+                    setValue(child.props.name, v, { shouldValidate: false }),
                   onSubmitEditing: () => {
                     Inputs.current[i + 1]
                       ? Inputs.current[i + 1].focus()
