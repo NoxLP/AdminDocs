@@ -57,7 +57,7 @@ function RootNavigator() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="UploadDocument" component={DashboardScreen} />
-      <Stack.Screen name="NewDocumentModal" component={NewDocumentScreen} />
+      <Stack.Screen name="NewDocumentScreen" component={NewDocumentScreen} />
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

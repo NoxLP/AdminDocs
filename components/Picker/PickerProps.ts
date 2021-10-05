@@ -7,7 +7,7 @@ export interface PickerItemProps {
 }
 export interface PickerProps {
   name?: string;
-  selectedValue?: any;
+  selectedValue?: PickerItemProps;
   defaultValue?: PickerItemProps;
   onValueChange?: (itemValue: any, itemIndex: number) => void | undefined;
   label?: string;

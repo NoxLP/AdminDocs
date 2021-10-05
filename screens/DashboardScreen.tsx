@@ -65,7 +65,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         if (!result.cancelled) {
           setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentModal");
+          navigation.navigate("NewDocumentScreen");
         }
       })();
     },
@@ -90,7 +90,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         if (!result.cancelled) {
           setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentModal");
+          navigation.navigate("NewDocumentScreen");
         }
       })();
     },
@@ -122,7 +122,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
 
         if (result.type === "success") {
           setNewDocumentFile(result);
-          navigation.navigate("NewDocumentModal");
+          navigation.navigate("NewDocumentScreen");
         }
       })();
     },

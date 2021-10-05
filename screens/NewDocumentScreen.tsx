@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import useUserNewDocument from "../hooks/useUserNewDocument";
 import {
   Image,
@@ -8,7 +8,6 @@ import {
   Platform,
   ScrollView,
   ViewStyle,
-  Text,
   View,
   TextStyle,
 } from "react-native";
@@ -17,7 +16,6 @@ import Document from "../models/Document";
 import { useBetween } from "use-between";
 import Form from "../components/Form/Form";
 import { Input } from "../components/Input/Input";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import DocumentCategory from "../models/DocumentCategory";
 import { Picker } from "../components/Picker/Picker";
@@ -25,6 +23,7 @@ import { PickerItemProps } from "../components/Picker/PickerProps";
 import { Button } from "../components/Button/Button";
 import { useEffect } from "react";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
+import { addDocument } from "../services/api";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -114,7 +113,7 @@ export default function NewDocumentScreen({ navigation }) {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     comments: Yup.string(),
-    category: Yup.mixed().oneOf(Object.keys(DocumentCategory)),
+    category: Yup.string().required(),
   });
   // Validation resolver
   const yupResolver = useYupValidationResolver(validationSchema);
@@ -124,6 +123,7 @@ export default function NewDocumentScreen({ navigation }) {
     formState: { errors },
     setValue,
     reset,
+    control,
   } = useForm<Document>({ resolver: yupResolver });
 
   const documentImage =
@@ -141,8 +141,12 @@ export default function NewDocumentScreen({ navigation }) {
     value: "Others",
   };
 
-  const onSubmit: SubmitHandler<Document> = (data) => {
+  const onSubmit: SubmitHandler<Document> = async (data) => {
     console.log("SUBMIT: ", data);
+    await addDocument(data);
+  };
+  const cancelButtonOnPress = () => {
+    navigation.goBack();
   };
 
   // react-hook-form can't catch the default value
@@ -186,22 +190,36 @@ export default function NewDocumentScreen({ navigation }) {
             multiline={true}
             numberOfLines={4}
           />
-          <Picker
-            name="category"
-            style={PICKER_CONTAINER}
-            items={categoryItems}
-            defaultValue={defaultCategory}
-          />
-          <View style={SUBMIT_BUTTONS_CONTAINER}>
-            <Button
-              style={SUBMIT_BUTTONS}
-              preset="success"
-              text="Aceptar"
-              onPress={handleSubmit(onSubmit)}
-            />
-            <Button style={SUBMIT_BUTTONS} preset="error" text="Cancelar" />
-          </View>
         </Form>
+        <Controller
+          control={control}
+          name="category"
+          defaultValue={defaultCategory}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <Picker
+              name="category"
+              style={PICKER_CONTAINER}
+              items={categoryItems}
+              defaultValue={defaultCategory}
+              selectedValue={value}
+              onValueChange={onChange}
+            />
+          )}
+        />
+        <View style={SUBMIT_BUTTONS_CONTAINER}>
+          <Button
+            style={SUBMIT_BUTTONS}
+            preset="success"
+            text="Aceptar"
+            onPress={handleSubmit(onSubmit)}
+          />
+          <Button
+            style={SUBMIT_BUTTONS}
+            preset="error"
+            text="Cancelar"
+            onPress={cancelButtonOnPress}
+          />
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
