@@ -1,67 +1,62 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+import {
+  getToken,
+  removeLoggedUser,
+  saveLoggedUser,
+} from "../services/auth-storage";
 import {
   checkToken,
   login as loginService,
   RequestResult,
 } from "../services/api";
 import { api } from "../services/api-config";
+import { useState } from "react";
+
+export interface LoginData {
+  phone: string;
+  password: string;
+}
 
 export default function useLogin() {
-  const [phoneInput, setPhoneInput] = useState<string>("");
-  const [pwdInput, setPwdInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>();
 
-  const isUserLoggedAsync = async (): Promise<boolean> => {
-    const token = await AsyncStorage.getItem("token");
-    console.log(">> Token: ", token);
+  const isUserLogged = async (): Promise<boolean> => {
+    setIsLoading(true);
+    const token = await getToken();
 
     if (!token) return false;
 
     api.setHeader("token", token);
     const check = await checkToken();
-    console.log(">> Check: " + JSON.stringify(check, null, 4));
 
     if (!check.correct) {
-      AsyncStorage.removeItem("token");
-      if (AsyncStorage.getItem("user")) AsyncStorage.removeItem("user");
-      console.log("Token not valid");
+      await removeLoggedUser();
 
+      setIsLoading(false);
       return false;
     }
 
-    const user = await AsyncStorage.getItem("user");
-    if (!user) {
-      console.log(">> User: ", user);
-      await AsyncStorage.setItem("user", JSON.stringify(check.data.user));
-    }
-    const user2 = await AsyncStorage.getItem("user");
-    console.log(JSON.stringify(user2, null, 4));
+    // TODO: This return false if something goes wrong, check and show errors
+    await saveLoggedUser(check);
 
+    setIsLoading(false);
     return true;
   };
-  const loginAsync = async (): Promise<RequestResult> => {
-    console.log("token not in storage");
-
-    const response = await loginService(phoneInput, pwdInput);
-    // if (!isError) navigation.navigate("dashboard")
+  const login = async (data: LoginData): Promise<RequestResult> => {
+    setIsLoading(true);
+    const response = await loginService(data.phone, data.password);
 
     if (response.correct) {
-      AsyncStorage.setItem("token", response.data.token);
-      AsyncStorage.setItem("user", JSON.stringify(response.data.user));
-      api.setHeader("token", response.data.token);
+      // TODO: This return false if something goes wrong, check and show errors
+      await saveLoggedUser(response);
     }
 
-    console.log(AsyncStorage.getItem("user"));
-
+    setIsLoading(false);
     return response;
   };
 
   return {
-    isUserLoggedAsync,
-    phoneInput,
-    setPhoneInput,
-    pwdInput,
-    setPwdInput,
-    loginAsync,
+    isLoading,
+    isUserLogged,
+    login,
   };
 }

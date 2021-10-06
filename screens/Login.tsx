@@ -7,12 +7,16 @@ import {
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { useForm, SubmitHandler } from "react-hook-form";
+import * as Yup from "yup";
 import { Anchor } from "../components/Anchor/Anchor";
 import { Button } from "../components/Button/Button";
+import Form from "../components/Form/Form";
 import { Input } from "../components/Input/Input";
 import Layout from "../constants/Layout";
-import useLogin from "../hooks/useLogin";
+import useLogin, { LoginData } from "../hooks/useLogin";
 import { RootStackScreenProps } from "../types";
+import useYupValidationResolver from "../hooks/useYupValidationResolver";
 
 const CONTAINER: ViewStyle = {
   flex: 1,
@@ -27,9 +31,9 @@ const CONTAINER_CONTENT: ViewStyle = {
   alignItems: "center",
 };
 const LOGO: ImageStyle = {
-  height: 250,
+  height: "40%",
   width: "80%",
-  marginTop: "6%",
+  marginTop: "15%",
   marginBottom: "10%",
 };
 const INPUT: ViewStyle = {
@@ -37,19 +41,33 @@ const INPUT: ViewStyle = {
 };
 
 export default function Login({ navigation }: RootStackScreenProps<"Login">) {
-  const {
-    isUserLoggedAsync,
-    phoneInput,
-    setPhoneInput,
-    pwdInput,
-    setPwdInput,
-    loginAsync,
-  } = useLogin();
+  const { login } = useLogin();
 
-  const loginButtonOnPress = async () => {
+  // Errors messages must be set before schema
+  Yup.setLocale({
+    string: {
+      required: "Campo obligatorio",
+    },
+  });
+  // Validation
+  const validationSchema = Yup.object().shape({
+    phone: Yup.string().required(),
+    password: Yup.string().required(),
+  });
+  // Validation resolver
+  const yupResolver = useYupValidationResolver(validationSchema);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm<LoginData>({ resolver: yupResolver });
+
+  const onSubmit: SubmitHandler<LoginData> = async (data) => {
     console.log("login on press");
 
-    if ((await loginAsync()).correct) navigation.navigate("Dashboard");
+    if ((await login(data)).correct) navigation.navigate("Dashboard");
   };
 
   return (
@@ -65,22 +83,18 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
           style={LOGO}
           source={require("../assets/images/adminDocs-logo-placeholder.png")}
         />
-        <Input
-          placeholder="Nº teléfono"
-          keyboardType="phone-pad"
-          value={phoneInput}
-          onChangeText={setPhoneInput}
-        />
-        <Input
-          placeholder="Contraseña"
-          password={true}
-          value={pwdInput}
-          onChangeText={setPwdInput}
-        />
+        <Form register={register} setValue={setValue} errors={errors}>
+          <Input
+            name="phone"
+            placeholder="Nº teléfono"
+            keyboardType="phone-pad"
+          />
+          <Input name="password" placeholder="Contraseña" password={true} />
+        </Form>
         <Button
           style={{ marginTop: "10%" }}
           text="Log in"
-          onPress={loginButtonOnPress}
+          onPress={handleSubmit(onSubmit)}
         />
         <Anchor text="¿Olvidaste tu contraseña?" style={{ marginTop: "3%" }} />
       </ScrollView>
