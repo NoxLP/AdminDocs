@@ -1,7 +1,6 @@
 import { ApiResponse } from "apisauce";
 import { api } from "./api-config";
 import Document from "../models/Document";
-import { loadPartialConfig } from "@babel/core";
 
 export interface RequestResult {
   correct: boolean;
@@ -9,6 +8,7 @@ export interface RequestResult {
   response?: ApiResponse<any>;
 }
 
+//#region helpers
 const getRequestResult = (
   response: ApiResponse<any>,
   dataProperty?: string
@@ -26,6 +26,36 @@ const getRequestResult = (
         : response.data,
     response,
   };
+};
+
+const logFormData = (data: FormData) => {
+  console.log("VALUES");
+  //const values = data.entries();
+  //console.log("VALUES: ", values);
+
+  for (const pair of data) {
+    console.log("entries for");
+
+    console.log(pair[0] + ", " + pair[1]);
+  }
+};
+
+const getError = (err: any) => {
+  console.error(
+    `ERROR in login: ${err.message} \n ${JSON.stringify(err, null, 4)}`
+  );
+  return { correct: false, data: err.message };
+};
+//#endregion
+
+export const checkToken = async (): Promise<RequestResult> => {
+  try {
+    const response: ApiResponse<any> = await api.get("/auth/check");
+
+    return getRequestResult(response);
+  } catch (err) {
+    return getError(err);
+  }
 };
 
 export const login = async (
@@ -55,28 +85,9 @@ export const login = async (
     */
     console.log("RESPONSE: " + JSON.stringify(response, null, 4));
 
-    return getRequestResult(response, "token");
+    return getRequestResult(response);
   } catch (err) {
-    console.log(
-      `ERROR in login: ${err.message} \n ${JSON.stringify(err, null, 4)}`
-    );
-    return { correct: false, data: err.message };
-  }
-};
-
-const uriToBlob = async (uri: string) => {
-  const imageResponse = await fetch(uri);
-  return await imageResponse.blob();
-};
-const logFormData = (data: FormData) => {
-  console.log("VALUES");
-  //const values = data.entries();
-  //console.log("VALUES: ", values);
-
-  for (const pair of data) {
-    console.log("entries for");
-
-    console.log(pair[0] + ", " + pair[1]);
+    return getError(err);
   }
 };
 
@@ -109,6 +120,6 @@ export const addDocument = async (data: Document) => {
 
     return getRequestResult(response);
   } catch (err) {
-    console.error(err);
+    return getError(err);
   }
 };

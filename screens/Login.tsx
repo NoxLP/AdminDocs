@@ -37,30 +37,20 @@ const INPUT: ViewStyle = {
 };
 
 export default function Login({ navigation }: RootStackScreenProps<"Login">) {
-  const [
+  const {
     isUserLoggedAsync,
     phoneInput,
     setPhoneInput,
     pwdInput,
     setPwdInput,
     loginAsync,
-  ] = useLogin();
+  } = useLogin();
 
   const loginButtonOnPress = async () => {
-    if (await loginAsync()) {
-      alert("logged");
-      navigation.navigate("Dashboard");
-    }
-  };
+    console.log("login on press");
 
-  useEffect(() => {
-    (async function checkUserIsLogged() {
-      if (await isUserLoggedAsync()) {
-        alert("logged");
-        navigation.navigate("Dashboard");
-      }
-    })();
-  }, []);
+    if ((await loginAsync()).correct) navigation.navigate("Dashboard");
+  };
 
   return (
     <KeyboardAvoidingView

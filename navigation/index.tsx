@@ -16,6 +16,7 @@ import { ColorSchemeName, Pressable } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import useLogin from "../hooks/useLogin";
 import DashboardScreen from "../screens/DashboardScreen";
 import Login from "../screens/Login";
 import ModalScreen from "../screens/ModalScreen";
@@ -52,9 +53,18 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const { isUserLoggedAsync } = useLogin();
+  const [isLogged, setIsLogged] = React.useState<boolean>();
+
+  React.useEffect(() => {
+    (async function checkUserIsLogged() {
+      setIsLogged(await isUserLoggedAsync());
+    })();
+  }, []);
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
+      {isLogged && <Stack.Screen name="Login" component={Login} />}
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen name="UploadDocument" component={DashboardScreen} />
       <Stack.Screen name="NewDocumentScreen" component={NewDocumentScreen} />
