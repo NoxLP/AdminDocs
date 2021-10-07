@@ -13,6 +13,7 @@ export default function useUserNewDocument() {
     name: "",
     comments: "",
   });
+  const [isDocumentLoading, setIsDocumentLoading] = useState<boolean>(true);
 
   const getMimeType = (ext: string): string => {
     // mime type mapping
@@ -32,8 +33,9 @@ export default function useUserNewDocument() {
         return "image/png";
     }
   };
-  const setNewDocumentFile = ({ uri, name }: { uri: string; name: string }) => {
+  const setNewDocumentFile = (uri: string, name: string | undefined) => {
     console.log("URI: ", uri);
+    setIsDocumentLoading(true);
 
     const uriExtensionArray = /\.(\w+)$/.exec(uri);
     console.log("uriExtensionArray: ", uriExtensionArray);
@@ -62,56 +64,12 @@ export default function useUserNewDocument() {
     };
 
     setDocument(newDocument);
-  };
-  const setNewDocumentCommunity = (communityId: string) => {
-    setDocument({
-      ...document,
-      community: communityId,
-    });
-  };
-  const setNewDocumentUser = (userId: string) => {
-    setDocument({
-      ...document,
-      user: userId,
-    });
-  };
-  const setNewDocumentCategory = (category: DocumentCategory) => {
-    setDocument({
-      ...document,
-      category,
-    });
-  };
-  const setNewDocumentName = (name: string) => {
-    setDocument({
-      ...document,
-      name,
-    });
-  };
-  const setNewDocumentComments = (newComments: string) => {
-    console.log(
-      JSON.stringify(
-        {
-          ...document,
-          comments: document.comments + newComments,
-        },
-        null,
-        4
-      )
-    );
-
-    setDocument({
-      ...document,
-      comments: document.comments + newComments,
-    });
+    setIsDocumentLoading(false);
   };
 
   return {
     document,
+    isDocumentLoading,
     setNewDocumentFile,
-    setNewDocumentCommunity,
-    setNewDocumentUser,
-    setNewDocumentCategory,
-    setNewDocumentName,
-    setNewDocumentComments,
   };
 }

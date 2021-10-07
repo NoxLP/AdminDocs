@@ -1,6 +1,5 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import useUserNewDocument from "../hooks/useUserNewDocument";
 import {
   Image,
   ImageStyle,
@@ -11,19 +10,20 @@ import {
   View,
   TextStyle,
 } from "react-native";
+import * as Yup from "yup";
+import SkeletonContent from "react-native-skeleton-content";
 import Layout from "../constants/Layout";
 import Document from "../models/Document";
-import { useBetween } from "use-between";
 import Form from "../components/Form/Form";
 import { Input } from "../components/Input/Input";
-import * as Yup from "yup";
 import DocumentCategory from "../models/DocumentCategory";
 import { Picker } from "../components/Picker/Picker";
 import { PickerItemProps } from "../components/Picker/PickerProps";
 import { Button } from "../components/Button/Button";
-import { useEffect } from "react";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
+import useUserNewDocument from "../hooks/useUserNewDocument";
 import { addDocument } from "../services/api";
+import { RootStackScreenProps } from "../types";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -89,14 +89,12 @@ const SUBMIT_BUTTONS: ViewStyle = {
 };
 //#endregion
 
-export default function NewDocumentScreen({ navigation }) {
-  const {
-    document,
-    setNewDocumentCategory,
-    setNewDocumentName,
-    setNewDocumentComments,
-  } = useBetween(useUserNewDocument);
-  //console.log("doc: ", document);
+export default function NewDocumentScreen({
+  navigation,
+  route,
+}: RootStackScreenProps<"NewDocumentScreen">) {
+  const { document, isDocumentLoading, setNewDocumentFile } =
+    useUserNewDocument();
 
   // Errors messages must be set before schema
   Yup.setLocale({
@@ -152,6 +150,8 @@ export default function NewDocumentScreen({ navigation }) {
   // react-hook-form can't catch the default value
   useEffect(() => {
     console.log("RESET: " + JSON.stringify(document, null, 4));
+
+    setNewDocumentFile(route.params.uri, route.params.name);
     reset(document);
   }, []);
   // react-hook-form errors
@@ -169,7 +169,9 @@ export default function NewDocumentScreen({ navigation }) {
         contentContainerStyle={CONTAINER_CONTENT}
       >
         <View style={IMAGE_CONTAINER}>
-          <Image source={documentImage} style={IMAGE} />
+          {isDocumentLoading ? null : (
+            <Image source={documentImage} style={IMAGE} />
+          )}
         </View>
         <Form register={register} setValue={setValue} errors={errors}>
           <Input

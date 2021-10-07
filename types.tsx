@@ -20,7 +20,10 @@ export type RootStackParamList = {
   Login: undefined;
   Dashboard: undefined;
   UploadDocument: undefined;
-  NewDocumentScreen: undefined;
+  NewDocumentScreen: {
+    uri: string;
+    name?: string;
+  };
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;

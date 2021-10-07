@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { RootStackScreenProps } from "../types";
+import { RootStackParamList, RootStackScreenProps } from "../types";
 import { icons } from "../components/Icon/icons/index";
 import { useThemeColors } from "../components/Themed";
 import { Image, ImageStyle, ViewStyle } from "react-native";
@@ -10,6 +10,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import useUserNewDocument from "../hooks/useUserNewDocument";
 import { useBetween } from "use-between";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "transparent",
@@ -24,7 +25,9 @@ const IMAGE: ImageStyle = {
 interface IDashboardItem {
   icon: any;
   text: string;
-  onPressItem: (...args: any[]) => void;
+  onPressItem: (
+    navigation: NativeStackNavigationProp<RootStackParamList, "Dashboard">
+  ) => void;
 }
 
 //#region constants
@@ -49,7 +52,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
   {
     icon: icons.uploadDocumentCamera,
     text: "Foto",
-    onPressItem: (navigation, setNewDocumentFile) => {
+    onPressItem: (navigation) => {
       (async function () {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== "granted") {
@@ -63,9 +66,11 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          setNewDocumentFile(result);
+          //setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentScreen");
+          navigation.navigate("NewDocumentScreen", {
+            uri: result.uri,
+          });
         }
       })();
     },
@@ -73,7 +78,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
   {
     icon: icons.uploadDocumentGallery,
     text: "Galería",
-    onPressItem: (navigation, setNewDocumentFile) => {
+    onPressItem: (navigation) => {
       (async function () {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -88,9 +93,11 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         });
 
         if (!result.cancelled) {
-          setNewDocumentFile(result);
+          //setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentScreen");
+          navigation.navigate("NewDocumentScreen", {
+            uri: result.uri,
+          });
         }
       })();
     },
@@ -112,7 +119,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
     */
     icon: icons.uploadDocumentFiles,
     text: "Ficheros",
-    onPressItem: (navigation, setNewDocumentFile) => {
+    onPressItem: (navigation) => {
       (async function () {
         // TODO: Only pdf files right now. Later I need to include xls, word/txt, etc.
         const result = await DocumentPicker.getDocumentAsync({
@@ -121,8 +128,11 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
         console.log("RESULT: " + JSON.stringify(result));
 
         if (result.type === "success") {
-          setNewDocumentFile(result);
-          navigation.navigate("NewDocumentScreen");
+          //setNewDocumentFile(result);
+          navigation.navigate("NewDocumentScreen", {
+            uri: result.uri,
+            name: result.name,
+          });
         }
       })();
     },
@@ -142,11 +152,9 @@ const getRouteItems = (routeName: string) => {
 
 export default function DashboardScreen({
   navigation,
+  route,
 }: RootStackScreenProps<"Dashboard">) {
   const themeColors = useThemeColors();
-  const route = useRoute();
-  const { document, setNewDocumentFile } = useBetween(useUserNewDocument);
-  // console.log("document: " + JSON.stringify(document, null, 4));
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);
@@ -157,7 +165,7 @@ export default function DashboardScreen({
       style={buttonStyle}
       text={item.text}
       preset="icon"
-      onPress={(e) => item.onPressItem(navigation, setNewDocumentFile)}
+      onPress={(e) => item.onPressItem(navigation)}
     />
   );
 
