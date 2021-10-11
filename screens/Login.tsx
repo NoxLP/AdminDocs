@@ -41,7 +41,14 @@ const INPUT: ViewStyle = {
 };
 
 export default function Login({ navigation }: RootStackScreenProps<"Login">) {
-  const { login } = useLogin();
+  const {
+    isLoading,
+    isSuccess,
+    mutate: login,
+    isError,
+    error,
+    data: isLogged,
+  } = useLogin();
 
   // Errors messages must be set before schema
   Yup.setLocale({
@@ -66,9 +73,15 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
 
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
     console.log("login on press");
-
-    if ((await login(data)).correct) navigation.navigate("Dashboard");
+    await login(data);
   };
+
+  useEffect(() => {
+    if ((isSuccess && !isLogged!.correct) || isError) {
+      //TODO: error on login
+      alert("Not logged");
+    } else alert("logged");
+  }, [isSuccess, isError]);
 
   return (
     <KeyboardAvoidingView

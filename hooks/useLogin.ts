@@ -10,6 +10,7 @@ import {
 } from "../services/api";
 import { api } from "../services/api-config";
 import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 export interface LoginData {
   phone: string;
@@ -17,46 +18,55 @@ export interface LoginData {
 }
 
 export default function useLogin() {
-  const [isLoading, setIsLoading] = useState<boolean>();
+  const login = async (data: LoginData): Promise<RequestResult> => {
+    const response = await loginService(data.phone, data.password);
 
-  const isUserLogged = async (): Promise<boolean> => {
-    setIsLoading(true);
+    if (response.correct) {
+      // TODO: This return false if something goes wrong, check and show errors
+      console.log("login logged");
+
+      await saveLoggedUser(response);
+    }
+
+    return response;
+  };
+
+  const queryClient = useQueryClient();
+  return useMutation("login", login, {
+    onSuccess: () => {
+      return queryClient.invalidateQueries("authCheck");
+    },
+  });
+}
+
+export function useAuthCheck() {
+  const checkUserIsLogged = async (): Promise<boolean> => {
     const token = await getToken();
+    console.log("token ", token);
 
-    if (!token) return false;
+    if (!token) {
+      return false;
+    }
+    console.log("token true");
 
     api.setHeader("token", token);
     const check = await checkToken();
 
     if (!check.correct) {
+      console.log("check false");
+
       await removeLoggedUser();
 
-      setIsLoading(false);
       return false;
     }
+    console.log("check true");
 
     // TODO: This return false if something goes wrong, check and show errors
     await saveLoggedUser(check);
+    console.log("logged saved");
 
-    setIsLoading(false);
     return true;
   };
-  const login = async (data: LoginData): Promise<RequestResult> => {
-    setIsLoading(true);
-    const response = await loginService(data.phone, data.password);
 
-    if (response.correct) {
-      // TODO: This return false if something goes wrong, check and show errors
-      await saveLoggedUser(response);
-    }
-
-    setIsLoading(false);
-    return response;
-  };
-
-  return {
-    isLoading,
-    isUserLogged,
-    login,
-  };
+  return useQuery("authCheck", checkUserIsLogged);
 }

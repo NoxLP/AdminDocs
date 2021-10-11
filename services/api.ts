@@ -83,7 +83,7 @@ export const login = async (
         })
     })
     */
-    console.log("RESPONSE: " + JSON.stringify(response, null, 4));
+    console.log("RESPONSE DATA: " + JSON.stringify(response.data, null, 4));
 
     return getRequestResult(response);
   } catch (err) {
@@ -96,8 +96,6 @@ export const addDocument = async (data: Document) => {
     console.log("addDocument: ", data);
 
     const formData = new FormData();
-    /*const blob = await uriToBlob(data.uri);
-    console.log("BLOB :", blob);*/
 
     formData.append("image", {
       uri: data.uri,

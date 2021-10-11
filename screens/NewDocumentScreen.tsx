@@ -93,7 +93,7 @@ export default function NewDocumentScreen({
   navigation,
   route,
 }: RootStackScreenProps<"NewDocumentScreen">) {
-  const { document, isDocumentLoading, setNewDocumentFile } =
+  const { document, isDocumentLoading, setNewDocumentFile, fillDocumentForm } =
     useUserNewDocument();
 
   // Errors messages must be set before schema
@@ -141,6 +141,7 @@ export default function NewDocumentScreen({
 
   const onSubmit: SubmitHandler<Document> = async (data) => {
     console.log("SUBMIT: ", data);
+    fillDocumentForm(data);
     await addDocument(data);
   };
   const cancelButtonOnPress = () => {
@@ -149,10 +150,13 @@ export default function NewDocumentScreen({
 
   // react-hook-form can't catch the default value
   useEffect(() => {
-    console.log("RESET: " + JSON.stringify(document, null, 4));
-
     setNewDocumentFile(route.params.uri, route.params.name);
-    reset(document);
+    console.log("RESET: " + JSON.stringify(document, null, 4));
+    //reset(document);
+    setValue("name", document.name, {
+      shouldValidate: true,
+      shouldDirty: false,
+    });
   }, []);
   // react-hook-form errors
   useEffect(() => {

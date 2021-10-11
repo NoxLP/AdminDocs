@@ -16,7 +16,7 @@ export async function saveLoggedUser(
   // if the user was already logged, use the stored token, otherwise
   // use the new one
   if (token) {
-    await setItemAsync(TOKEN_KEY, JSON.stringify(token));
+    await setItemAsync(TOKEN_KEY, token);
     api.setHeader("token", token);
   } else api.setHeader("token", (await getToken())!);
 
@@ -32,6 +32,9 @@ export async function removeLoggedUser() {
 }
 
 export async function getToken(): Promise<string | null> {
+  //const token = await getItemAsync(TOKEN_KEY);
+  //console.log(">> get token: ", token);
+
   return await getItemAsync(TOKEN_KEY);
 }
 

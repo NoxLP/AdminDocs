@@ -3,16 +3,10 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import * as React from "react";
-import { ColorSchemeName, Pressable, Text } from "react-native";
-import useLogin from "../hooks/useLogin";
+import React from "react";
+import { ColorSchemeName, Text } from "react-native";
+import { useAuthCheck } from "../hooks/useLogin";
 import AuthNavigator from "./AuthNavigator";
-import LinkingConfiguration from "./LinkingConfiguration";
 import RootNavigator from "./RootNavigator";
 
 export default function Navigation({
@@ -20,27 +14,13 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
-  const { isLoading, isUserLogged } = useLogin();
-  const [isLogged, setIsLogged] = React.useState<boolean>();
+  const { isLoading, data: isAlreadyLogged } = useAuthCheck();
 
-  React.useEffect(() => {
-    (async function checkUserIsLogged() {
-      setIsLogged(await isUserLogged());
-    })();
-  }, []);
-
-  return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-    >
-      {isLoading ? (
-        <Text style={{ marginTop: "50%" }}>LOADING</Text>
-      ) : isLogged ? (
-        <RootNavigator />
-      ) : (
-        <AuthNavigator />
-      )}
-    </NavigationContainer>
+  return isLoading ? (
+    <Text style={{ marginTop: "50%" }}>LOADING</Text>
+  ) : isAlreadyLogged ? (
+    <RootNavigator />
+  ) : (
+    <AuthNavigator />
   );
 }

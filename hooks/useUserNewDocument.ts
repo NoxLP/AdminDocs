@@ -33,6 +33,22 @@ export default function useUserNewDocument() {
         return "image/png";
     }
   };
+  const getExtension = (): string => {
+    switch (document.contentType) {
+      case "application/pdf":
+        return "pdf";
+      case "image/jpeg":
+        return "jpg";
+      case "image/gif":
+        return "gif";
+      case "image/tiff":
+        return "tif";
+      // case "image/png":
+      default:
+        return "png";
+    }
+  };
+
   const setNewDocumentFile = (uri: string, name: string | undefined) => {
     console.log("URI: ", uri);
     setIsDocumentLoading(true);
@@ -67,9 +83,36 @@ export default function useUserNewDocument() {
     setIsDocumentLoading(false);
   };
 
+  const fillDocumentForm = ({
+    name,
+    category,
+    comments,
+  }: {
+    name: string;
+    category: string;
+    comments: string;
+  }) => {
+    let fileName = name;
+    const defaultExtension = getExtension();
+    const extension = /\.(\w+)$/.exec(name);
+    if (!extension) {
+      fileName = `${fileName}.${defaultExtension}`;
+    }
+
+    const newDocument: Document = {
+      ...document,
+      name: fileName,
+      category: category as DocumentCategory,
+      comments,
+    };
+
+    setDocument(newDocument);
+  };
+
   return {
     document,
     isDocumentLoading,
     setNewDocumentFile,
+    fillDocumentForm,
   };
 }
