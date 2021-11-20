@@ -15,7 +15,14 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Dashboard">
+    <Stack.Navigator 
+      initialRouteName="Dashboard"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#CFE6FB',
+        },
+      }}
+    >
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
       <Stack.Screen
         name="Root"

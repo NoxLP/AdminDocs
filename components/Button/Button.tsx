@@ -9,7 +9,10 @@ const CONTAINER: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,
-  alignSelf: "center"
+  alignSelf: "center",
+  shadowColor: "rgba(0, 0, 0, 0.29)",
+  shadowOffset: {width: 2, height: 2},
+  shadowRadius: 6
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,
