@@ -1,6 +1,7 @@
 import { ApiResponse } from "apisauce";
 import { api } from "./api-config";
 import Document from "../models/Document";
+import { getToken } from "./auth-storage";
 
 export interface RequestResult {
   correct: boolean;
@@ -14,7 +15,7 @@ const getRequestResult = (
   dataProperty?: string
 ): RequestResult => {
   if (!response.ok) {
-    console.log("response NO ok");
+    console.log("response NO ok: ", JSON.stringify(response, null, 4));
     return { correct: false, data: response.problem, response };
   }
 
@@ -41,9 +42,7 @@ const logFormData = (data: FormData) => {
 };
 
 const getError = (err: any) => {
-  console.error(
-    `ERROR in login: ${err.message} \n ${JSON.stringify(err, null, 4)}`
-  );
+  console.error(`ERROR: ${err.message} \n ${JSON.stringify(err, null, 4)}`);
   return { correct: false, data: err.message };
 };
 //#endregion
@@ -109,12 +108,16 @@ export const addDocument = async (data: Document) => {
     formData.append("category", data.category);
     formData.append("name", data.name);
     formData.append("comments", data.comments);
-    console.log("addDocument 2", formData);
+    //console.log("addDocument 2", formData);
 
     //logFormData(formData);
     //console.log("ADD DOC: ", JSON.stringify(formData.entries(), null, 4));
 
-    const response: ApiResponse<any> = await api.post("/documents", data);
+    const token = await getToken();
+    console.log("Token: ", token);
+
+    api.setHeader("token", token!);
+    const response: ApiResponse<any> = await api.post("/documents", formData);
 
     return getRequestResult(response);
   } catch (err) {

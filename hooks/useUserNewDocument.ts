@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PickerItemProps } from "../components/Picker/PickerProps";
 import Document from "../models/Document";
 import DocumentCategory from "../models/DocumentCategory";
 
@@ -49,7 +50,7 @@ export default function useUserNewDocument() {
     }
   };
 
-  const setNewDocumentFile = (uri: string, name: string | undefined) => {
+  const getDocumentName = (uri: string, name: string | undefined) => {
     console.log("URI: ", uri);
     setIsDocumentLoading(true);
 
@@ -68,15 +69,21 @@ export default function useUserNewDocument() {
     // is provided, simply use now date and the extension built
     // from the uri
     const fileName =
-      name && name.length > 0
-        ? name
-        : `${now.toString()}.${uriExtensionArray[1]}`;
+      document.name === ""
+        ? name && name.length > 0
+          ? name
+          : `${now.toString()}.${uriExtensionArray[1]}`
+        : document.name;
 
+    return { fileName, type };
+  };
+
+  const setNewDocumentFile = (uri: string, name: string, type: string) => {
     const newDocument: Document = {
       ...document,
       uri,
       contentType: type,
-      name: document.name === "" ? fileName : document.name,
+      name: name,
     };
 
     setDocument(newDocument);
@@ -89,7 +96,7 @@ export default function useUserNewDocument() {
     comments,
   }: {
     name: string;
-    category: string;
+    category: PickerItemProps;
     comments: string;
   }) => {
     let fileName = name;
@@ -102,9 +109,10 @@ export default function useUserNewDocument() {
     const newDocument: Document = {
       ...document,
       name: fileName,
-      category: category as DocumentCategory,
+      category: category.value as DocumentCategory,
       comments,
     };
+    console.log("FILL: " + JSON.stringify(newDocument, null, 4));
 
     setDocument(newDocument);
   };
@@ -112,6 +120,7 @@ export default function useUserNewDocument() {
   return {
     document,
     isDocumentLoading,
+    getDocumentName,
     setNewDocumentFile,
     fillDocumentForm,
   };

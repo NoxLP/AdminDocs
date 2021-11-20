@@ -89,12 +89,23 @@ const SUBMIT_BUTTONS: ViewStyle = {
 };
 //#endregion
 
+type FormFields = {
+  name: string;
+  comments: string;
+  category: PickerItemProps;
+};
+
 export default function NewDocumentScreen({
   navigation,
   route,
 }: RootStackScreenProps<"NewDocumentScreen">) {
-  const { document, isDocumentLoading, setNewDocumentFile, fillDocumentForm } =
-    useUserNewDocument();
+  const {
+    document,
+    isDocumentLoading,
+    getDocumentName,
+    setNewDocumentFile,
+    fillDocumentForm,
+  } = useUserNewDocument();
 
   // Errors messages must be set before schema
   Yup.setLocale({
@@ -111,7 +122,7 @@ export default function NewDocumentScreen({
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(),
     comments: Yup.string(),
-    category: Yup.string().required(),
+    category: Yup.mixed<PickerItemProps>().required(),
   });
   // Validation resolver
   const yupResolver = useYupValidationResolver(validationSchema);
@@ -122,7 +133,9 @@ export default function NewDocumentScreen({
     setValue,
     reset,
     control,
-  } = useForm<Document>({ resolver: yupResolver });
+  } = useForm<FormFields>({
+    resolver: yupResolver,
+  });
 
   const documentImage =
     document!.contentType === "application/json"
@@ -139,10 +152,11 @@ export default function NewDocumentScreen({
     value: "Others",
   };
 
-  const onSubmit: SubmitHandler<Document> = async (data) => {
+  const onSubmit = async (data: FormFields) => {
     console.log("SUBMIT: ", data);
     fillDocumentForm(data);
-    await addDocument(data);
+    await addDocument(document);
+    navigation.goBack();
   };
   const cancelButtonOnPress = () => {
     navigation.goBack();
@@ -150,13 +164,22 @@ export default function NewDocumentScreen({
 
   // react-hook-form can't catch the default value
   useEffect(() => {
-    setNewDocumentFile(route.params.uri, route.params.name);
+    const { fileName, type } = getDocumentName(
+      route.params.uri,
+      route.params.name
+    )!;
+    setNewDocumentFile(route.params.uri, fileName, type);
     console.log("RESET: " + JSON.stringify(document, null, 4));
-    //reset(document);
-    setValue("name", document.name, {
+    console.log("RESET: " + JSON.stringify(route, null, 4));
+    reset({
+      name: fileName,
+      comments: "",
+      category: defaultCategory,
+    });
+    /*setValue("name", route.params.name, {
       shouldValidate: true,
       shouldDirty: false,
-    });
+    });*/
   }, []);
   // react-hook-form errors
   useEffect(() => {
@@ -187,6 +210,21 @@ export default function NewDocumentScreen({
             multiline={true}
             numberOfLines={2}
           />
+          <Controller
+            control={control}
+            name="category"
+            defaultValue={defaultCategory}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <Picker
+                name="category"
+                style={PICKER_CONTAINER}
+                items={categoryItems}
+                defaultValue={defaultCategory}
+                selectedValue={value}
+                onValueChange={onChange}
+              />
+            )}
+          />
           <Input
             style={{ ...INPUT_CONTAINER, marginTop: "2%" }}
             inputStyle={{ ...INPUT, paddingTop: "2%" }}
@@ -197,21 +235,6 @@ export default function NewDocumentScreen({
             numberOfLines={4}
           />
         </Form>
-        <Controller
-          control={control}
-          name="category"
-          defaultValue={defaultCategory}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <Picker
-              name="category"
-              style={PICKER_CONTAINER}
-              items={categoryItems}
-              defaultValue={defaultCategory}
-              selectedValue={value}
-              onValueChange={onChange}
-            />
-          )}
-        />
         <View style={SUBMIT_BUTTONS_CONTAINER}>
           <Button
             style={SUBMIT_BUTTONS}
