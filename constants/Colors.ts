@@ -11,7 +11,7 @@ const errorDark = "#ED6519";
 export default {
   light: {
     text: "#000",
-    background: "#fff",
+    background: "#F2FAFF",
     tint: primaryLight,
     tabIconDefault: secondaryLight,
     tabIconSelected: primaryLight,

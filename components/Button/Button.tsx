@@ -6,10 +6,10 @@ import { ButtonProps } from "./ButtonProps";
 
 const CONTAINER: ViewStyle = {
   height: 60,
-  width: "85%",
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 10,
+  alignSelf: "center"
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,

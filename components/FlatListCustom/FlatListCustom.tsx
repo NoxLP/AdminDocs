@@ -1,19 +1,21 @@
 import * as React from "react";
 import { FlatList, ViewStyle } from "react-native";
+import { useThemeColors } from "../Themed";
 import { FlatListCustomProps } from "./FlatListCustomProps";
 
 const CONTAINER: ViewStyle = {
   height: "100%",
 };
 const CONTAINER_CONTENT: ViewStyle = {
-  alignItems: "center",
+  alignItems: "stretch",
   justifyContent: "space-around",
   flexGrow: 1,
 };
 
 export function FlatListCustom(props: FlatListCustomProps) {
   const { style, items, renderItem, horizontal, keyExtractor } = props;
-  const styles = [CONTAINER, style];
+  const themeColors = useThemeColors();
+  const styles = { backgroundColor: themeColors.background, ...CONTAINER, style };
   const defaultKeyExtractor = (item: any, idx: number): string =>
     item.id ?? `${JSON.stringify(item)}.${idx}`;
 

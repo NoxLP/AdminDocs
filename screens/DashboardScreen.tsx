@@ -9,12 +9,15 @@ import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
 import useUserNewDocument from "../hooks/useUserNewDocument";
-import { useBetween } from "use-between";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const BUTTON: ViewStyle = {
-  backgroundColor: "transparent",
+  backgroundColor: "white",
   height: 150,
+  width: "90%",
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: "#ABA7A7"
 };
 
 const IMAGE: ImageStyle = {
