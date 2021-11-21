@@ -5,19 +5,18 @@ import { RootStackParamList, RootStackScreenProps } from "../types";
 import { icons } from "../components/Icon/icons/index";
 import { useThemeColors } from "../components/Themed";
 import { Image, ImageStyle, ViewStyle } from "react-native";
-import { useRoute } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
-import useUserNewDocument from "../hooks/useUserNewDocument";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "white",
   height: 150,
   width: "90%",
+  paddingVertical: "2%",
   borderRadius: 20,
   borderWidth: 1,
-  borderColor: "#ABA7A7"
+  borderColor: "#ABA7A7",
 };
 
 const IMAGE: ImageStyle = {
@@ -43,12 +42,12 @@ const ITEMS_DASHBOARD: Array<IDashboardItem> = [
   {
     icon: icons.dashboardMyDocs,
     text: "Mis documentos",
-    onPressItem: () => {},
+    onPressItem: () => { },
   },
   {
     icon: icons.dashboardCommunityDocs,
     text: "Documentos de mi comunidad",
-    onPressItem: () => {},
+    onPressItem: () => { },
   },
 ];
 const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [

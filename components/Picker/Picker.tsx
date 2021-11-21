@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TextStyle, View, ViewStyle } from "react-native";
-import { useThemeColors } from "../Themed";
+import { Text, useThemeColors } from "../Themed";
 import { Picker as RNPicker } from "@react-native-picker/picker";
 import { PickerProps } from "./PickerProps";
 
@@ -10,6 +10,10 @@ const CONTAINER: ViewStyle = {
   height: "auto",
   width: "87%",
 };
+
+const LABEL: TextStyle = {
+  marginLeft: "-0.7%"
+}
 
 const PICKER: TextStyle = {
   width: "100%",
@@ -32,6 +36,7 @@ export const Picker = React.forwardRef(function Picker(
 
   const themeColors = useThemeColors();
 
+  const labelStyles = [ LABEL, { color: themeColors.input.label } ]
   const containerStyles = [CONTAINER, styleOverride];
   const pickerStyles = [
     PICKER,
@@ -41,6 +46,7 @@ export const Picker = React.forwardRef(function Picker(
 
   return (
     <View style={containerStyles}>
+      {label ? <Text style={labelStyles} text={label} /> : null}
       <RNPicker
         style={pickerStyles}
         selectedValue={selectedValue}

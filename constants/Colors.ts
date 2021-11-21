@@ -20,6 +20,7 @@ export default {
       background: "transparent",
       placeholderColor: "lightgray",
       underlineColor: "#000",
+      label: "#ACACAC",
     },
     button: {
       text: "#fff",

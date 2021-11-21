@@ -10,9 +10,11 @@ const CONTAINER: ViewStyle = {
   alignItems: "center",
   borderRadius: 10,
   alignSelf: "center",
-  shadowColor: "rgba(0, 0, 0, 0.29)",
+  shadowOpacity: 1,
+  shadowColor: "rgba(0,0,0,0.29)",
   shadowOffset: {width: 2, height: 2},
-  shadowRadius: 6
+  shadowRadius: 50,
+  elevation: 3
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,

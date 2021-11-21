@@ -24,6 +24,7 @@ import useYupValidationResolver from "../hooks/useYupValidationResolver";
 import useUserNewDocument from "../hooks/useUserNewDocument";
 import { addDocument } from "../services/api";
 import { RootStackScreenProps } from "../types";
+import { useThemeColors } from "../components/Themed";
 
 //#region styles
 const CONTAINER: ViewStyle = {
@@ -40,7 +41,7 @@ const CONTAINER_CONTENT: ViewStyle = {
 };
 
 const IMAGE_CONTAINER: ViewStyle = {
-  height: "30%",
+  height: "26%",
   width: "90%",
   marginHorizontal: "8%",
   marginTop: "4%",
@@ -67,22 +68,28 @@ const IMAGE: ImageStyle = {
 const INPUT: TextStyle = {
   maxWidth: "100%",
   minWidth: "100%",
-  padding: "4%",
+  paddingBottom: "4%",
+  paddingTop: 0,
   textAlignVertical: "bottom",
 };
 const INPUT_CONTAINER: ViewStyle = {
   margin: "5%",
   marginBottom: 0,
 };
+const COMMENTS_INPUT_CONTAINER: ViewStyle = {
+  margin: "5%",
+  marginTop: "8%",
+  marginBottom: 0,
+};
 const PICKER_CONTAINER: ViewStyle = {
   paddingVertical: "1%",
-  marginTop: "7%",
+  marginTop: "4%",
 };
 const SUBMIT_BUTTONS_CONTAINER: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-around",
   width: "100%",
-  marginTop: "9%",
+  marginTop: "6%",
 };
 const SUBMIT_BUTTONS: ViewStyle = {
   width: "40%",
@@ -99,6 +106,9 @@ export default function NewDocumentScreen({
   navigation,
   route,
 }: RootStackScreenProps<"NewDocumentScreen">) {
+  const themeColors = useThemeColors();
+  const containerStylesOverride = {...CONTAINER, backgroundColor: themeColors.background }
+
   const {
     document,
     isDocumentLoading,
@@ -189,7 +199,7 @@ export default function NewDocumentScreen({
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "position"}
-      style={CONTAINER}
+      style={containerStylesOverride}
     >
       <ScrollView
         style={INNER_CONTENT}
@@ -202,6 +212,7 @@ export default function NewDocumentScreen({
         </View>
         <Form register={register} setValue={setValue} errors={errors}>
           <Input
+            label="Nombre*"
             style={INPUT_CONTAINER}
             inputStyle={INPUT}
             name="name"
@@ -216,6 +227,7 @@ export default function NewDocumentScreen({
             defaultValue={defaultCategory}
             render={({ field: { onChange, value, onBlur } }) => (
               <Picker
+                label="Categoría*"
                 name="category"
                 style={PICKER_CONTAINER}
                 items={categoryItems}
@@ -226,8 +238,9 @@ export default function NewDocumentScreen({
             )}
           />
           <Input
-            style={{ ...INPUT_CONTAINER, marginTop: "2%" }}
-            inputStyle={{ ...INPUT, paddingTop: "2%" }}
+            label="Comentarios"
+            style={ COMMENTS_INPUT_CONTAINER }
+            inputStyle={ INPUT }
             name="comments"
             defaultValue={document.comments}
             placeholder="Comentarios"

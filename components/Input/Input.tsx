@@ -20,6 +20,10 @@ const INPUT: TextStyle = {
   borderRadius: 6,
 };
 
+const LABEL: TextStyle = {
+  marginLeft: "1%"
+}
+
 export const Input = React.forwardRef(function Input(
   props: InputProps,
   ref: any
@@ -41,12 +45,13 @@ export const Input = React.forwardRef(function Input(
 
   const themeColors = useThemeColors();
 
+  const labelStyles = [ LABEL, { color: themeColors.input.label } ]
   const containerStyles = [CONTAINER, styleOverride];
   const inputStyles = [INPUT, inputStyleOverride, { color: themeColors.text }];
 
   return (
     <View style={containerStyles}>
-      {label ? <Text text={label} /> : null}
+      {label ? <Text style={labelStyles} text={label} /> : null}
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={themeColors.input.placeholderColor}
