@@ -18,6 +18,7 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import LinkingConfiguration from "./navigation/LinkingConfiguration";
+import BottomTabNavigator from "./navigation/BottomTabNavigator";
 
 const CUSTOM_FONTS = {
   montserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),

@@ -5,9 +5,10 @@
  */
 import React from "react";
 import { ColorSchemeName, Text } from "react-native";
-import { useAuthCheck } from "../hooks/useLogin";
+import useLogin from "../hooks/auth/useLogin";
 import AuthNavigator from "./AuthNavigator";
 import RootNavigator from "./RootNavigator";
+import useAuthCheck from "../hooks/auth/useAuthCheck";
 
 export default function Navigation({
   colorScheme,
@@ -15,11 +16,17 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
 }) {
   const { isLoading, data: isAlreadyLogged } = useAuthCheck();
+  const {
+    isLoading: isLoginLoading,
+    isSuccess,
+    isError,
+    data: isLogged,
+  } = useLogin();
 
-  return isLoading ? (
+  return isLoading || isLoginLoading ? (
     <Text style={{ marginTop: "50%" }}>LOADING</Text>
-  ) : isAlreadyLogged ? (
-    <RootNavigator />
+  ) : isAlreadyLogged || (isSuccess && isLogged && isLogged.correct && !isError) ? (
+      <RootNavigator />
   ) : (
     <AuthNavigator />
   );

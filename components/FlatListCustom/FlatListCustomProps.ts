@@ -4,6 +4,8 @@ export interface FlatListCustomProps {
   items: Array<any>;
   renderItem: ListRenderItem<any>;
   style?: StyleProp<ViewStyle>;
-  horizontal?: boolean;
+  contentStyle?: StyleProp<ViewStyle>;
   keyExtractor?: (item: any, index: number) => string;
+  horizontal?: boolean;
+  numColumns?: number;
 }

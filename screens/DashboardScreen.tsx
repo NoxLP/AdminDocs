@@ -1,13 +1,14 @@
 import React from "react";
 import { Button } from "../components/Button/Button";
 import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { RootStackParamList, RootStackScreenProps } from "../types";
 import { icons } from "../components/Icon/icons/index";
 import { useThemeColors } from "../components/Themed";
+import { IDefaultFlatListItem } from "../components/FlatListCustom/FlatListCustom";
+import { BottomTabs } from "../components/BottomTabs/BottomTabs";
 import { Image, ImageStyle, ViewStyle } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackScreenProps } from "../types";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "white",
@@ -24,16 +25,8 @@ const IMAGE: ImageStyle = {
   resizeMode: "contain",
 };
 
-interface IDashboardItem {
-  icon: any;
-  text: string;
-  onPressItem: (
-    navigation: NativeStackNavigationProp<RootStackParamList, "Dashboard">
-  ) => void;
-}
-
 //#region constants
-const ITEMS_DASHBOARD: Array<IDashboardItem> = [
+const ITEMS_DASHBOARD: Array<IDefaultFlatListItem> = [
   {
     icon: icons.dashboardUploadDocs,
     text: "Subir documento",
@@ -50,7 +43,7 @@ const ITEMS_DASHBOARD: Array<IDashboardItem> = [
     onPressItem: () => { },
   },
 ];
-const ITEMS_UPLOAD_DOCUMENT: Array<IDashboardItem> = [
+const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
   {
     icon: icons.uploadDocumentCamera,
     text: "Foto",
@@ -161,7 +154,7 @@ export default function DashboardScreen({
   const buttonStyle = { color: themeColors.text, ...BUTTON };
   const items = getRouteItems(route.name);
 
-  const renderItem = ({ item }: { item: IDashboardItem }) => (
+  const renderItem = ({ item }: { item: IDefaultFlatListItem }) => (
     <Button
       children={<Image source={item.icon} style={IMAGE} />}
       style={buttonStyle}
@@ -171,5 +164,10 @@ export default function DashboardScreen({
     />
   );
 
-  return <FlatListCustom items={items} renderItem={renderItem} />;
+  return (
+    <>
+      <FlatListCustom items={items} renderItem={renderItem} />
+      <BottomTabs navigation={navigation}/>
+    </>
+  );
 }

@@ -15,7 +15,7 @@ import { Button } from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import { Input } from "../components/Input/Input";
 import Layout from "../constants/Layout";
-import useLogin, { LoginData } from "../hooks/useLogin";
+import useLogin, { LoginData } from "../hooks/auth/useLogin";
 import { RootStackScreenProps } from "../types";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -91,14 +91,14 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
     console.log("login on press");
     await login(data);
   };
-
+/*
   useEffect(() => {
     if ((isSuccess && !isLogged!.correct) || isError) {
       //TODO: error on login
       alert("Not logged");
     } else alert("logged");
   }, [isSuccess, isError]);
-
+*/
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "position"}
