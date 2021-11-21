@@ -4,6 +4,7 @@ import {
   ImageStyle,
   KeyboardAvoidingView,
   Platform,
+  TextStyle,
   ViewStyle,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -17,28 +18,43 @@ import Layout from "../constants/Layout";
 import useLogin, { LoginData } from "../hooks/useLogin";
 import { RootStackScreenProps } from "../types";
 import useYupValidationResolver from "../hooks/useYupValidationResolver";
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CONTAINER: ViewStyle = {
   flex: 1,
+
 };
 const INNER_CONTENT: ViewStyle = {
   flex: 1,
   minHeight: Layout.window.height,
   width: Layout.window.width,
+  alignItems: "center"
 };
+/*
 const CONTAINER_CONTENT: ViewStyle = {
   flex: 1,
   alignItems: "center",
 };
+*/
 const LOGO: ImageStyle = {
   height: "40%",
-  width: "80%",
-  marginTop: "15%",
-  marginBottom: "10%",
+  width: "85%",
+  marginTop: "7%",
+  marginBottom: "3%",
+  resizeMode: "contain"
 };
+const LABEL: TextStyle = {
+  color: "white",
+  fontSize: 20
+}
 const INPUT: ViewStyle = {
   margin: "10%",
 };
+const BUTTON: ViewStyle = {
+  marginTop: "10%",
+  marginHorizontal: "20%",
+  width: "84%"
+}
 
 export default function Login({ navigation }: RootStackScreenProps<"Login">) {
   const {
@@ -88,29 +104,39 @@ export default function Login({ navigation }: RootStackScreenProps<"Login">) {
       behavior={Platform.OS == "ios" ? "padding" : "position"}
       style={CONTAINER}
     >
-      <ScrollView
-        style={INNER_CONTENT}
-        contentContainerStyle={CONTAINER_CONTENT}
-      >
-        <Image
-          style={LOGO}
-          source={require("../assets/images/adminDocs-logo-placeholder.png")}
-        />
-        <Form register={register} setValue={setValue} errors={errors}>
-          <Input
-            name="phone"
-            placeholder="Nº teléfono"
-            keyboardType="phone-pad"
+        <LinearGradient
+          colors={["#CFE6FB", "#81C0FA"]}
+          style={INNER_CONTENT}
+        >
+          <Image
+            style={LOGO}
+            source={require("../assets/images/logo-large.png")}
           />
-          <Input name="password" placeholder="Contraseña" password={true} />
-        </Form>
-        <Button
-          style={{ marginTop: "10%" }}
-          text="Log in"
-          onPress={handleSubmit(onSubmit)}
-        />
-        <Anchor text="¿Olvidaste tu contraseña?" style={{ marginTop: "3%" }} />
-      </ScrollView>
+          <Form register={register} setValue={setValue} errors={errors}>
+            <Input
+              label="Nº teléfono"
+              labelStyle={LABEL}
+              name="phone"
+              placeholder="Nº teléfono"
+              keyboardType="phone-pad"
+            />
+            <Input 
+              label="Contraseña"
+              labelStyle={LABEL}
+              name="password" 
+              placeholder="Contraseña" 
+              password={true}
+              style={{ marginTop: "1%" }}
+            />
+          </Form>
+          <Button
+            style={BUTTON}
+            text="Log in"
+            onPress={handleSubmit(onSubmit)}
+          />
+          <Anchor text="¿Olvidaste tu contraseña?" style={{ marginTop: "1%" }} />
+          <Anchor text="¿No tienes cuenta? Regístrate..." style={{ marginTop: "1%" }} />
+        </LinearGradient>
     </KeyboardAvoidingView>
   );
 }

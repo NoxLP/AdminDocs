@@ -15,7 +15,7 @@ export default {
     tint: primaryLight,
     tabIconDefault: secondaryLight,
     tabIconSelected: primaryLight,
-    anchorTextColor: "blue",
+    anchorTextColor: "white",
     input: {
       background: "transparent",
       placeholderColor: "lightgray",

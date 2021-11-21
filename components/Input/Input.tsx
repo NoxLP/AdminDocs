@@ -36,6 +36,7 @@ export const Input = React.forwardRef(function Input(
     label,
     style: styleOverride,
     inputStyle: inputStyleOverride,
+    labelStyle: labelStyleOverride,
     keyboardType,
     password,
     multiline,
@@ -45,9 +46,9 @@ export const Input = React.forwardRef(function Input(
 
   const themeColors = useThemeColors();
 
-  const labelStyles = [ LABEL, { color: themeColors.input.label } ]
+  const labelStyles = [ LABEL, { color: themeColors.input.label }, labelStyleOverride ]
   const containerStyles = [CONTAINER, styleOverride];
-  const inputStyles = [INPUT, inputStyleOverride, { color: themeColors.text }];
+  const inputStyles = [INPUT, { color: themeColors.text }, inputStyleOverride];
 
   return (
     <View style={containerStyles}>

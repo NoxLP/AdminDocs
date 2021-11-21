@@ -10,6 +10,7 @@ export interface InputProps {
   label?: string;
   style?: ViewStyle;
   inputStyle?: TextStyle;
+  labelStyle?: TextStyle;
   keyboardType?: KeyboardTypeOptions;
   password?: boolean;
   multiline?: boolean;
