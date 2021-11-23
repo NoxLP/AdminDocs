@@ -92,8 +92,6 @@ export const login = async (
 
 export const addDocument = async (data: Document) => {
   try {
-    console.log("addDocument: ", data);
-
     const formData = new FormData();
 
     formData.append("image", {
@@ -108,14 +106,8 @@ export const addDocument = async (data: Document) => {
     formData.append("category", data.category);
     formData.append("name", data.name);
     formData.append("comments", data.comments);
-    //console.log("addDocument 2", formData);
-
-    //logFormData(formData);
-    //console.log("ADD DOC: ", JSON.stringify(formData.entries(), null, 4));
 
     const token = await getToken();
-    console.log("Token: ", token);
-
     api.setHeader("token", token!);
     const response: ApiResponse<any> = await api.post("/documents", formData);
 
@@ -124,3 +116,15 @@ export const addDocument = async (data: Document) => {
     return getError(err);
   }
 };
+
+export const getMyDocuments = async (): Promise<RequestResult> => {
+  try {
+    const token = await getToken();
+    api.setHeader("token", token!);
+    const response: ApiResponse<any> = await api.get("/users/docs");
+
+    return getRequestResult(response);
+  } catch (err) {
+    return getError(err);
+  }
+}
