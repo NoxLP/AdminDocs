@@ -16,6 +16,11 @@ declare global {
   }
 }
 
+export enum GalleryType {
+  MyDocuments = 'MyDocuments',
+  CommunityDocuments = 'CommunityDocuments',
+}
+
 export type RootStackParamList = {
   Login: undefined;
   Dashboard: undefined;
@@ -23,6 +28,9 @@ export type RootStackParamList = {
   NewDocumentScreen: {
     uri: string;
     name?: string;
+  };
+  GalleryScreen: {
+    type: GalleryType;
   };
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
