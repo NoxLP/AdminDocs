@@ -25,28 +25,28 @@ import useUserNewDocument from "../hooks/useUserNewDocument";
 import { addDocument } from "../services/api";
 import { RootStackScreenProps } from "../types";
 import { useThemeColors } from "../components/Themed";
+import { BottomTabs } from "../components/BottomTabs/BottomTabs";
 
 //#region styles
-const CONTAINER: ViewStyle = {
+const SCROLL_CONTAINER: ViewStyle = {
   flex: 1,
+  width: Layout.window.width,
+  minHeight: Layout.window.height * 0.46,
 };
 const INNER_CONTENT: ViewStyle = {
   flex: 1,
+  height: Layout.window.height * 0.64,
   minHeight: Layout.window.height,
-  width: Layout.window.width,
 };
 const CONTAINER_CONTENT: ViewStyle = {
   flex: 1,
   alignItems: "center",
 };
-
 const IMAGE_CONTAINER: ViewStyle = {
-  height: "26%",
-  width: "90%",
-  marginHorizontal: "8%",
-  marginTop: "4%",
-  marginBottom: 0,
-  padding: "2%",
+  height: "33%",
+  width: Layout.window.width,
+  marginBottom: "3%",
+  paddingVertical: "3%",
   alignContent: "center",
   justifyContent: "center",
   backgroundColor: "white",
@@ -58,7 +58,6 @@ const IMAGE_CONTAINER: ViewStyle = {
     height: 5,
   },
   elevation: 5,
-  borderRadius: 8,
 };
 const IMAGE: ImageStyle = {
   height: "100%",
@@ -74,11 +73,11 @@ const INPUT: TextStyle = {
 };
 const INPUT_CONTAINER: ViewStyle = {
   margin: "5%",
-  marginBottom: 0,
+  marginBottom: "2%",
 };
 const COMMENTS_INPUT_CONTAINER: ViewStyle = {
   margin: "5%",
-  marginTop: "8%",
+  marginTop: "11%",
   marginBottom: 0,
 };
 const PICKER_CONTAINER: ViewStyle = {
@@ -107,8 +106,9 @@ export default function NewDocumentScreen({
   route,
 }: RootStackScreenProps<"NewDocumentScreen">) {
   const themeColors = useThemeColors();
-  const containerStylesOverride = {...CONTAINER, backgroundColor: themeColors.background }
-
+  const innerContainerStylesOverride = {...INNER_CONTENT, backgroundColor: themeColors.background }
+  
+  //#region rest
   const {
     document,
     isDocumentLoading,
@@ -195,74 +195,76 @@ export default function NewDocumentScreen({
   useEffect(() => {
     console.log("ERRORS: " + JSON.stringify(errors, null, 4));
   }, [errors]);
+  //#endregion
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "position"}
-      style={containerStylesOverride}
-    >
-      <ScrollView
-        style={INNER_CONTENT}
-        contentContainerStyle={CONTAINER_CONTENT}
-      >
-        <View style={IMAGE_CONTAINER}>
-          {isDocumentLoading ? null : (
-            <Image source={documentImage} style={IMAGE} />
-          )}
-        </View>
-        <Form register={register} setValue={setValue} errors={errors}>
-          <Input
-            label="Nombre*"
-            style={INPUT_CONTAINER}
-            inputStyle={INPUT}
-            name="name"
-            defaultValue={document.name}
-            placeholder="Nombre"
-            multiline={true}
-            numberOfLines={2}
-          />
-          <Controller
-            control={control}
-            name="category"
-            defaultValue={defaultCategory}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <Picker
-                label="Categoría*"
-                name="category"
-                style={PICKER_CONTAINER}
-                items={categoryItems}
-                defaultValue={defaultCategory}
-                selectedValue={value}
-                onValueChange={onChange}
-              />
-            )}
-          />
-          <Input
-            label="Comentarios"
-            style={ COMMENTS_INPUT_CONTAINER }
-            inputStyle={ INPUT }
-            name="comments"
-            defaultValue={document.comments}
-            placeholder="Comentarios"
-            multiline={true}
-            numberOfLines={4}
-          />
-        </Form>
-        <View style={SUBMIT_BUTTONS_CONTAINER}>
-          <Button
-            style={SUBMIT_BUTTONS}
-            preset="success"
-            text="Aceptar"
-            onPress={handleSubmit(onSubmit)}
-          />
-          <Button
-            style={SUBMIT_BUTTONS}
-            preset="error"
-            text="Cancelar"
-            onPress={cancelButtonOnPress}
-          />
-        </View>
+    <>
+      <View style={IMAGE_CONTAINER}>
+        {isDocumentLoading ? null : (
+          <Image source={documentImage} style={IMAGE} />
+        )}
+      </View>
+      <ScrollView style={SCROLL_CONTAINER}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "position"}
+          style={innerContainerStylesOverride}
+          contentContainerStyle = {CONTAINER_CONTENT}
+        >
+          <Form register={register} setValue={setValue} errors={errors}>
+            <Input
+              label="Nombre*"
+              style={INPUT_CONTAINER}
+              inputStyle={INPUT}
+              name="name"
+              defaultValue={document.name}
+              placeholder="Nombre"
+              multiline={true}
+              numberOfLines={2}
+            />
+            <Controller
+              control={control}
+              name="category"
+              defaultValue={defaultCategory}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <Picker
+                  label="Categoría*"
+                  name="category"
+                  style={PICKER_CONTAINER}
+                  items={categoryItems}
+                  defaultValue={defaultCategory}
+                  selectedValue={value}
+                  onValueChange={onChange}
+                />
+              )}
+            />
+            <Input
+              label="Comentarios"
+              style={ COMMENTS_INPUT_CONTAINER }
+              inputStyle={ INPUT }
+              name="comments"
+              defaultValue={document.comments}
+              placeholder="Comentarios"
+              multiline={true}
+              numberOfLines={4}
+            />
+          </Form>
+          <View style={SUBMIT_BUTTONS_CONTAINER}>
+            <Button
+              style={SUBMIT_BUTTONS}
+              preset="success"
+              text="Aceptar"
+              onPress={handleSubmit(onSubmit)}
+            />
+            <Button
+              style={SUBMIT_BUTTONS}
+              preset="error"
+              text="Cancelar"
+              onPress={cancelButtonOnPress}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </ScrollView>
-    </KeyboardAvoidingView>
+      <BottomTabs navigation={navigation}/>
+    </>
   );
 }
