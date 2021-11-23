@@ -5,7 +5,7 @@ import {
 } from "../../services/auth-storage";
 import { checkToken } from "../../services/api";
 import { api } from "../../services/api-config";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 export default function useAuthCheck() {
   const checkUserIsLogged = async (): Promise<boolean> => {
@@ -37,5 +37,10 @@ export default function useAuthCheck() {
     return true;
   };
 
-  return useQuery("authCheck", checkUserIsLogged);
+  const queryClient = useQueryClient();
+  return useQuery("authCheck", checkUserIsLogged, {
+    onSuccess: () => {
+      return queryClient.invalidateQueries("galleryDocs");
+    }
+  });
 }

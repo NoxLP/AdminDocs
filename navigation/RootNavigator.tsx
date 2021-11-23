@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import DashboardScreen from "../screens/DashboardScreen";
+import GalleryScreen from "../screens/GalleryScreen";
 import ModalScreen from "../screens/ModalScreen";
 import NewDocumentScreen from "../screens/NewDocumentScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -31,6 +32,7 @@ export default function RootNavigator() {
       />
       <Stack.Screen name="UploadDocument" component={DashboardScreen} />
       <Stack.Screen name="NewDocumentScreen" component={NewDocumentScreen} />
+      <Stack.Screen name="GalleryScreen" component={GalleryScreen} />
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

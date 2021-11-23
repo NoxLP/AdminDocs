@@ -8,7 +8,7 @@ import { BottomTabs } from "../components/BottomTabs/BottomTabs";
 import { Image, ImageStyle, ViewStyle } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as DocumentPicker from "expo-document-picker";
-import { RootStackScreenProps } from "../types";
+import { GalleryType, RootStackScreenProps } from "../types";
 
 const BUTTON: ViewStyle = {
   backgroundColor: "white",
@@ -35,7 +35,7 @@ const ITEMS_DASHBOARD: Array<IDefaultFlatListItem> = [
   {
     icon: icons.dashboardMyDocs,
     text: "Mis documentos",
-    onPressItem: () => { },
+    onPressItem: (navigation) => navigation.navigate("GalleryScreen", { type: GalleryType.MyDocuments }),
   },
   {
     icon: icons.dashboardCommunityDocs,

@@ -117,7 +117,7 @@ export const addDocument = async (data: Document) => {
   }
 };
 
-export const getMyDocuments = async (): Promise<RequestResult> => {
+export const getUserDocuments = async (): Promise<RequestResult> => {
   try {
     const token = await getToken();
     api.setHeader("token", token!);

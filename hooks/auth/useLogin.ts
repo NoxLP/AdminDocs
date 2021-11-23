@@ -27,6 +27,7 @@ export default function useLogin() {
   const queryClient = useQueryClient();
   return useMutation("login", login, {
     onSuccess: () => {
+      queryClient.invalidateQueries("galleryDocs");
       return queryClient.invalidateQueries("authCheck");
     },
   });
