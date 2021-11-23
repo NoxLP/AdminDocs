@@ -40,7 +40,8 @@ export function FlatListCustom(props: FlatListCustomProps) {
       keyExtractor={keyExtractor ?? defaultKeyExtractor}
       columnWrapperStyle={numColumns && numColumns > 0 ? {
         flex: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        flexWrap: "wrap"
       } : null}
       numColumns={numColumns}
     />

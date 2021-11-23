@@ -2,6 +2,7 @@ import { ApiResponse } from "apisauce";
 import { api } from "./api-config";
 import Document from "../models/Document";
 import { getToken } from "./auth-storage";
+import DocumentCategory from "../models/DocumentCategory";
 
 export interface RequestResult {
   correct: boolean;
@@ -103,7 +104,7 @@ export const addDocument = async (data: Document) => {
     formData.append("community", data.community);
     formData.append("user", data.user);
     formData.append("date", data.date.toString());
-    formData.append("category", data.category);
+    formData.append("category", Object.keys(DocumentCategory)[Object.values(DocumentCategory).indexOf(data.category)]);
     formData.append("name", data.name);
     formData.append("comments", data.comments);
 

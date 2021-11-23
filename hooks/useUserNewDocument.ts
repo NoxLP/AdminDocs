@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 import { PickerItemProps } from "../components/Picker/PickerProps";
 import Document from "../models/Document";
 import DocumentCategory from "../models/DocumentCategory";
+import { addDocument } from "../services/api";
 
 export default function useUserNewDocument() {
   const [document, setDocument] = useState<Document>({
@@ -117,11 +119,20 @@ export default function useUserNewDocument() {
     setDocument(newDocument);
   };
 
+  const queryClient = useQueryClient();
+  const saveDocument = async () => {
+    const response = await addDocument(document);
+    if(response.correct) {
+      queryClient.invalidateQueries('galleryDocs');
+    }
+  }
+
   return {
     document,
     isDocumentLoading,
     getDocumentName,
     setNewDocumentFile,
     fillDocumentForm,
+    saveDocument
   };
 }

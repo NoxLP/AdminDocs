@@ -115,6 +115,7 @@ export default function NewDocumentScreen({
     getDocumentName,
     setNewDocumentFile,
     fillDocumentForm,
+    saveDocument
   } = useUserNewDocument();
 
   // Errors messages must be set before schema
@@ -165,7 +166,8 @@ export default function NewDocumentScreen({
   const onSubmit = async (data: FormFields) => {
     console.log("SUBMIT: ", data);
     fillDocumentForm(data);
-    await addDocument(document);
+    await saveDocument();
+      
     navigation.goBack();
   };
   const cancelButtonOnPress = () => {
