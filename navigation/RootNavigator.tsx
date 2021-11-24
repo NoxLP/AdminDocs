@@ -1,12 +1,12 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import DashboardScreen from "../screens/DashboardScreen";
-import GalleryScreen from "../screens/GalleryScreen";
-import ModalScreen from "../screens/ModalScreen";
-import NewDocumentScreen from "../screens/NewDocumentScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
-import { RootStackParamList } from "../types";
-import BottomTabNavigator from "./BottomTabNavigator";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import DashboardScreen from '../screens/DashboardScreen';
+import GalleryScreen from '../screens/GalleryScreen';
+import ModalScreen from '../screens/ModalScreen';
+import NewDocumentScreen from '../screens/NewDocumentScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
+import { RootStackParamList } from '../types';
+import BottomTabNavigator from './BottomTabNavigator';
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
   return (
-    <Stack.Navigator 
+    <Stack.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
         headerStyle: {
@@ -36,9 +36,9 @@ export default function RootNavigator() {
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
-        options={{ title: "Oops!" }}
+        options={{ title: 'Oops!' }}
       />
-      <Stack.Group screenOptions={{ presentation: "modal" }}>
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
     </Stack.Navigator>

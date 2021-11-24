@@ -8,6 +8,8 @@ import { RootStackScreenProps, GalleryType } from '../types';
 import { Image, ImageStyle, ScrollView, ViewStyle } from 'react-native';
 import IDocument from '../models/Document';
 import Layout from '../constants/Layout';
+import { GalleryItem } from '../components/GalleryItem/GalleryItem';
+import useGallery from '../hooks/DocumentsGalleries/useGallery';
 
 const SCROLL_CONTAINER: ViewStyle = {
   flex: 2,
@@ -18,20 +20,6 @@ const FLATLIST_CONTAINER: ViewStyle = {
   minHeight: Layout.window.height,
   paddingHorizontal: '3%',
 };
-const IMAGE_CONTAINER: ViewStyle = {
-  width: '47%',
-  margin: '3%',
-  marginHorizontal: 0,
-  borderRadius: 5,
-  borderWidth: 1,
-  borderColor: '#ABA7A7',
-  elevation: 5,
-};
-const IMAGE: ImageStyle = {
-  height: '100%',
-  width: '100%',
-  resizeMode: 'cover',
-};
 
 export default function GalleryScreen({
   navigation,
@@ -39,24 +27,29 @@ export default function GalleryScreen({
 }: RootStackScreenProps<'GalleryScreen'>) {
   const themeColors = useThemeColors();
   const { isLoading, error, isError, documents } = useUserDocuments();
-
-  const imageContainerHeight = Layout.window.height * 0.3;
-  const imageContainerOverride: ViewStyle = {
-    ...IMAGE_CONTAINER,
-    height: imageContainerHeight,
-  };
+  const {
+    imageWidth,
+    setImageWidth,
+    isSelecting,
+    setIsSelecting,
+    selectedItems,
+    setIsSelected,
+  } = useGallery();
 
   const renderItem = ({ item }: { item: IDocument }) => {
     console.log(item.name);
 
     //console.log(`data:${item.contentType};base64,${item.data}`);
     return (
-      <View style={imageContainerOverride}>
-        <Image
-          source={{ uri: `data:${item.contentType};base64,${item.data}` }}
-          style={IMAGE}
-        />
-      </View>
+      <GalleryItem
+        item={item}
+        imageWidth={imageWidth}
+        setImageWidth={setImageWidth}
+        isSelecting={isSelecting}
+        setIsSelecting={setIsSelecting}
+        setIsSelected={setIsSelected}
+        navigation={navigation}
+      />
     );
   };
 
