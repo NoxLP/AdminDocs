@@ -1,57 +1,62 @@
-import { getTabBarHeight } from "@react-navigation/bottom-tabs/lib/typescript/src/views/BottomTabBar";
-import React from "react";
-import { Image, ImageStyle, TextStyle, ViewStyle } from "react-native";
-import useLogout from "../../hooks/auth/useLogout";
-import { Button } from "../Button/Button";
-import { FlatListCustom, IDefaultFlatListItem } from "../FlatListCustom/FlatListCustom";
-import { icons } from "../Icon/icons/index";
+import React from 'react';
+import { Image, ImageStyle, TextStyle, ViewStyle } from 'react-native';
+import Layout from '../../constants/Layout';
+import useLogout from '../../hooks/auth/useLogout';
+import { Button } from '../Button/Button';
+import {
+  FlatListCustom,
+  IDefaultFlatListItem,
+} from '../FlatListCustom/FlatListCustom';
+import { icons } from '../Icon/icons/index';
 
-const CONTAINER: ViewStyle = {  
-  height: "13%",
-  backgroundColor: "#81C0FA",
-  paddingHorizontal: "3%"
-}
+const CONTAINER: ViewStyle = {
+  height: Layout.window.height * 0.13,
+  maxHeight: Layout.window.height * 0.13,
+  backgroundColor: '#81C0FA',
+  paddingHorizontal: '3%',
+  paddingVertical: 0,
+};
 const BUTTON: ViewStyle = {
-  backgroundColor: "transparent",
-  height: "220%",
-  borderColor: "transparent",
+  backgroundColor: 'transparent',
+  height: '100%',
+  borderColor: 'transparent',
   borderRadius: 0,
-  shadowColor: "transparent",
-  elevation: 0
-}
+  shadowColor: 'transparent',
+  elevation: 0,
+};
 const BUTTON_TEXT: TextStyle = {
   fontSize: 18,
-  color: "white",
-}
+  color: 'white',
+};
 const IMAGE: ImageStyle = {
-  height: "50%",
-  resizeMode: "contain",
+  height: '100%',
+  resizeMode: 'contain',
 };
 
 export function BottomTabs({ navigation }) {
-    const {mutate: logout} = useLogout()
-    const TABS: Array<IDefaultFlatListItem> = [
+  const { mutate: logout } = useLogout();
+  const TABS: Array<IDefaultFlatListItem> = [
     {
       icon: icons.bottomTabsUploadDoc,
-      text: "Subir doc",
-      onPressItem: (navigation) => navigation.navigate("UploadDocument"),
+      text: 'Subir doc',
+      onPressItem: (navigation) => navigation.navigate('UploadDocument'),
     },
     {
       icon: icons.bottomTabsMyDocs,
-      text: "Mis docs",
-      onPressItem: (navigation) => { },
+      text: 'Mis docs',
+      onPressItem: (navigation) => {},
     },
     {
       icon: icons.bottomTabsCommunityDocs,
-      text: "Comunidad",
-      onPressItem: (navigation) => { },
+      text: 'Comunidad',
+      onPressItem: (navigation) => {},
     },
     {
       icon: icons.bottomTabsLogout,
-      text: "Cerrar",
+      text: 'Cerrar',
       onPressItem: (navigation) => {
-        const syncLogout = async() => await logout()
-        syncLogout()
+        const syncLogout = async () => await logout();
+        syncLogout();
       },
     },
   ];
@@ -65,12 +70,12 @@ export function BottomTabs({ navigation }) {
       preset="icon"
       onPress={(e) => item.onPressItem(navigation)}
     />
-  )
+  );
 
   return (
-    <FlatListCustom 
-      style={CONTAINER} 
-      items={TABS} 
+    <FlatListCustom
+      style={CONTAINER}
+      items={TABS}
       renderItem={renderItem}
       numColumns={4}
     />

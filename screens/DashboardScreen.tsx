@@ -1,57 +1,58 @@
-import React from "react";
-import { Button } from "../components/Button/Button";
-import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { icons } from "../components/Icon/icons/index";
-import { useThemeColors } from "../components/Themed";
-import { IDefaultFlatListItem } from "../components/FlatListCustom/FlatListCustom";
-import { BottomTabs } from "../components/BottomTabs/BottomTabs";
-import { Image, ImageStyle, ViewStyle } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import * as DocumentPicker from "expo-document-picker";
-import { GalleryType, RootStackScreenProps } from "../types";
+import React from 'react';
+import { Button } from '../components/Button/Button';
+import { FlatListCustom } from '../components/FlatListCustom/FlatListCustom';
+import { icons } from '../components/Icon/icons/index';
+import { useThemeColors } from '../components/Themed';
+import { IDefaultFlatListItem } from '../components/FlatListCustom/FlatListCustom';
+import { BottomTabs } from '../components/BottomTabs/BottomTabs';
+import { Image, ImageStyle, View, ViewStyle } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
+import { GalleryType, RootStackScreenProps } from '../types';
 
 const BUTTON: ViewStyle = {
-  backgroundColor: "white",
+  backgroundColor: 'white',
   height: 150,
-  width: "90%",
-  paddingVertical: "2%",
+  width: '90%',
+  paddingVertical: '2%',
   borderRadius: 20,
   borderWidth: 1,
-  borderColor: "#ABA7A7",
+  borderColor: '#ABA7A7',
 };
 
 const IMAGE: ImageStyle = {
-  height: "70%",
-  resizeMode: "contain",
+  height: '70%',
+  resizeMode: 'contain',
 };
 
 //#region constants
 const ITEMS_DASHBOARD: Array<IDefaultFlatListItem> = [
   {
     icon: icons.dashboardUploadDocs,
-    text: "Subir documento",
-    onPressItem: (navigation) => navigation.navigate("UploadDocument"),
+    text: 'Subir documento',
+    onPressItem: (navigation) => navigation.navigate('UploadDocument'),
   },
   {
     icon: icons.dashboardMyDocs,
-    text: "Mis documentos",
-    onPressItem: (navigation) => navigation.navigate("GalleryScreen", { type: GalleryType.MyDocuments }),
+    text: 'Mis documentos',
+    onPressItem: (navigation) =>
+      navigation.navigate('GalleryScreen', { type: GalleryType.MyDocuments }),
   },
   {
     icon: icons.dashboardCommunityDocs,
-    text: "Documentos de mi comunidad",
-    onPressItem: () => { },
+    text: 'Documentos de mi comunidad',
+    onPressItem: () => {},
   },
 ];
 const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
   {
     icon: icons.uploadDocumentCamera,
-    text: "Foto",
+    text: 'Foto',
     onPressItem: (navigation) => {
       (async function () {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera permissions!");
+        if (status !== 'granted') {
+          alert('Sorry, we need camera permissions!');
           return null;
         }
         let result = await ImagePicker.launchCameraAsync({
@@ -63,7 +64,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
         if (!result.cancelled) {
           //setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentScreen", {
+          navigation.navigate('NewDocumentScreen', {
             uri: result.uri,
           });
         }
@@ -72,13 +73,13 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
   },
   {
     icon: icons.uploadDocumentGallery,
-    text: "Galería",
+    text: 'Galería',
     onPressItem: (navigation) => {
       (async function () {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera permissions!");
+        if (status !== 'granted') {
+          alert('Sorry, we need camera permissions!');
           return null;
         }
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -90,7 +91,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
         if (!result.cancelled) {
           //setNewDocumentFile(result);
           console.log(JSON.stringify(result));
-          navigation.navigate("NewDocumentScreen", {
+          navigation.navigate('NewDocumentScreen', {
             uri: result.uri,
           });
         }
@@ -113,18 +114,18 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
   Check the iCloud Documents checkbox
     */
     icon: icons.uploadDocumentFiles,
-    text: "Ficheros",
+    text: 'Ficheros',
     onPressItem: (navigation) => {
       (async function () {
         // TODO: Only pdf files right now. Later I need to include xls, word/txt, etc.
         const result = await DocumentPicker.getDocumentAsync({
-          type: "application/pdf",
+          type: 'application/pdf',
         });
-        console.log("RESULT: " + JSON.stringify(result));
+        console.log('RESULT: ' + JSON.stringify(result));
 
-        if (result.type === "success") {
+        if (result.type === 'success') {
           //setNewDocumentFile(result);
-          navigation.navigate("NewDocumentScreen", {
+          navigation.navigate('NewDocumentScreen', {
             uri: result.uri,
             name: result.name,
           });
@@ -137,7 +138,7 @@ const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [
 
 const getRouteItems = (routeName: string) => {
   switch (routeName) {
-    case "Dashboard":
+    case 'Dashboard':
       return ITEMS_DASHBOARD;
     //case "UploadDocument":
     default:
@@ -148,7 +149,7 @@ const getRouteItems = (routeName: string) => {
 export default function DashboardScreen({
   navigation,
   route,
-}: RootStackScreenProps<"Dashboard">) {
+}: RootStackScreenProps<'Dashboard'>) {
   const themeColors = useThemeColors();
 
   const buttonStyle = { color: themeColors.text, ...BUTTON };
@@ -165,9 +166,9 @@ export default function DashboardScreen({
   );
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <FlatListCustom items={items} renderItem={renderItem} />
-      <BottomTabs navigation={navigation}/>
-    </>
+      <BottomTabs navigation={navigation} />
+    </View>
   );
 }

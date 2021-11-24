@@ -1,75 +1,88 @@
-import React, { useEffect } from "react";
-import { BottomTabs } from "../components/BottomTabs/BottomTabs";
-import { FlatListCustom } from "../components/FlatListCustom/FlatListCustom";
-import { Text, useThemeColors, View } from "../components/Themed";
-import useUserDocuments from "../hooks/DocumentsGalleries/useUserDocuments";
-import useCommunityDocuments from "../hooks/DocumentsGalleries/useCommunityDocuments";
-import { RootStackScreenProps, GalleryType } from "../types";
-import { Image, ImageStyle, ScrollView, ViewStyle } from "react-native";
-import IDocument from "../models/Document";
-import Layout from "../constants/Layout";
+import React, { useEffect } from 'react';
+import { BottomTabs } from '../components/BottomTabs/BottomTabs';
+import { FlatListCustom } from '../components/FlatListCustom/FlatListCustom';
+import { Text, useThemeColors, View } from '../components/Themed';
+import useUserDocuments from '../hooks/DocumentsGalleries/useUserDocuments';
+import useCommunityDocuments from '../hooks/DocumentsGalleries/useCommunityDocuments';
+import { RootStackScreenProps, GalleryType } from '../types';
+import { Image, ImageStyle, ScrollView, ViewStyle } from 'react-native';
+import IDocument from '../models/Document';
+import Layout from '../constants/Layout';
 
-const CONTAINER: ViewStyle = {
-
-}
-const CONTAINER_CONTENT: ViewStyle = {
+const SCROLL_CONTAINER: ViewStyle = {
+  flex: 2,
+  height: Layout.window.height,
+};
+const FLATLIST_CONTAINER: ViewStyle = {
   flex: 1,
-  alignItems: "center",
-  justifyContent: "space-around"
-}
+  minHeight: Layout.window.height,
+  paddingHorizontal: '3%',
+};
 const IMAGE_CONTAINER: ViewStyle = {
-  width: "50%",
-  borderColor: "red",
-  borderWidth: 5,
-}
+  width: '47%',
+  margin: '3%',
+  marginHorizontal: 0,
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: '#ABA7A7',
+  elevation: 5,
+};
 const IMAGE: ImageStyle = {
-  height: "100%",
-  width: "100%",
-  resizeMode: "cover",
+  height: '100%',
+  width: '100%',
+  resizeMode: 'cover',
 };
 
 export default function GalleryScreen({
   navigation,
   route,
-}: RootStackScreenProps<"GalleryScreen">) {
+}: RootStackScreenProps<'GalleryScreen'>) {
   const themeColors = useThemeColors();
   const { isLoading, error, isError, documents } = useUserDocuments();
-  
-  const renderItem = ({item}: {item: IDocument}) => {
+
+  const imageContainerHeight = Layout.window.height * 0.3;
+  const imageContainerOverride: ViewStyle = {
+    ...IMAGE_CONTAINER,
+    height: imageContainerHeight,
+  };
+
+  const renderItem = ({ item }: { item: IDocument }) => {
     console.log(item.name);
-    
+
     //console.log(`data:${item.contentType};base64,${item.data}`);
     return (
-      <View
-        style={IMAGE_CONTAINER}
-      >
-        <Image 
-          source={{uri: `data:${item.contentType};base64,${item.data}`}} 
+      <View style={imageContainerOverride}>
+        <Image
+          source={{ uri: `data:${item.contentType};base64,${item.data}` }}
           style={IMAGE}
         />
       </View>
-    )
-  }
+    );
+  };
 
   // TODO: isloading and error ui
   return (
     <>
-      { 
-        isLoading ? 
-          (<Text text="loading"/>) :
-          (
-            <>
-            <Text text={documents.length}/>
-            <FlatListCustom 
+      {isLoading ? (
+        <Text text="loading" />
+      ) : (
+        <>
+          <Text text={documents.length} />
+          <ScrollView style={SCROLL_CONTAINER}>
+            <FlatListCustom
               items={documents ? documents : []}
               renderItem={renderItem}
-              contentStyle={CONTAINER_CONTENT}
-              numColumns={2}
+              style={FLATLIST_CONTAINER}
+              contentStyle={{
+                flex: 1,
+                alignItems: 'flex-start',
+              }}
+              numColumns={3}
             />
-            </>
-          )
-      }
-      <BottomTabs navigation={navigation}/>
+          </ScrollView>
+        </>
+      )}
+      <BottomTabs navigation={navigation} />
     </>
-  )
+  );
 }
