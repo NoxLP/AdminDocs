@@ -25,20 +25,12 @@ export default function GalleryScreen({
     selectedItems,
     setIsSelected,
   } = useGallery();
+  console.log(documents.length);
 
-  const itemHeight = 0.3;
-  const rowHeight = Layout.window.height * (itemHeight + 0.1);
-  const rowsNum = Math.ceil(documents.length / 2);
-  const height = rowHeight * rowsNum;
-  const SCROLL_CONTAINER: ViewStyle = {
-    flex: 2,
-    height: height,
-    backgroundColor: themeColors.background,
-  };
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
-    height: height,
     paddingHorizontal: '3%',
+    backgroundColor: themeColors.background,
   };
 
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
@@ -46,7 +38,6 @@ export default function GalleryScreen({
     return (
       <GalleryItem
         item={item}
-        itemHeight={itemHeight}
         index={index}
         imageWidth={imageWidth}
         setImageWidth={setImageWidth}
@@ -65,18 +56,12 @@ export default function GalleryScreen({
       {isLoading ? (
         <Text text="loading" />
       ) : (
-        <ScrollView style={SCROLL_CONTAINER}>
-          <FlatListCustom
-            items={documents ? documents : []}
-            renderItem={renderItem}
-            style={FLATLIST_CONTAINER}
-            contentStyle={{
-              flex: 1,
-              alignItems: 'flex-start',
-            }}
-            numColumns={3}
-          />
-        </ScrollView>
+        <FlatListCustom
+          items={documents ? documents : []}
+          renderItem={renderItem}
+          style={FLATLIST_CONTAINER}
+          numColumns={2}
+        />
       )}
       <BottomTabs navigation={navigation} />
     </>

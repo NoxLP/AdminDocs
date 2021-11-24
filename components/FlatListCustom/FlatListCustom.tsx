@@ -32,6 +32,7 @@ export function FlatListCustom(props: FlatListCustomProps) {
     keyExtractor,
     horizontal,
     numColumns,
+    ...rest
   } = props;
   const themeColors = useThemeColors();
   const styles = [
@@ -71,6 +72,7 @@ export function FlatListCustom(props: FlatListCustomProps) {
           : null
       }
       numColumns={numColumns}
+      {...rest}
     />
   );
 }

@@ -18,7 +18,6 @@ const CHECKBOX: ViewStyle = {
 export function GalleryItem(props: IGalleryItemProps) {
   const {
     item,
-    itemHeight,
     index,
     imageWidth,
     setImageWidth,
@@ -42,7 +41,7 @@ export function GalleryItem(props: IGalleryItemProps) {
   };
   const IMAGE_CONTAINER: ViewStyle = {
     width: '47%',
-    height: Layout.window.height * itemHeight,
+    height: Layout.window.height * 0.3,
     margin: '3%',
     marginHorizontal: 0,
   };

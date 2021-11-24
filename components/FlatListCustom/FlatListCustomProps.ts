@@ -9,4 +9,5 @@ export interface FlatListCustomProps {
   keyExtractor?: (item: any, index: number) => string;
   horizontal?: boolean;
   numColumns?: number;
+  [x:string]: any
 }

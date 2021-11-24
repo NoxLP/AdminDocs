@@ -4,7 +4,6 @@ import { RootStackParamList } from "../../types";
 
 export default interface IGalleryItemProps {
   item: IDocument
-  itemHeight: number
   index: number
   imageWidth: string
   setImageWidth: Function
