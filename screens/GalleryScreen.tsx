@@ -29,6 +29,7 @@ export default function GalleryScreen({
 
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
+    marginTop: '3%',
     paddingHorizontal: '3%',
     backgroundColor: themeColors.background,
   };

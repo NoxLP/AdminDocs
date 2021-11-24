@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import Layout from '../../constants/Layout';
 import useLogout from '../../hooks/auth/useLogout';
+import { GalleryType } from '../../types';
 import { Button } from '../Button/Button';
 import {
   FlatListCustom,
@@ -44,7 +45,11 @@ export function BottomTabs({ navigation }) {
     {
       icon: icons.bottomTabsMyDocs,
       text: 'Mis docs',
-      onPressItem: (navigation) => {},
+      onPressItem: (navigation) => {
+        navigation.navigate('GalleryScreen', {
+          type: GalleryType.MyDocuments,
+        });
+      },
     },
     {
       icon: icons.bottomTabsCommunityDocs,
