@@ -24,6 +24,7 @@
     "apisauce": "^2.1.1",
     "expo": "~42.0.1",
     "expo-asset": "~8.3.2",
+    "expo-checkbox": "~1.0.3",
     "expo-constants": "~11.0.1",
     "expo-document-picker": "~9.2.4",
     "expo-file-system": "~11.1.3",

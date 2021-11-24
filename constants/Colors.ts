@@ -27,6 +27,10 @@ export default {
       success: successLight,
       error: errorLight,
     },
+    checkbox: {
+      checked: '#81C0FA',
+      unchecked: '#D4D4D4'
+    }
   },
   dark: {
     text: "#fff",
@@ -45,5 +49,9 @@ export default {
       success: successDark,
       error: errorDark,
     },
+    checkbox: {
+      checked: '#81C0FA',
+      unchecked: '#D4D4D4'
+    }
   },
 };

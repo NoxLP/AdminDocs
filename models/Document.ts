@@ -1,6 +1,7 @@
 import DocumentCategory from "./DocumentCategory";
 
 export default interface IDocument {
+  id?: string;
   data?: string;
   uri: string;
   contentType: string;

@@ -11,16 +11,6 @@ import Layout from '../constants/Layout';
 import { GalleryItem } from '../components/GalleryItem/GalleryItem';
 import useGallery from '../hooks/DocumentsGalleries/useGallery';
 
-const SCROLL_CONTAINER: ViewStyle = {
-  flex: 2,
-  height: Layout.window.height,
-};
-const FLATLIST_CONTAINER: ViewStyle = {
-  flex: 1,
-  minHeight: Layout.window.height,
-  paddingHorizontal: '3%',
-};
-
 export default function GalleryScreen({
   navigation,
   route,
@@ -36,17 +26,33 @@ export default function GalleryScreen({
     setIsSelected,
   } = useGallery();
 
-  const renderItem = ({ item }: { item: IDocument }) => {
-    console.log(item.name);
+  const itemHeight = 0.3;
+  const rowHeight = Layout.window.height * (itemHeight + 0.1);
+  const rowsNum = Math.ceil(documents.length / 2);
+  const height = rowHeight * rowsNum;
+  const SCROLL_CONTAINER: ViewStyle = {
+    flex: 2,
+    height: height,
+    backgroundColor: themeColors.background,
+  };
+  const FLATLIST_CONTAINER: ViewStyle = {
+    flex: 1,
+    height: height,
+    paddingHorizontal: '3%',
+  };
 
+  const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
     //console.log(`data:${item.contentType};base64,${item.data}`);
     return (
       <GalleryItem
         item={item}
+        itemHeight={itemHeight}
+        index={index}
         imageWidth={imageWidth}
         setImageWidth={setImageWidth}
         isSelecting={isSelecting}
         setIsSelecting={setIsSelecting}
+        selectedItems={selectedItems}
         setIsSelected={setIsSelected}
         navigation={navigation}
       />
@@ -59,21 +65,18 @@ export default function GalleryScreen({
       {isLoading ? (
         <Text text="loading" />
       ) : (
-        <>
-          <Text text={documents.length} />
-          <ScrollView style={SCROLL_CONTAINER}>
-            <FlatListCustom
-              items={documents ? documents : []}
-              renderItem={renderItem}
-              style={FLATLIST_CONTAINER}
-              contentStyle={{
-                flex: 1,
-                alignItems: 'flex-start',
-              }}
-              numColumns={3}
-            />
-          </ScrollView>
-        </>
+        <ScrollView style={SCROLL_CONTAINER}>
+          <FlatListCustom
+            items={documents ? documents : []}
+            renderItem={renderItem}
+            style={FLATLIST_CONTAINER}
+            contentStyle={{
+              flex: 1,
+              alignItems: 'flex-start',
+            }}
+            numColumns={3}
+          />
+        </ScrollView>
       )}
       <BottomTabs navigation={navigation} />
     </>
