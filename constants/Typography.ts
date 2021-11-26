@@ -1,11 +1,13 @@
-const fontFamily = 'montserratRegular'
+const fontFamily = 'montserratRegular';
 
 export default {
   fontFamily: {
-    primary: fontFamily
+    primary: fontFamily,
   },
   fontSize: {
     primary: 18,
-    button: 22
+    button: 22,
+    galleryItemOverlayName: 16,
+    galleryItemOverlayCategory: 14,
   },
-}
+};

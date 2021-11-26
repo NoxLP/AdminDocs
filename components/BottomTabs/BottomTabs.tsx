@@ -9,6 +9,7 @@ import {
   IDefaultFlatListItem,
 } from '../FlatListCustom/FlatListCustom';
 import { icons } from '../Icon/icons/index';
+import BottomTabsProps from './BottomTabsProps';
 
 const CONTAINER: ViewStyle = {
   height: Layout.window.height * 0.13,
@@ -34,7 +35,8 @@ const IMAGE: ImageStyle = {
   resizeMode: 'contain',
 };
 
-export function BottomTabs({ navigation }) {
+export function BottomTabs(props: BottomTabsProps) {
+  const { navigation, hide } = props;
   const { mutate: logout } = useLogout();
   const TABS: Array<IDefaultFlatListItem> = [
     {
@@ -82,11 +84,15 @@ export function BottomTabs({ navigation }) {
   );
 
   return (
-    <FlatListCustom
-      style={CONTAINER}
-      items={TABS}
-      renderItem={renderItem}
-      numColumns={4}
-    />
+    <>
+      {!hide ? (
+        <FlatListCustom
+          style={CONTAINER}
+          items={TABS}
+          renderItem={renderItem}
+          numColumns={4}
+        />
+      ) : null}
+    </>
   );
 }

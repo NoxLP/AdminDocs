@@ -1,9 +1,10 @@
 import Checkbox from 'expo-checkbox';
 import React from 'react';
-import { Image, ImageStyle, View, ViewStyle } from 'react-native';
+import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Layout from '../../constants/Layout';
-import { useThemeColors } from '../Themed';
+import Typography from '../../constants/Typography';
+import { Text, useThemeColors } from '../Themed';
 import IGalleryItemProps from './GalleryItemProps';
 
 const IMAGE: ImageStyle = {
@@ -13,6 +14,31 @@ const IMAGE: ImageStyle = {
 };
 const CHECKBOX: ViewStyle = {
   margin: 0,
+};
+const OVERLAY: ViewStyle = {
+  height: '35%',
+  width: '100%',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+};
+const VIEW_OPACITY: ViewStyle = {
+  height: '35%',
+  width: '100%',
+  backgroundColor: 'black',
+  opacity: 0.5,
+};
+const OVERLAY_TEXT: TextStyle = {
+  marginLeft: '4%',
+  marginTop: '2%',
+  color: 'white',
+  fontFamily: Typography.fontFamily.primary,
+};
+const NAME_FONT: TextStyle = {
+  fontSize: Typography.fontSize.galleryItemOverlayName,
+};
+const CATEGORY_FONT: TextStyle = {
+  fontSize: Typography.fontSize.galleryItemOverlayCategory,
 };
 
 export function GalleryItem(props: IGalleryItemProps) {
@@ -39,7 +65,7 @@ export function GalleryItem(props: IGalleryItemProps) {
     elevation: 0,
     alignSelf: 'flex-end',
   };
-  const IMAGE_CONTAINER: ViewStyle = {
+  const CONTAINER: ViewStyle = {
     width: '47%',
     height: Layout.window.height * 0.3,
     margin: '3%',
@@ -63,7 +89,7 @@ export function GalleryItem(props: IGalleryItemProps) {
   };
 
   return (
-    <View style={IMAGE_CONTAINER}>
+    <View style={CONTAINER}>
       {!isSelecting || (
         <Checkbox
           style={CHECKBOX}
@@ -85,6 +111,19 @@ export function GalleryItem(props: IGalleryItemProps) {
           source={{ uri: `data:${item.contentType};base64,${item.data}` }}
           style={IMAGE}
         />
+        <View style={[OVERLAY, VIEW_OPACITY]} />
+        <View style={OVERLAY}>
+          <Text
+            style={[OVERLAY_TEXT, NAME_FONT]}
+            text={item.name}
+            numberOfLines={1}
+          />
+          <Text
+            style={[OVERLAY_TEXT, CATEGORY_FONT]}
+            text={item.category}
+            numberOfLines={1}
+          />
+        </View>
       </TouchableOpacity>
     </View>
   );
