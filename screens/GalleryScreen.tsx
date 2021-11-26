@@ -82,7 +82,7 @@ export default function GalleryScreen({
   // TODO: isloading and error ui
   return (
     <>
-      {!isSelecting || <GallerySideMenu />}
+      <GallerySideMenu show={isSelecting} />
       {isLoading || !documents || documents.length == 0 ? (
         <Text text="loading" />
       ) : (
