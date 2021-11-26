@@ -15,6 +15,7 @@ import useGallery from '../hooks/DocumentsGalleries/useGallery';
 import { useKeyboard } from '../hooks/useKeyboard';
 import { RootStackScreenProps, GalleryType } from '../types';
 import IDocument from '../models/Document';
+import GallerySideMenu from '../components/GallerySideMenu/GallerySideMenu';
 
 export default function GalleryScreen({
   navigation,
@@ -81,6 +82,7 @@ export default function GalleryScreen({
   // TODO: isloading and error ui
   return (
     <>
+      {!isSelecting || <GallerySideMenu />}
       {isLoading || !documents || documents.length == 0 ? (
         <Text text="loading" />
       ) : (
