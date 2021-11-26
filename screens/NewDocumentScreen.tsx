@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import React, { useEffect } from 'react';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import {
   Image,
   ImageStyle,
@@ -9,23 +9,23 @@ import {
   ViewStyle,
   View,
   TextStyle,
-} from "react-native";
-import * as Yup from "yup";
-import SkeletonContent from "react-native-skeleton-content";
-import Layout from "../constants/Layout";
-import Document from "../models/Document";
-import Form from "../components/Form/Form";
-import { Input } from "../components/Input/Input";
-import DocumentCategory from "../models/DocumentCategory";
-import { Picker } from "../components/Picker/Picker";
-import { PickerItemProps } from "../components/Picker/PickerProps";
-import { Button } from "../components/Button/Button";
-import useYupValidationResolver from "../hooks/useYupValidationResolver";
-import useUserNewDocument from "../hooks/useUserNewDocument";
-import { addDocument } from "../services/api";
-import { RootStackScreenProps } from "../types";
-import { useThemeColors } from "../components/Themed";
-import { BottomTabs } from "../components/BottomTabs/BottomTabs";
+} from 'react-native';
+import * as Yup from 'yup';
+import SkeletonContent from 'react-native-skeleton-content';
+import Layout from '../constants/Layout';
+import Document from '../models/Document';
+import Form from '../components/Form/Form';
+import { Input } from '../components/Input/Input';
+import DocumentCategory from '../models/DocumentCategory';
+import { Picker } from '../components/Picker/Picker';
+import { PickerItemProps } from '../components/Picker/PickerProps';
+import { Button } from '../components/Button/Button';
+import useYupValidationResolver from '../hooks/useYupValidationResolver';
+import useUserNewDocument from '../hooks/useUserNewDocument';
+import { addDocument } from '../services/api';
+import { RootStackScreenProps } from '../types';
+import { useThemeColors } from '../components/Themed';
+import { BottomTabs } from '../components/BottomTabs/BottomTabs';
 
 //#region styles
 const SCROLL_CONTAINER: ViewStyle = {
@@ -40,17 +40,17 @@ const INNER_CONTENT: ViewStyle = {
 };
 const CONTAINER_CONTENT: ViewStyle = {
   flex: 1,
-  alignItems: "center",
+  alignItems: 'center',
 };
 const IMAGE_CONTAINER: ViewStyle = {
-  height: "33%",
+  height: '33%',
   width: Layout.window.width,
-  marginBottom: "3%",
-  paddingVertical: "3%",
-  alignContent: "center",
-  justifyContent: "center",
-  backgroundColor: "white",
-  shadowColor: "gray",
+  marginBottom: '3%',
+  paddingVertical: '3%',
+  alignContent: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'white',
+  shadowColor: 'gray',
   shadowRadius: 5,
   shadowOpacity: 0.5,
   shadowOffset: {
@@ -60,54 +60,57 @@ const IMAGE_CONTAINER: ViewStyle = {
   elevation: 5,
 };
 const IMAGE: ImageStyle = {
-  height: "100%",
-  width: "auto",
-  resizeMode: "contain",
+  height: '100%',
+  width: 'auto',
+  resizeMode: 'contain',
 };
 const INPUT: TextStyle = {
-  maxWidth: "100%",
-  minWidth: "100%",
-  paddingBottom: "4%",
+  maxWidth: '100%',
+  minWidth: '100%',
+  paddingBottom: '4%',
   paddingTop: 0,
-  textAlignVertical: "bottom",
+  textAlignVertical: 'bottom',
 };
 const INPUT_CONTAINER: ViewStyle = {
-  margin: "5%",
-  marginBottom: "2%",
+  margin: '5%',
+  marginBottom: '2%',
 };
 const COMMENTS_INPUT_CONTAINER: ViewStyle = {
-  margin: "5%",
-  marginTop: "11%",
+  margin: '5%',
+  marginTop: '11%',
   marginBottom: 0,
 };
 const PICKER_CONTAINER: ViewStyle = {
-  paddingVertical: "1%",
-  marginTop: "4%",
+  paddingVertical: '1%',
+  marginTop: '4%',
 };
 const SUBMIT_BUTTONS_CONTAINER: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "space-around",
-  width: "100%",
-  marginTop: "6%",
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  width: '100%',
+  marginTop: '6%',
 };
 const SUBMIT_BUTTONS: ViewStyle = {
-  width: "40%",
+  width: '40%',
 };
 //#endregion
 
 type FormFields = {
   name: string;
   comments: string;
-  category: PickerItemProps;
+  category: string;
 };
 
 export default function NewDocumentScreen({
   navigation,
   route,
-}: RootStackScreenProps<"NewDocumentScreen">) {
+}: RootStackScreenProps<'NewDocumentScreen'>) {
   const themeColors = useThemeColors();
-  const innerContainerStylesOverride = {...INNER_CONTENT, backgroundColor: themeColors.background }
-  
+  const innerContainerStylesOverride = {
+    ...INNER_CONTENT,
+    backgroundColor: themeColors.background,
+  };
+
   //#region rest
   const {
     document,
@@ -115,18 +118,19 @@ export default function NewDocumentScreen({
     getDocumentName,
     setNewDocumentFile,
     fillDocumentForm,
-    saveDocument
+    saveDocument,
+    isDocumentFilled,
   } = useUserNewDocument();
 
   // Errors messages must be set before schema
   Yup.setLocale({
     mixed: {
-      oneOf: "Elija una categoría",
-      required: "Campo obligatorio",
+      oneOf: 'Elija una categoría',
+      required: 'Campo obligatorio',
     },
     string: {
-      max: "Máximo ${max} caracteres",
-      required: "Campo obligatorio",
+      max: 'Máximo ${max} caracteres',
+      required: 'Campo obligatorio',
     },
   });
   // Validation
@@ -149,8 +153,8 @@ export default function NewDocumentScreen({
   });
 
   const documentImage =
-    document!.contentType === "application/json"
-      ? require("../assets/images/pdf-file-thumbnail-placeholder.png")
+    document!.contentType === 'application/json'
+      ? require('../assets/images/pdf-file-thumbnail-placeholder.png')
       : { uri: document!.uri };
   const categoryItems: PickerItemProps[] = Object.keys(DocumentCategory).map(
     (key) => ({
@@ -160,20 +164,25 @@ export default function NewDocumentScreen({
   );
   const defaultCategory: PickerItemProps = {
     key: DocumentCategory.Others,
-    value: "Others",
+    value: 'Others',
   };
 
   const onSubmit = async (data: FormFields) => {
-    console.log("SUBMIT: ", data);
+    console.log('SUBMIT: ', data);
     fillDocumentForm(data);
-    await saveDocument();
-      
-    navigation.goBack();
   };
   const cancelButtonOnPress = () => {
     navigation.goBack();
   };
 
+  useEffect(() => {
+    if (!isDocumentFilled) return;
+    (async function save() {
+      await saveDocument();
+
+      navigation.goBack();
+    })();
+  }, [document]);
   // react-hook-form can't catch the default value
   useEffect(() => {
     const { fileName, type } = getDocumentName(
@@ -181,11 +190,11 @@ export default function NewDocumentScreen({
       route.params.name
     )!;
     setNewDocumentFile(route.params.uri, fileName, type);
-    console.log("RESET: " + JSON.stringify(document, null, 4));
-    console.log("RESET: " + JSON.stringify(route, null, 4));
+    console.log('RESET: ' + JSON.stringify(document, null, 4));
+    console.log('RESET: ' + JSON.stringify(route, null, 4));
     reset({
       name: fileName,
-      comments: "",
+      comments: '',
       category: defaultCategory,
     });
     /*setValue("name", route.params.name, {
@@ -195,7 +204,7 @@ export default function NewDocumentScreen({
   }, []);
   // react-hook-form errors
   useEffect(() => {
-    console.log("ERRORS: " + JSON.stringify(errors, null, 4));
+    console.log('ERRORS: ' + JSON.stringify(errors, null, 4));
   }, [errors]);
   //#endregion
 
@@ -208,9 +217,9 @@ export default function NewDocumentScreen({
       </View>
       <ScrollView style={SCROLL_CONTAINER}>
         <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "position"}
+          behavior={Platform.OS == 'ios' ? 'padding' : 'position'}
           style={innerContainerStylesOverride}
-          contentContainerStyle = {CONTAINER_CONTENT}
+          contentContainerStyle={CONTAINER_CONTENT}
         >
           <Form register={register} setValue={setValue} errors={errors}>
             <Input
@@ -241,8 +250,8 @@ export default function NewDocumentScreen({
             />
             <Input
               label="Comentarios"
-              style={ COMMENTS_INPUT_CONTAINER }
-              inputStyle={ INPUT }
+              style={COMMENTS_INPUT_CONTAINER}
+              inputStyle={INPUT}
               name="comments"
               defaultValue={document.comments}
               placeholder="Comentarios"
@@ -266,7 +275,7 @@ export default function NewDocumentScreen({
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
-      <BottomTabs navigation={navigation}/>
+      <BottomTabs navigation={navigation} />
     </>
   );
 }

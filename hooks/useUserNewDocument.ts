@@ -1,66 +1,67 @@
-import { useState } from "react";
-import { useQueryClient } from "react-query";
-import { PickerItemProps } from "../components/Picker/PickerProps";
-import Document from "../models/Document";
-import DocumentCategory from "../models/DocumentCategory";
-import { addDocument } from "../services/api";
+import { useState } from 'react';
+import { useQueryClient } from 'react-query';
+import { PickerItemProps } from '../components/Picker/PickerProps';
+import IDocument from '../models/Document';
+import DocumentCategory from '../models/DocumentCategory';
+import { addDocument } from '../services/api';
 
 export default function useUserNewDocument() {
-  const [document, setDocument] = useState<Document>({
-    uri: "",
-    contentType: "",
-    community: "",
-    user: "",
+  const [document, setDocument] = useState<IDocument>({
+    uri: '',
+    contentType: '',
+    community: '',
+    user: '',
     date: new Date(),
-    category: DocumentCategory.Others,
-    name: "",
-    comments: "",
+    category: 'Others' as DocumentCategory,
+    name: '',
+    comments: '',
   });
   const [isDocumentLoading, setIsDocumentLoading] = useState<boolean>(true);
+  const [isDocumentFilled, setIsDocumentFilled] = useState<boolean>(false);
 
   const getMimeType = (ext: string): string => {
     // mime type mapping
     switch (ext) {
-      case "pdf":
-        return "application/pdf";
-      case "jpg":
-      case "jpeg":
-        return "image/jpeg";
-      case "gif":
-        return "image/gif";
-      case "tif":
-      case "tiff":
-        return "image/tiff";
+      case 'pdf':
+        return 'application/pdf';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'gif':
+        return 'image/gif';
+      case 'tif':
+      case 'tiff':
+        return 'image/tiff';
       // case "png":
       default:
-        return "image/png";
+        return 'image/png';
     }
   };
   const getExtension = (): string => {
     switch (document.contentType) {
-      case "application/pdf":
-        return "pdf";
-      case "image/jpeg":
-        return "jpg";
-      case "image/gif":
-        return "gif";
-      case "image/tiff":
-        return "tif";
+      case 'application/pdf':
+        return 'pdf';
+      case 'image/jpeg':
+        return 'jpg';
+      case 'image/gif':
+        return 'gif';
+      case 'image/tiff':
+        return 'tif';
       // case "image/png":
       default:
-        return "png";
+        return 'png';
     }
   };
 
   const getDocumentName = (uri: string, name: string | undefined) => {
-    console.log("URI: ", uri);
+    console.log('URI: ', uri);
     setIsDocumentLoading(true);
 
     const uriExtensionArray = /\.(\w+)$/.exec(uri);
-    console.log("uriExtensionArray: ", uriExtensionArray);
+    console.log('uriExtensionArray: ', uriExtensionArray);
     if (!uriExtensionArray) {
       // TODO: error in case no extension
-      alert("The file has no extension");
+      alert('The file has no extension');
       return;
     }
 
@@ -71,7 +72,7 @@ export default function useUserNewDocument() {
     // is provided, simply use now date and the extension built
     // from the uri
     const fileName =
-      document.name === ""
+      document.name === ''
         ? name && name.length > 0
           ? name
           : `${now.toString()}.${uriExtensionArray[1]}`
@@ -81,7 +82,7 @@ export default function useUserNewDocument() {
   };
 
   const setNewDocumentFile = (uri: string, name: string, type: string) => {
-    const newDocument: Document = {
+    const newDocument: IDocument = {
       ...document,
       uri,
       contentType: type,
@@ -98,7 +99,7 @@ export default function useUserNewDocument() {
     comments,
   }: {
     name: string;
-    category: PickerItemProps;
+    category: string;
     comments: string;
   }) => {
     let fileName = name;
@@ -108,24 +109,27 @@ export default function useUserNewDocument() {
       fileName = `${fileName}.${defaultExtension}`;
     }
 
-    const newDocument: Document = {
+    const newDocument: IDocument = {
       ...document,
       name: fileName,
-      category: category.value as DocumentCategory,
+      category: category as DocumentCategory,
       comments,
     };
-    console.log("FILL: " + JSON.stringify(newDocument, null, 4));
+    console.log('CATEGORY: ' + category);
+    console.log('FILL: ' + JSON.stringify(newDocument, null, 4));
 
+    setIsDocumentFilled(true);
     setDocument(newDocument);
   };
 
   const queryClient = useQueryClient();
   const saveDocument = async () => {
+    console.log('SAVE: ' + JSON.stringify(document, null, 4));
     const response = await addDocument(document);
-    if(response.correct) {
+    if (response.correct) {
       queryClient.invalidateQueries('galleryDocs');
     }
-  }
+  };
 
   return {
     document,
@@ -133,6 +137,7 @@ export default function useUserNewDocument() {
     getDocumentName,
     setNewDocumentFile,
     fillDocumentForm,
-    saveDocument
+    saveDocument,
+    isDocumentFilled,
   };
 }

@@ -1,8 +1,8 @@
-import { ApiResponse } from "apisauce";
-import { api } from "./api-config";
-import Document from "../models/Document";
-import { getToken } from "./auth-storage";
-import DocumentCategory from "../models/DocumentCategory";
+import { ApiResponse } from 'apisauce';
+import { api } from './api-config';
+import { getToken } from './auth-storage';
+import DocumentCategory from '../models/DocumentCategory';
+import IDocument from '../models/Document';
 
 export interface RequestResult {
   correct: boolean;
@@ -16,14 +16,14 @@ const getRequestResult = (
   dataProperty?: string
 ): RequestResult => {
   if (!response.ok) {
-    console.log("response NO ok: ", JSON.stringify(response, null, 4));
+    console.log('response NO ok: ', JSON.stringify(response, null, 4));
     return { correct: false, data: response.problem, response };
   }
 
   return {
     correct: true,
     data:
-      dataProperty && dataProperty !== ""
+      dataProperty && dataProperty !== ''
         ? response.data[dataProperty]
         : response.data,
     response,
@@ -31,14 +31,14 @@ const getRequestResult = (
 };
 
 const logFormData = (data: FormData) => {
-  console.log("VALUES");
+  console.log('VALUES');
   //const values = data.entries();
   //console.log("VALUES: ", values);
 
   for (const pair of data) {
-    console.log("entries for");
+    console.log('entries for');
 
-    console.log(pair[0] + ", " + pair[1]);
+    console.log(pair[0] + ', ' + pair[1]);
   }
 };
 
@@ -50,7 +50,7 @@ const getError = (err: any) => {
 
 export const checkToken = async (): Promise<RequestResult> => {
   try {
-    const response: ApiResponse<any> = await api.get("/auth/check");
+    const response: ApiResponse<any> = await api.get('/auth/check');
 
     return getRequestResult(response);
   } catch (err) {
@@ -70,7 +70,7 @@ export const login = async (
     /*
     const response: AxiosResponse<any> = await axiosInstance.post("auth/login", { mobile, password })
     */
-    const response: ApiResponse<any> = await api.post("/auth/login", {
+    const response: ApiResponse<any> = await api.post('/auth/login', {
       mobile,
       password,
     });
@@ -83,7 +83,7 @@ export const login = async (
         })
     })
     */
-    console.log("RESPONSE DATA: " + JSON.stringify(response.data, null, 4));
+    console.log('RESPONSE DATA: ' + JSON.stringify(response.data, null, 4));
 
     return getRequestResult(response);
   } catch (err) {
@@ -91,26 +91,31 @@ export const login = async (
   }
 };
 
-export const addDocument = async (data: Document) => {
+export const addDocument = async (data: IDocument) => {
+  console.log('API DATA:');
+  console.log(data);
+
   try {
     const formData = new FormData();
 
-    formData.append("image", {
+    formData.append('image', {
       uri: data.uri,
       name: data.name,
       type: data.contentType,
     });
-    formData.append("contentType", data.contentType);
-    formData.append("community", data.community);
-    formData.append("user", data.user);
-    formData.append("date", data.date.toString());
-    formData.append("category", Object.keys(DocumentCategory)[Object.values(DocumentCategory).indexOf(data.category)]);
-    formData.append("name", data.name);
-    formData.append("comments", data.comments);
+    formData.append('contentType', data.contentType);
+    formData.append('community', data.community);
+    formData.append('user', data.user);
+    formData.append('date', data.date.toString());
+    formData.append('category', data.category);
+    formData.append('name', data.name);
+    formData.append('comments', data.comments);
+    console.log('API FORM DATA:');
+    console.log(formData);
 
     const token = await getToken();
-    api.setHeader("token", token!);
-    const response: ApiResponse<any> = await api.post("/documents", formData);
+    api.setHeader('token', token!);
+    const response: ApiResponse<any> = await api.post('/documents', formData);
 
     return getRequestResult(response);
   } catch (err) {
@@ -121,11 +126,30 @@ export const addDocument = async (data: Document) => {
 export const getUserDocuments = async (): Promise<RequestResult> => {
   try {
     const token = await getToken();
-    api.setHeader("token", token!);
-    const response: ApiResponse<any> = await api.get("/users/docs");
+    api.setHeader('token', token!);
+    const response: ApiResponse<any> = await api.get('/users/docs');
 
-    return getRequestResult(response);
+    const result = getRequestResult(response);
+    if (result.correct) {
+      result.data = result.data.map((doc) => {
+        const document: IDocument = {
+          id: doc._id,
+          data: doc.data,
+          uri: '',
+          contentType: doc.contentType,
+          community: doc.community,
+          user: doc.user,
+          date: new Date(doc.date),
+          category: doc.category,
+          name: doc.name,
+          comments: doc.comments,
+        };
+        return document;
+      });
+    }
+
+    return result;
   } catch (err) {
     return getError(err);
   }
-}
+};
