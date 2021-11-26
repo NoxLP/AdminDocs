@@ -30,7 +30,7 @@ const BUTTON_TEXT: TextStyle = {
   color: 'white',
 };
 const IMAGE: ImageStyle = {
-  height: '100%',
+  height: '115%',
   resizeMode: 'contain',
 };
 
@@ -54,7 +54,11 @@ export function BottomTabs({ navigation }) {
     {
       icon: icons.bottomTabsCommunityDocs,
       text: 'Comunidad',
-      onPressItem: (navigation) => {},
+      onPressItem: (navigation) => {
+        navigation.navigate('GalleryScreen', {
+          type: GalleryType.CommunityDocuments,
+        });
+      },
     },
     {
       icon: icons.bottomTabsLogout,

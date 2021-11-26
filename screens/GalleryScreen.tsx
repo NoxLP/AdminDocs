@@ -10,6 +10,10 @@ import IDocument from '../models/Document';
 import Layout from '../constants/Layout';
 import { GalleryItem } from '../components/GalleryItem/GalleryItem';
 import useGallery from '../hooks/DocumentsGalleries/useGallery';
+import {
+  AutocompleteDropdown,
+  TAutocompleteDropdownItem,
+} from 'react-native-autocomplete-dropdown';
 
 export default function GalleryScreen({
   navigation,
@@ -24,14 +28,28 @@ export default function GalleryScreen({
     setIsSelecting,
     selectedItems,
     setIsSelected,
+    buildAutocompleteItems,
+    autocompleteItems,
+    filteredDocuments,
+    filterDocuments,
   } = useGallery();
-  console.log(documents.length);
+  console.log(isLoading ? 'loading' : documents.length);
 
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
     marginTop: '3%',
     paddingHorizontal: '3%',
     backgroundColor: themeColors.background,
+  };
+
+  const filterOnTextChangeHandler = (text: string) => {
+    filterDocuments(documents, text);
+  };
+  const filterOnSelectItemHandler = (item: TAutocompleteDropdownItem) => {
+    if (item) filterDocuments(documents, item.id, true);
+  };
+  const filterOnClearHandler = () => {
+    filterDocuments(documents, '');
   };
 
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
@@ -51,19 +69,35 @@ export default function GalleryScreen({
     );
   };
 
+  useEffect(() => {
+    if (!isLoading) {
+      buildAutocompleteItems(documents);
+      filterDocuments(documents, '');
+    }
+  }, [isLoading, documents]);
+
   // TODO: isloading and error ui
   return (
     <>
-      {isLoading ? (
+      {isLoading || !documents || documents.length == 0 ? (
         <Text text="loading" />
       ) : (
         <FlatListCustom
-          items={documents ? documents : []}
+          items={filteredDocuments ? filteredDocuments : []}
           renderItem={renderItem}
           style={FLATLIST_CONTAINER}
           numColumns={2}
         />
       )}
+      <AutocompleteDropdown
+        loading={isLoading}
+        textInputProps={{ placeholder: 'Filtro' }}
+        dataSet={autocompleteItems}
+        onChangeText={filterOnTextChangeHandler}
+        onSelectItem={filterOnSelectItemHandler}
+        onClear={filterOnClearHandler}
+        emptyResultText="No se encontraron resultados"
+      />
       <BottomTabs navigation={navigation} />
     </>
   );

@@ -16,7 +16,7 @@ export default function useUserDocuments() {
     
     return [];
   }
-  const { isLoading, error, isError, data: documents} = useQuery(
+  const { isLoading, error, isError, data: documents} = useQuery<Array<IDocument>, Error>(
     'galleryDocs', 
     getDocuments
   )

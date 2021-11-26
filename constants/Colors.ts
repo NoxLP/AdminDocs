@@ -30,7 +30,8 @@ export default {
     checkbox: {
       checked: '#81C0FA',
       unchecked: '#D4D4D4'
-    }
+    },
+    galleryFilterBackground : '#F0F0F0'
   },
   dark: {
     text: "#fff",
@@ -52,6 +53,7 @@ export default {
     checkbox: {
       checked: '#81C0FA',
       unchecked: '#D4D4D4'
-    }
+    },
+    galleryFilterBackground : '#F0F0F0'
   },
 };
