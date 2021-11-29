@@ -1,17 +1,9 @@
 import Checkbox from 'expo-checkbox';
-import React, { useRef } from 'react';
-import {
-  Animated,
-  Image,
-  ImageStyle,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import React from 'react';
+import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Layout from '../../constants/Layout';
 import Typography from '../../constants/Typography';
-import useItemsAnimations from '../../hooks/DocumentsGalleries/useItemsAnimations';
 import { Text, useThemeColors } from '../Themed';
 import IGalleryItemProps from './GalleryItemProps';
 
@@ -57,8 +49,6 @@ export function GalleryItem(props: IGalleryItemProps) {
   const {
     item,
     index,
-    //imageWidth,
-    //setImageWidth,
     isSelecting,
     setIsSelecting,
     selectedItems,
@@ -66,8 +56,6 @@ export function GalleryItem(props: IGalleryItemProps) {
     navigation,
   } = props;
   const themeColors = useThemeColors();
-  const { widthAnim, translateX, translateY, shrink, grow } =
-    useItemsAnimations();
 
   const BUTTON: ViewStyle = {
     width: '100%',
@@ -76,11 +64,6 @@ export function GalleryItem(props: IGalleryItemProps) {
     borderWidth: 0,
     elevation: 0,
     alignSelf: 'flex-end',
-    /*transform: [
-      { scaleX: widthAnim },
-      { translateX: translateX },
-      { translateY: translateY },
-    ],*/
   };
   const CONTAINER: ViewStyle = {
     width: '47%',
@@ -95,12 +78,8 @@ export function GalleryItem(props: IGalleryItemProps) {
   const onLongPressHandler = () => {
     if (isSelecting) {
       setIsSelecting(false);
-      //setImageWidth('100%');
-      //grow();
     } else {
       setIsSelecting(true);
-      //setImageWidth('75%');
-      //shrink();
     }
   };
   const selectThis = () => {

@@ -39,18 +39,17 @@ export default function GalleryScreen({
 
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
-    paddingTop: '3%',
-    paddingHorizontal: '3%',
+    padding: '3%',
     backgroundColor: themeColors.background,
   };
 
-  const filterOnTextChangeHandler = (text: string) => {
+  const onFilterTextChangeHandler = (text: string) => {
     filterDocuments(documents!, text);
   };
-  const filterOnSelectItemHandler = (item: TAutocompleteDropdownItem) => {
+  const onFilterSelectItemHandler = (item: TAutocompleteDropdownItem) => {
     if (item) filterDocuments(documents!, item.id, true);
   };
-  const filterOnClearHandler = () => {
+  const onFilterClearHandler = () => {
     filterDocuments(documents!, '');
   };
 
@@ -97,9 +96,9 @@ export default function GalleryScreen({
         textInputProps={{ placeholder: 'Filtro' }}
         dataSet={autocompleteItems}
         emptyResultText="No se encontraron resultados"
-        onChangeText={filterOnTextChangeHandler}
-        onSelectItem={filterOnSelectItemHandler}
-        onClear={filterOnClearHandler}
+        onChangeText={onFilterTextChangeHandler}
+        onSelectItem={onFilterSelectItemHandler}
+        onClear={onFilterClearHandler}
       />
       <BottomTabs navigation={navigation} hide={isKeyboardVisible} />
     </>

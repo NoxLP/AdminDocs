@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, ImageStyle, View, ViewStyle } from 'react-native';
-import { Easing } from 'react-native-reanimated';
+import React, { useEffect } from 'react';
+import { Animated, ImageStyle, ViewStyle } from 'react-native';
+import useGalleryMenuAnimations from '../../hooks/DocumentsGalleries/useGalleryMenuAnimations';
 import { Button } from '../Button/Button';
 import { Icon } from '../Icon/Icon';
 import { icons } from '../Icon/icons';
@@ -16,23 +16,7 @@ const ICON: ImageStyle = {
 
 export default function GallerySideMenu(props: GallerySideMenuProps) {
   const { show } = props;
-  const hideAnim = useRef(new Animated.Value(-70)).current;
-  const doShowAnim = () => {
-    Animated.timing(hideAnim, {
-      toValue: -2,
-      duration: 450,
-      useNativeDriver: false,
-      easing: Easing.elastic(0.95),
-    }).start();
-  };
-  const doHideAnim = () => {
-    Animated.timing(hideAnim, {
-      toValue: -80,
-      duration: 450,
-      useNativeDriver: false,
-      easing: Easing.inOut(Easing.sin),
-    }).start();
-  };
+  const { hideAnim, doShowAnim, doHideAnim } = useGalleryMenuAnimations();
 
   const CONTAINER: ViewStyle = {
     flex: 1,
@@ -40,7 +24,7 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
     alignItems: 'center',
     justifyContent: 'space-around',
     flexShrink: 2,
-    height: '12%',
+    height: '10%',
     width: '52%',
     position: 'absolute',
     top: hideAnim,
