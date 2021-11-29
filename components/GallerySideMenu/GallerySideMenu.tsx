@@ -16,20 +16,18 @@ const ICON: ImageStyle = {
 
 export default function GallerySideMenu(props: GallerySideMenuProps) {
   const { show } = props;
-  const fadeAnim = useRef(new Animated.Value(-70)).current;
-
-  const fadeIn = () => {
-    Animated.timing(fadeAnim, {
+  const hideAnim = useRef(new Animated.Value(-70)).current;
+  const doShowAnim = () => {
+    Animated.timing(hideAnim, {
       toValue: -2,
       duration: 450,
       useNativeDriver: false,
       easing: Easing.elastic(0.95),
     }).start();
   };
-
-  const fadeOut = () => {
-    Animated.timing(fadeAnim, {
-      toValue: -70,
+  const doHideAnim = () => {
+    Animated.timing(hideAnim, {
+      toValue: -80,
       duration: 450,
       useNativeDriver: false,
       easing: Easing.inOut(Easing.sin),
@@ -38,25 +36,26 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
 
   const CONTAINER: ViewStyle = {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     flexShrink: 2,
-    height: '35%',
-    width: '19%',
+    height: '12%',
+    width: '52%',
     position: 'absolute',
-    top: '0.5%',
-    right: fadeAnim,
+    top: hideAnim,
+    right: -2,
     backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 1,
-    borderTopLeftRadius: 6,
+    borderTopWidth: 0,
     borderBottomLeftRadius: 6,
     zIndex: 100,
   };
 
   useEffect(() => {
-    if (show) fadeIn();
-    else fadeOut();
+    if (show) doShowAnim();
+    else doHideAnim();
   }, [show]);
 
   return (

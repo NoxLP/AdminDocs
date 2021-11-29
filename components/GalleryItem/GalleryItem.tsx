@@ -1,9 +1,17 @@
 import Checkbox from 'expo-checkbox';
-import React from 'react';
-import { Image, ImageStyle, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  Animated,
+  Image,
+  ImageStyle,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Layout from '../../constants/Layout';
 import Typography from '../../constants/Typography';
+import useItemsAnimations from '../../hooks/DocumentsGalleries/useItemsAnimations';
 import { Text, useThemeColors } from '../Themed';
 import IGalleryItemProps from './GalleryItemProps';
 
@@ -14,6 +22,10 @@ const IMAGE: ImageStyle = {
 };
 const CHECKBOX: ViewStyle = {
   margin: 0,
+  position: 'absolute',
+  bottom: 0,
+  right: 0,
+  zIndex: 200,
 };
 const OVERLAY: ViewStyle = {
   height: '35%',
@@ -45,8 +57,8 @@ export function GalleryItem(props: IGalleryItemProps) {
   const {
     item,
     index,
-    imageWidth,
-    setImageWidth,
+    //imageWidth,
+    //setImageWidth,
     isSelecting,
     setIsSelecting,
     selectedItems,
@@ -54,16 +66,21 @@ export function GalleryItem(props: IGalleryItemProps) {
     navigation,
   } = props;
   const themeColors = useThemeColors();
+  const { widthAnim, translateX, translateY, shrink, grow } =
+    useItemsAnimations();
 
   const BUTTON: ViewStyle = {
-    width: imageWidth,
+    width: '100%',
     margin: 0,
-    marginTop: imageWidth == '100%' ? 0 : '-20%',
-    marginBottom: imageWidth == '100%' ? 0 : '20%',
     padding: 0,
     borderWidth: 0,
     elevation: 0,
     alignSelf: 'flex-end',
+    /*transform: [
+      { scaleX: widthAnim },
+      { translateX: translateX },
+      { translateY: translateY },
+    ],*/
   };
   const CONTAINER: ViewStyle = {
     width: '47%',
@@ -78,10 +95,12 @@ export function GalleryItem(props: IGalleryItemProps) {
   const onLongPressHandler = () => {
     if (isSelecting) {
       setIsSelecting(false);
-      setImageWidth('100%');
+      //setImageWidth('100%');
+      //grow();
     } else {
       setIsSelecting(true);
-      setImageWidth('75%');
+      //setImageWidth('75%');
+      //shrink();
     }
   };
   const selectThis = () => {

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { Image, ImageStyle, ScrollView, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import {
   AutocompleteDropdown,
   TAutocompleteDropdownItem,
 } from 'react-native-autocomplete-dropdown';
-import Layout from '../constants/Layout';
 import { BottomTabs } from '../components/BottomTabs/BottomTabs';
 import { FlatListCustom } from '../components/FlatListCustom/FlatListCustom';
 import { Text, useThemeColors, View } from '../components/Themed';
@@ -40,7 +39,7 @@ export default function GalleryScreen({
 
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
-    marginTop: '3%',
+    paddingTop: '3%',
     paddingHorizontal: '3%',
     backgroundColor: themeColors.background,
   };
