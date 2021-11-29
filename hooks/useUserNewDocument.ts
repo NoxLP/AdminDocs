@@ -127,7 +127,8 @@ export default function useUserNewDocument() {
     console.log('SAVE: ' + JSON.stringify(document, null, 4));
     const response = await addDocument(document);
     if (response.correct) {
-      queryClient.invalidateQueries('galleryDocs');
+      queryClient.invalidateQueries('userDocs');
+      queryClient.invalidateQueries('commDocs');
     }
   };
 

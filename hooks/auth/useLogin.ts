@@ -1,9 +1,6 @@
-import { saveLoggedUser } from "../../services/auth-storage";
-import {
-  login as loginService,
-  RequestResult,
-} from "../../services/api";
-import { useMutation, useQueryClient } from "react-query";
+import { saveLoggedUser } from '../../services/auth-storage';
+import { login as loginService, RequestResult } from '../../services/api';
+import { useMutation, useQueryClient } from 'react-query';
 
 export interface LoginData {
   phone: string;
@@ -16,7 +13,7 @@ export default function useLogin() {
 
     if (response.correct) {
       // TODO: This return false if something goes wrong, check and show errors
-      console.log("login logged");
+      console.log('login logged');
 
       await saveLoggedUser(response);
     }
@@ -25,10 +22,11 @@ export default function useLogin() {
   };
 
   const queryClient = useQueryClient();
-  return useMutation("login", login, {
+  return useMutation('login', login, {
     onSuccess: () => {
-      queryClient.invalidateQueries("galleryDocs");
-      return queryClient.invalidateQueries("authCheck");
+      queryClient.invalidateQueries('userDocs');
+      queryClient.invalidateQueries('commDocs');
+      return queryClient.invalidateQueries('authCheck');
     },
   });
 }

@@ -4,24 +4,39 @@ import {
   AutocompleteDropdown,
   TAutocompleteDropdownItem,
 } from 'react-native-autocomplete-dropdown';
-import { BottomTabs } from '../components/BottomTabs/BottomTabs';
-import { FlatListCustom } from '../components/FlatListCustom/FlatListCustom';
-import { Text, useThemeColors, View } from '../components/Themed';
-import { GalleryItem } from '../components/GalleryItem/GalleryItem';
-import useUserDocuments from '../hooks/DocumentsGalleries/useUserDocuments';
-import useCommunityDocuments from '../hooks/DocumentsGalleries/useCommunityDocuments';
-import useGallery from '../hooks/DocumentsGalleries/useGallery';
-import { useKeyboard } from '../hooks/useKeyboard';
-import { RootStackScreenProps, GalleryType } from '../types';
-import IDocument from '../models/Document';
-import GallerySideMenu from '../components/GallerySideMenu/GallerySideMenu';
+import { BottomTabs } from '../../components/BottomTabs/BottomTabs';
+import { FlatListCustom } from '../../components/FlatListCustom/FlatListCustom';
+import { Text, useThemeColors, View } from '../../components/Themed';
+import { GalleryItem } from '../../components/GalleryItem/GalleryItem';
+import useUserDocuments from '../../hooks/DocumentsGalleries/useUserDocuments';
+import useCommunityDocuments from '../../hooks/DocumentsGalleries/useCommunityDocuments';
+import useGallery from '../../hooks/DocumentsGalleries/useGallery';
+import { useKeyboard } from '../../hooks/useKeyboard';
+import { RootStackScreenProps } from '../../types';
+import IDocument from '../../models/Document';
+import GallerySideMenu from '../../components/GallerySideMenu/GallerySideMenu';
+import { GalleryType } from './GalleryType';
 
 export default function GalleryScreen({
   navigation,
   route,
 }: RootStackScreenProps<'GalleryScreen'>) {
   const themeColors = useThemeColors();
-  const { isLoading, error, isError, documents } = useUserDocuments();
+  let isLoading: boolean,
+    error,
+    isError,
+    documents: Array<IDocument> | undefined;
+  console.log('>>> ROUTE TYPE:');
+  console.log(route.params.type);
+
+  if (route.params.type === GalleryType.UserDocuments) {
+    console.log('User docs');
+    ({ isLoading, error, isError, documents } = useUserDocuments());
+  } else {
+    console.log('Comm docs');
+    ({ isLoading, error, isError, documents } = useCommunityDocuments());
+  }
+
   const {
     imageWidth,
     setImageWidth,

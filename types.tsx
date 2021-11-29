@@ -9,16 +9,12 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { GalleryType } from './screens/Galleries/GalleryType';
 
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
-}
-
-export enum GalleryType {
-  MyDocuments = 'MyDocuments',
-  CommunityDocuments = 'CommunityDocuments',
 }
 
 export type RootStackParamList = {

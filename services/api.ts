@@ -46,6 +46,24 @@ const getError = (err: any) => {
   console.error(`ERROR: ${err.message} \n ${JSON.stringify(err, null, 4)}`);
   return { correct: false, data: err.message };
 };
+
+const buildDocumentsArray = (requestResult: RequestResult) => {
+  return requestResult.data.map((doc) => {
+    const document: IDocument = {
+      id: doc._id,
+      data: doc.data,
+      uri: '',
+      contentType: doc.contentType,
+      community: doc.community,
+      user: doc.user,
+      date: new Date(doc.date),
+      category: doc.category,
+      name: doc.name,
+      comments: doc.comments,
+    };
+    return document;
+  });
+};
 //#endregion
 
 export const checkToken = async (): Promise<RequestResult> => {
@@ -131,21 +149,24 @@ export const getUserDocuments = async (): Promise<RequestResult> => {
 
     const result = getRequestResult(response);
     if (result.correct) {
-      result.data = result.data.map((doc) => {
-        const document: IDocument = {
-          id: doc._id,
-          data: doc.data,
-          uri: '',
-          contentType: doc.contentType,
-          community: doc.community,
-          user: doc.user,
-          date: new Date(doc.date),
-          category: doc.category,
-          name: doc.name,
-          comments: doc.comments,
-        };
-        return document;
-      });
+      result.data = buildDocumentsArray(result);
+    }
+
+    return result;
+  } catch (err) {
+    return getError(err);
+  }
+};
+
+export const getCommunityDocuments = async (): Promise<RequestResult> => {
+  try {
+    const token = await getToken();
+    api.setHeader('token', token!);
+    const response: ApiResponse<any> = await api.get('/communities/docs');
+
+    const result = getRequestResult(response);
+    if (result.correct) {
+      result.data = buildDocumentsArray(result);
     }
 
     return result;

@@ -8,7 +8,8 @@ import { BottomTabs } from '../components/BottomTabs/BottomTabs';
 import { Image, ImageStyle, View, ViewStyle } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
-import { GalleryType, RootStackScreenProps } from '../types';
+import { RootStackScreenProps } from '../types';
+import { GalleryType } from './Galleries/GalleryType';
 
 const BUTTON: ViewStyle = {
   backgroundColor: 'white',
@@ -36,12 +37,15 @@ const ITEMS_DASHBOARD: Array<IDefaultFlatListItem> = [
     icon: icons.dashboardMyDocs,
     text: 'Mis documentos',
     onPressItem: (navigation) =>
-      navigation.navigate('GalleryScreen', { type: GalleryType.MyDocuments }),
+      navigation.navigate('GalleryScreen', { type: GalleryType.UserDocuments }),
   },
   {
     icon: icons.dashboardCommunityDocs,
     text: 'Documentos de mi comunidad',
-    onPressItem: () => {},
+    onPressItem: (navigation) =>
+      navigation.navigate('GalleryScreen', {
+        type: GalleryType.CommunityDocuments,
+      }),
   },
 ];
 const ITEMS_UPLOAD_DOCUMENT: Array<IDefaultFlatListItem> = [

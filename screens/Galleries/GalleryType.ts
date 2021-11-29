@@ -1,4 +1,4 @@
 export enum GalleryType {
-  MyDocuments = 'MyDocuments',
-  CommunityDocuments = 'CommunityDocuments',
+  UserDocuments = 'Documentos de usuario',
+  CommunityDocuments = 'Documentos de comunidad',
 }
