@@ -68,10 +68,18 @@ export default function DocumentForm(props: DocumentFormProps) {
       value: key,
     })
   );
-  const defaultCategory: PickerItemProps = {
-    key: DocumentCategory.Others,
-    value: 'Others',
-  };
+  const defaultCategory: PickerItemProps =
+    options.type === 'newDoc'
+      ? {
+          key: DocumentCategory.Others,
+          value: 'Others',
+        }
+      : {
+          key: DocumentCategory[
+            document.category as keyof typeof DocumentCategory
+          ],
+          value: document.category,
+        };
 
   // react-hook-form can't catch the default value
   useEffect(() => {

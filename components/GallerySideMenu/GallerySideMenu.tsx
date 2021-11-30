@@ -15,7 +15,12 @@ const ICON: ImageStyle = {
 };
 
 export default function GallerySideMenu(props: GallerySideMenuProps) {
-  const { show } = props;
+  const {
+    show,
+    editButtonOnPressHandler,
+    shareButtonOnPressHandler,
+    deleteButtonOnPressHandler,
+  } = props;
   const { hideAnim, doShowAnim, doHideAnim } = useGalleryMenuAnimations();
 
   const CONTAINER: ViewStyle = {
@@ -24,8 +29,8 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
     alignItems: 'center',
     justifyContent: 'space-around',
     flexShrink: 2,
-    height: '10%',
-    width: '52%',
+    height: '12%',
+    width: '60%',
     position: 'absolute',
     top: hideAnim,
     right: -2,
@@ -48,6 +53,7 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
         style={BUTTON}
         preset="icon"
         children={<Icon style={ICON} icon={icons.gallerySideMenuEdit} />}
+        onPress={editButtonOnPressHandler}
       />
       <Button
         style={BUTTON}

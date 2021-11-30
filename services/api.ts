@@ -49,6 +49,9 @@ const getError = (err: any) => {
 
 const buildDocumentsArray = (requestResult: RequestResult) => {
   return requestResult.data.map((doc) => {
+    console.log('>>> CATEGORY');
+    console.log(<DocumentCategory>doc.category);
+
     const date = new Date(doc.date);
     const document: IDocument = {
       id: doc._id,
@@ -58,7 +61,7 @@ const buildDocumentsArray = (requestResult: RequestResult) => {
       community: doc.community,
       user: doc.user,
       date,
-      category: doc.category,
+      category: <DocumentCategory>doc.category,
       name: doc.name,
       comments: doc.comments,
     };
@@ -143,24 +146,24 @@ export const addDocument = async (data: IDocument) => {
 };
 
 export const editDocumentById = async (data: IDocument) => {
-  console.log('API DATA:');
-  console.log(data);
+  console.log('>>> editDocumentById API DATA:');
+  console.log(`/documents/${data.id}`);
 
   try {
     const formData = new FormData();
 
-    formData.append('image', {
-      uri: data.data,
-      name: data.name,
-      type: data.contentType,
-    });
+    if (data.uri) {
+      formData.append('image', {
+        uri: data.uri,
+        name: data.name,
+        type: data.contentType,
+      });
+    }
     formData.append('contentType', data.contentType);
     formData.append('date', data.date.toString());
     formData.append('category', data.category);
     formData.append('name', data.name);
     formData.append('comments', data.comments);
-    console.log('API FORM DATA:');
-    console.log(formData);
 
     const token = await getToken();
     api.setHeader('token', token!);
@@ -168,6 +171,7 @@ export const editDocumentById = async (data: IDocument) => {
       `/documents/${data.id}`,
       formData
     );
+    console.log(response);
 
     return getRequestResult(response);
   } catch (err) {

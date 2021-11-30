@@ -67,6 +67,22 @@ export default function GalleryScreen({
     filterDocuments(documents!, '');
   };
 
+  const sideMenuEditButtonOnPressHandler = () => {
+    if (documents && selectedItems.length > 0) {
+      const index = selectedItems.indexOf(true);
+
+      if (index !== -1) {
+        navigation.navigate('EditDocumentScreen', {
+          document: documents[index],
+        });
+      }
+    } else {
+      //TODO: notification no documents or no documents selected
+    }
+  };
+  const sideMenuShareButtonOnPressHandler = () => {};
+  const sideMenuDeleteButtonOnPressHandler = () => {};
+
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
     //console.log(`data:${item.contentType};base64,${item.data}`);
     return (
@@ -94,7 +110,12 @@ export default function GalleryScreen({
   // TODO: isloading and error ui
   return (
     <>
-      <GallerySideMenu show={isSelecting} />
+      <GallerySideMenu
+        show={isSelecting}
+        editButtonOnPressHandler={sideMenuEditButtonOnPressHandler}
+        shareButtonOnPressHandler={sideMenuShareButtonOnPressHandler}
+        deleteButtonOnPressHandler={sideMenuDeleteButtonOnPressHandler}
+      />
       {isLoading || !documents || documents.length == 0 ? (
         <Text text="loading" />
       ) : (

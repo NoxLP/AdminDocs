@@ -36,7 +36,6 @@ export default function EditDocumentScreen({
   route,
 }: RootStackScreenProps<'EditDocumentScreen'>) {
   const { document, setDocument, mutation } = useEditDocument();
-  setDocument(route.params.document);
 
   const onSubmit = async (data: FormFields) => {
     console.log('SUBMIT: ', data);
@@ -49,6 +48,12 @@ export default function EditDocumentScreen({
   const cancelButtonOnPress = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    console.log(route.params.document);
+
+    setDocument(route.params.document);
+  }, []);
 
   return (
     <>
