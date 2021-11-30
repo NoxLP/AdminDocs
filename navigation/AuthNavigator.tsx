@@ -1,7 +1,7 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import Login from "../screens/Login";
-import { RootStackParamList } from "../types";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import * as React from 'react';
+import Login from '../screens/Login';
+import { RootStackParamList } from '../types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

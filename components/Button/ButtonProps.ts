@@ -3,12 +3,12 @@ import {
   TextStyle,
   TouchableOpacityProps,
   ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 export interface ButtonProps extends TouchableOpacityProps {
   text?: string;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   children?: React.ReactNode;
-  preset?: "success" | "error" | "icon";
+  preset?: 'success' | 'error' | 'icon';
 }

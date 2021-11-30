@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import * as yup from "yup";
+import { useCallback } from 'react';
+import * as yup from 'yup';
 
 export default function useYupValidationResolver(
   validationSchema: yup.AnyObjectSchema
@@ -22,7 +22,7 @@ export default function useYupValidationResolver(
             (allErrors, currentError) => ({
               ...allErrors,
               [currentError.path]: {
-                type: currentError.type ?? "validation",
+                type: currentError.type ?? 'validation',
                 message: currentError.message,
               },
             }),

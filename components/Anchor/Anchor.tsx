@@ -1,22 +1,22 @@
-import React from "react";
-import { Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
-import Typography from "../../constants/Typography";
-import { useThemeColors } from "../Themed";
-import { AnchorProps } from "./AnchorProps";
+import React from 'react';
+import { Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import Typography from '../../constants/Typography';
+import { useThemeColors } from '../Themed';
+import { AnchorProps } from './AnchorProps';
 
 const CONTAINER: ViewStyle = {
   height: 60,
-  width: "85%",
-  justifyContent: "center",
-  alignItems: "center",
+  width: '85%',
+  justifyContent: 'center',
+  alignItems: 'center',
   borderRadius: 6,
-  backgroundColor: "transparent",
-  borderColor: "transparent",
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,
   fontSize: Typography.fontSize.primary,
-  textDecorationLine: "underline",
+  textDecorationLine: 'underline',
 };
 
 export function Anchor(props: AnchorProps) {

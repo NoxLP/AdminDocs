@@ -1,6 +1,6 @@
-import * as React from "react";
-import { TextInput } from "react-native";
-import { FormProps } from "./FormProps";
+import * as React from 'react';
+import { TextInput } from 'react-native';
+import { FormProps } from './FormProps';
 
 export default ({ register, errors, setValue, children }: FormProps) => {
   const Inputs = React.useRef<Array<TextInput>>([]);
@@ -11,7 +11,7 @@ export default ({ register, errors, setValue, children }: FormProps) => {
     (Array.isArray(children) ? children : [children]).forEach((child) => {
       if (child.props.name) {
         register(child.props.name);
-        console.log("REGISTER: " + child.props.name);
+        console.log('REGISTER: ' + child.props.name);
       }
     });
   }, [register]);

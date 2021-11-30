@@ -1,4 +1,4 @@
-import { ListRenderItem, StyleProp, ViewStyle } from "react-native";
+import { ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 
 export interface FlatListCustomProps {
   listKey?: string;
@@ -9,5 +9,5 @@ export interface FlatListCustomProps {
   keyExtractor?: (item: any, index: number) => string;
   horizontal?: boolean;
   numColumns?: number;
-  [x:string]: any
+  [x: string]: any;
 }

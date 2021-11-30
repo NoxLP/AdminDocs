@@ -3,7 +3,7 @@ import {
   ImageStyle,
   StyleProp,
   ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 export interface IconProps {
   icon: ImageSourcePropType;

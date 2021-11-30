@@ -3,7 +3,7 @@ import {
   FieldError,
   UseFormSetValue,
   UseFormRegister,
-} from "react-hook-form";
+} from 'react-hook-form';
 
 export interface ErrorMap {
   [key: string]: FieldError | undefined;

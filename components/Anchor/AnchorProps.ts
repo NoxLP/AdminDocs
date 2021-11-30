@@ -3,7 +3,7 @@ import {
   TextStyle,
   TouchableOpacityProps,
   ViewStyle,
-} from "react-native";
+} from 'react-native';
 
 export interface AnchorProps extends TouchableOpacityProps {
   text?: string;

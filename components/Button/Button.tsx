@@ -1,25 +1,25 @@
-import React from "react";
-import { Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
-import Typography from "../../constants/Typography";
-import { useThemeColors, View } from "../Themed";
-import { ButtonProps } from "./ButtonProps";
+import React from 'react';
+import { Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import Typography from '../../constants/Typography';
+import { useThemeColors, View } from '../Themed';
+import { ButtonProps } from './ButtonProps';
 
 const CONTAINER: ViewStyle = {
   height: 60,
-  justifyContent: "center",
-  alignItems: "center",
+  justifyContent: 'center',
+  alignItems: 'center',
   borderRadius: 10,
-  alignSelf: "center",
+  alignSelf: 'center',
   shadowOpacity: 1,
-  shadowColor: "rgba(0,0,0,0.29)",
-  shadowOffset: {width: 2, height: 2},
+  shadowColor: 'rgba(0,0,0,0.29)',
+  shadowOffset: { width: 2, height: 2 },
   shadowRadius: 50,
-  elevation: 3
+  elevation: 3,
 };
 const TEXT: TextStyle = {
   fontFamily: Typography.fontFamily.primary,
   fontSize: Typography.fontSize.button,
-  fontWeight: "700",
+  fontWeight: '700',
 };
 
 export function Button(props: ButtonProps) {
@@ -36,7 +36,7 @@ export function Button(props: ButtonProps) {
   const viewPresets = {
     success: { backgroundColor: themeColors.button.success },
     error: { backgroundColor: themeColors.button.error },
-    icon: { backgroundColor: "transparent" },
+    icon: { backgroundColor: 'transparent' },
   };
   const textPresets = {
     success: { color: themeColors.button.text },
@@ -45,19 +45,19 @@ export function Button(props: ButtonProps) {
   };
 
   const viewStyles = [
-    viewPresets[preset || "success"],
+    viewPresets[preset || 'success'],
     CONTAINER,
     styleOverride,
   ];
   const textStyles = [
-    textPresets[preset || "success"],
+    textPresets[preset || 'success'],
     TEXT,
     textStyleOverride,
   ];
 
   return (
     <TouchableOpacity style={viewStyles} {...rest}>
-      {!preset || preset !== "icon" ? (
+      {!preset || preset !== 'icon' ? (
         <Text style={textStyles}>{text}</Text>
       ) : (
         <>

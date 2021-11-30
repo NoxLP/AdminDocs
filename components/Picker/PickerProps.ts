@@ -1,5 +1,5 @@
-import { PickerProps as RNPickerProps } from "@react-native-picker/picker";
-import { TextStyle, ViewStyle } from "react-native";
+import { PickerProps as RNPickerProps } from '@react-native-picker/picker';
+import { TextStyle, ViewStyle } from 'react-native';
 
 export interface PickerItemProps {
   key: string;

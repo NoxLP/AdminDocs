@@ -3,12 +3,12 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import React from "react";
-import { ColorSchemeName, Text } from "react-native";
-import useLogin from "../hooks/auth/useLogin";
-import AuthNavigator from "./AuthNavigator";
-import RootNavigator from "./RootNavigator";
-import useAuthCheck from "../hooks/auth/useAuthCheck";
+import React from 'react';
+import { ColorSchemeName, Text } from 'react-native';
+import useLogin from '../hooks/auth/useLogin';
+import AuthNavigator from './AuthNavigator';
+import RootNavigator from './RootNavigator';
+import useAuthCheck from '../hooks/auth/useAuthCheck';
 
 export default function Navigation({
   colorScheme,
@@ -24,9 +24,10 @@ export default function Navigation({
   } = useLogin();
 
   return isLoading || isLoginLoading ? (
-    <Text style={{ marginTop: "50%" }}>LOADING</Text>
-  ) : isAlreadyLogged || (isSuccess && isLogged && isLogged.correct && !isError) ? (
-      <RootNavigator />
+    <Text style={{ marginTop: '50%' }}>LOADING</Text>
+  ) : isAlreadyLogged ||
+    (isSuccess && isLogged && isLogged.correct && !isError) ? (
+    <RootNavigator />
   ) : (
     <AuthNavigator />
   );

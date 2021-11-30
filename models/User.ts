@@ -1,11 +1,11 @@
 // IUser custom typeguard
 export function isUser(object: any): object is IUser {
   return (
-    "id" in object &&
-    "name" in object &&
-    "mobile_number" in object &&
-    "community" in object &&
-    "email" in object
+    'id' in object &&
+    'name' in object &&
+    'mobile_number' in object &&
+    'community' in object &&
+    'email' in object
   );
 }
 

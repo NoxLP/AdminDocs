@@ -1,10 +1,10 @@
-import { deleteItemAsync, getItemAsync, setItemAsync } from "expo-secure-store";
-import IUser, { isUser } from "../models/User";
-import { RequestResult } from "./api";
-import { api } from "./api-config";
+import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
+import IUser, { isUser } from '../models/User';
+import { RequestResult } from './api';
+import { api } from './api-config';
 
-const TOKEN_KEY = "token";
-const USER_KEY = "user";
+const TOKEN_KEY = 'token';
+const USER_KEY = 'user';
 
 export async function saveLoggedUser(
   loginResult: RequestResult
@@ -17,8 +17,8 @@ export async function saveLoggedUser(
   // use the new one
   if (token) {
     await setItemAsync(TOKEN_KEY, token);
-    api.setHeader("token", token);
-  } else api.setHeader("token", (await getToken())!);
+    api.setHeader('token', token);
+  } else api.setHeader('token', (await getToken())!);
 
   await setItemAsync(USER_KEY, JSON.stringify(user));
 
@@ -26,7 +26,7 @@ export async function saveLoggedUser(
 }
 
 export async function removeLoggedUser() {
-  api.deleteHeader("token");
+  api.deleteHeader('token');
   await deleteItemAsync(TOKEN_KEY);
   await deleteItemAsync(USER_KEY);
 }

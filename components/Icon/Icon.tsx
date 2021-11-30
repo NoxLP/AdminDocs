@@ -1,9 +1,9 @@
-import * as React from "react";
-import { ImageStyle, Image } from "react-native";
-import { IconProps } from "./IconProps";
+import * as React from 'react';
+import { ImageStyle, Image } from 'react-native';
+import { IconProps } from './IconProps';
 
 const ROOT: ImageStyle = {
-  resizeMode: "contain",
+  resizeMode: 'contain',
 };
 
 export function Icon(props: IconProps) {
