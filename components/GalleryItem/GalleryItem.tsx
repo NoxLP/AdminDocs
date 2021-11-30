@@ -73,7 +73,7 @@ export function GalleryItem(props: IGalleryItemProps) {
   };
 
   const onPressHandler = () => {
-    //TODO: navigation to preview
+    navigation.navigate('PreviewDocumentScreen', { item });
   };
   const onLongPressHandler = () => {
     if (isSelecting) {

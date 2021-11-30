@@ -18,8 +18,8 @@ export default function useInputPresets() {
     borderRadius: 6,
   };
   const INPUT_ROUND: TextStyle = {
-    backgroundColor: 'white',
-    borderColor: 'black',
+    backgroundColor: themeColors.input.roundBackground,
+    borderColor: themeColors.input.border,
     borderWidth: 1,
     borderRadius: 10,
   };
@@ -31,6 +31,7 @@ export default function useInputPresets() {
   const LABEL_ROUND: TextStyle = {
     fontFamily: Typography.fontFamily.semiBold,
     fontSize: Typography.fontSize.previewDocumentInputLabel,
+    fontWeight: '600',
     marginLeft: '7%',
     marginBottom: '1%',
   };

@@ -18,10 +18,12 @@ export default {
     anchorTextColor: 'white',
     input: {
       background: 'transparent',
+      roundBackground: 'white',
       placeholderColor: 'lightgray',
       underlineColor: '#000',
       label: '#ACACAC',
       border: '#808080',
+      disabledColor: '#999999',
     },
     button: {
       text: '#fff',
@@ -43,10 +45,12 @@ export default {
     anchorTextColor: 'blue',
     input: {
       background: 'transparent',
+      roundBackground: 'white',
       placeholderColor: 'lightgray',
       underlineColor: '#fff',
       label: '#ACACAC',
       border: '#808080',
+      disabledColor: '#999999',
     },
     button: {
       text: '#',

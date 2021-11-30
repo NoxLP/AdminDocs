@@ -49,6 +49,7 @@ const getError = (err: any) => {
 
 const buildDocumentsArray = (requestResult: RequestResult) => {
   return requestResult.data.map((doc) => {
+    const date = new Date(doc.date);
     const document: IDocument = {
       id: doc._id,
       data: doc.data,
@@ -56,7 +57,7 @@ const buildDocumentsArray = (requestResult: RequestResult) => {
       contentType: doc.contentType,
       community: doc.community,
       user: doc.user,
-      date: new Date(doc.date),
+      date,
       category: doc.category,
       name: doc.name,
       comments: doc.comments,

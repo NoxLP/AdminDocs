@@ -21,11 +21,6 @@ import Navigation from './navigation';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 
-const CUSTOM_FONTS = {
-  montserratRegular: require('./assets/fonts/Montserrat-Regular.ttf'),
-  montserratSemiBold: require('./assets/fonts/Montserrat-SemiBold.ttf'),
-};
-
 export default function App() {
   const queryClient = new QueryClient();
 

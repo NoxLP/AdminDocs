@@ -5,6 +5,7 @@ import GalleryScreen from '../screens/Galleries/GalleryScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NewDocumentScreen from '../screens/NewDocumentScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import PreviewDocumentScreen from '../screens/PreviewDocumentScreen';
 import { RootStackParamList } from '../types';
 import BottomTabNavigator from './BottomTabNavigator';
 
@@ -36,6 +37,11 @@ export default function RootNavigator() {
         name="GalleryScreen"
         component={GalleryScreen}
         options={({ route }) => ({ title: route.params.type })}
+      />
+      <Stack.Screen
+        name="PreviewDocumentScreen"
+        component={PreviewDocumentScreen}
+        options={{ title: 'Preview document' }}
       />
       <Stack.Screen
         name="NotFound"

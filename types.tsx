@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import IDocument from './models/Document';
 import { GalleryType } from './screens/Galleries/GalleryType';
 
 declare global {
@@ -27,6 +28,9 @@ export type RootStackParamList = {
   };
   GalleryScreen: {
     type: GalleryType;
+  };
+  PreviewDocumentScreen: {
+    item: IDocument;
   };
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const CUSTOM_FONTS = {
   montserratRegular: require('../assets/fonts/Montserrat-Regular.ttf'),
-  montserratSemiBold: require('./assets/fonts/Montserrat-SemiBold.ttf'),
+  montserratSemiBold: require('../assets/fonts/Montserrat-SemiBold.ttf'),
 };
 
 export default function useFonts() {
