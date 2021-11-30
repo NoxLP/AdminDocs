@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ImageStyle, TextStyle, ViewStyle } from 'react-native';
 import Layout from '../../constants/Layout';
 import useLogout from '../../hooks/auth/useLogout';
+import { useKeyboard } from '../../hooks/useKeyboard';
 import { GalleryType } from '../../screens/Galleries/GalleryType';
 import { Button } from '../Button/Button';
 import {
@@ -36,8 +37,10 @@ const IMAGE: ImageStyle = {
 };
 
 export function BottomTabs(props: BottomTabsProps) {
-  const { navigation, hide } = props;
+  const { navigation } = props;
+  const isKeyboardVisible = useKeyboard();
   const { mutate: logout } = useLogout();
+
   const TABS: Array<IDefaultFlatListItem> = [
     {
       icon: icons.bottomTabsUploadDoc,
@@ -85,7 +88,7 @@ export function BottomTabs(props: BottomTabsProps) {
 
   return (
     <>
-      {!hide ? (
+      {!isKeyboardVisible ? (
         <FlatListCustom
           style={CONTAINER}
           items={TABS}

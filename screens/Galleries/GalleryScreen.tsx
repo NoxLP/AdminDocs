@@ -49,7 +49,6 @@ export default function GalleryScreen({
     filteredDocuments,
     filterDocuments,
   } = useGallery();
-  const isKeyboardVisible = useKeyboard();
   console.log(isLoading ? 'loading' : documents!.length);
 
   const FLATLIST_CONTAINER: ViewStyle = {
@@ -115,7 +114,7 @@ export default function GalleryScreen({
         onSelectItem={onFilterSelectItemHandler}
         onClear={onFilterClearHandler}
       />
-      <BottomTabs navigation={navigation} hide={isKeyboardVisible} />
+      <BottomTabs navigation={navigation} />
     </>
   );
 }
