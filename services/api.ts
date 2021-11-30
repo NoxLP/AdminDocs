@@ -142,7 +142,7 @@ export const addDocument = async (data: IDocument) => {
   }
 };
 
-export const editDocument = async (data: IDocument) => {
+export const editDocumentById = async (data: IDocument) => {
   console.log('API DATA:');
   console.log(data);
 
@@ -150,7 +150,7 @@ export const editDocument = async (data: IDocument) => {
     const formData = new FormData();
 
     formData.append('image', {
-      uri: data.uri,
+      uri: data.data,
       name: data.name,
       type: data.contentType,
     });

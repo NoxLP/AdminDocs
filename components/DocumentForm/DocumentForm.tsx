@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { TextStyle, View, ViewStyle } from 'react-native';
-import useFormValidation, {
-  FormFields,
-} from '../../hooks/New-EditDocument/useFormValidation';
+import useFormValidation from '../../hooks/New-EditDocument/useFormValidation';
 import DocumentCategory from '../../models/DocumentCategory';
 import { Button } from '../Button/Button';
 import { FlatListCustom } from '../FlatListCustom/FlatListCustom';
@@ -13,6 +11,7 @@ import { Picker } from '../Picker/Picker';
 import { PickerItemProps } from '../Picker/PickerProps';
 import DocumentFormProps from './DocumentFormProps';
 
+//#region styles
 const CONTAINER: ViewStyle = {
   paddingTop: '5%',
 };
@@ -50,6 +49,7 @@ const SUBMIT_BUTTONS_CONTAINER: ViewStyle = {
 const SUBMIT_BUTTONS: ViewStyle = {
   width: '40%',
 };
+//#endregion
 
 export default function DocumentForm(props: DocumentFormProps) {
   const { document, onSubmit, cancelButtonOnPress, options } = props;
@@ -76,6 +76,7 @@ export default function DocumentForm(props: DocumentFormProps) {
   // react-hook-form can't catch the default value
   useEffect(() => {
     if (options.type === 'newDoc') {
+      //new document
       const { fileName, type } = options.getDocumentName(
         options.uri,
         options.name
@@ -86,6 +87,8 @@ export default function DocumentForm(props: DocumentFormProps) {
         comments: '',
         category: defaultCategory,
       });
+    } else {
+      // edit document
     }
   }, []);
   // react-hook-form errors

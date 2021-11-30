@@ -1,34 +1,10 @@
 import React, { useEffect } from 'react';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
-import {
-  Image,
-  ImageStyle,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  ViewStyle,
-  View,
-  TextStyle,
-} from 'react-native';
-import SkeletonContent from 'react-native-skeleton-content';
+import { Image, ImageStyle, ViewStyle, View } from 'react-native';
 import Layout from '../../constants/Layout';
-import Document from '../../models/Document';
-import Form from '../../components/Form/Form';
-import { Input } from '../../components/Input/Input';
-import DocumentCategory from '../../models/DocumentCategory';
-import { Picker } from '../../components/Picker/Picker';
-import { PickerItemProps } from '../../components/Picker/PickerProps';
-import { Button } from '../../components/Button/Button';
-import useYupValidationResolver from '../../hooks/New-EditDocument/useYupValidationResolver';
 import useUserNewDocument from '../../hooks/New-EditDocument/useUserNewDocument';
-import { addDocument } from '../../services/api';
 import { RootStackScreenProps } from '../../types';
-import { useThemeColors } from '../../components/Themed';
 import { BottomTabs } from '../../components/BottomTabs/BottomTabs';
-import { FlatListCustom } from '../../components/FlatListCustom/FlatListCustom';
-import useFormValidation, {
-  FormFields,
-} from '../../hooks/New-EditDocument/useFormValidation';
+import { FormFields } from '../../hooks/New-EditDocument/useFormValidation';
 import DocumentForm from '../../components/DocumentForm/DocumentForm';
 
 const IMAGE_CONTAINER: ViewStyle = {
@@ -89,7 +65,6 @@ export default function NewDocumentScreen({
       navigation.goBack();
     })();
   }, [document]);
-
   //#endregion
 
   return (
