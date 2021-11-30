@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
-import { PickerItemProps } from '../components/Picker/PickerProps';
-import IDocument from '../models/Document';
-import DocumentCategory from '../models/DocumentCategory';
-import { addDocument } from '../services/api';
+import { PickerItemProps } from '../../components/Picker/PickerProps';
+import IDocument from '../../models/Document';
+import DocumentCategory from '../../models/DocumentCategory';
+import { addDocument } from '../../services/api';
 
 export default function useUserNewDocument() {
   const [document, setDocument] = useState<IDocument>({

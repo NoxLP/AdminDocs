@@ -17,7 +17,7 @@ import { Input } from '../components/Input/Input';
 import Layout from '../constants/Layout';
 import useLogin, { LoginData } from '../hooks/auth/useLogin';
 import { RootStackScreenProps } from '../types';
-import useYupValidationResolver from '../hooks/useYupValidationResolver';
+import useYupValidationResolver from '../hooks/New-EditDocument/useYupValidationResolver';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const CONTAINER: ViewStyle = {

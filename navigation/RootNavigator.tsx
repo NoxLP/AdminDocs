@@ -3,7 +3,7 @@ import * as React from 'react';
 import DashboardScreen from '../screens/DashboardScreen';
 import GalleryScreen from '../screens/Galleries/GalleryScreen';
 import ModalScreen from '../screens/ModalScreen';
-import NewDocumentScreen from '../screens/NewDocumentScreen';
+import NewDocumentScreen from '../screens/New-EditDocument/NewDocumentScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import PreviewDocumentScreen from '../screens/PreviewDocumentScreen';
 import { RootStackParamList } from '../types';
