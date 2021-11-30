@@ -3,18 +3,19 @@ import { useEffect, useState } from 'react';
 
 const CUSTOM_FONTS = {
   montserratRegular: require('../assets/fonts/Montserrat-Regular.ttf'),
-}
+  montserratSemiBold: require('./assets/fonts/Montserrat-SemiBold.ttf'),
+};
 
 export default function useFonts() {
-  const [fontsLoaded, setFontsLoaded] = useState(false)
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
-    const loadFontsAsync = async() => {
+    const loadFontsAsync = async () => {
       await Font.loadAsync(CUSTOM_FONTS);
       setFontsLoaded(true);
-    }
-    loadFontsAsync()
-  }, [])
+    };
+    loadFontsAsync();
+  }, []);
 
-  return fontsLoaded
+  return fontsLoaded;
 }

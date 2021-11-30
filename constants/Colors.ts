@@ -21,6 +21,7 @@ export default {
       placeholderColor: 'lightgray',
       underlineColor: '#000',
       label: '#ACACAC',
+      border: '#808080',
     },
     button: {
       text: '#fff',
@@ -44,6 +45,8 @@ export default {
       background: 'transparent',
       placeholderColor: 'lightgray',
       underlineColor: '#fff',
+      label: '#ACACAC',
+      border: '#808080',
     },
     button: {
       text: '#',

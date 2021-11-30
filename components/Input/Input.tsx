@@ -1,36 +1,18 @@
-import * as React from "react";
-import { TextInput, TextStyle, View, ViewStyle } from "react-native";
-import COLORS from "../../constants/Colors";
-import TYPOGRAPHY from "../../constants/Typography";
-import { InputProps } from "./InputProps";
-import { Text, useThemeColors } from "../Themed";
+import * as React from 'react';
+import { TextInput, TextStyle, View, ViewStyle } from 'react-native';
+import COLORS from '../../constants/Colors';
+import TYPOGRAPHY from '../../constants/Typography';
+import { InputProps } from './InputProps';
+import { Text, useThemeColors } from '../Themed';
+import useInputPresets from './InputPresets';
 
 const CONTAINER: ViewStyle = {};
-
-const INPUT: TextStyle = {
-  alignSelf: "center",
-  fontSize: TYPOGRAPHY.fontSize.primary,
-  fontFamily: TYPOGRAPHY.fontFamily.primary,
-  color: COLORS.dark.text,
-  backgroundColor: "transparent",
-  minHeight: 44,
-  width: "85%",
-  minWidth: "85%",
-  paddingHorizontal: "2%",
-  borderRadius: 6,
-};
-
-const LABEL: TextStyle = {
-  marginLeft: "1%"
-}
 
 export const Input = React.forwardRef(function Input(
   props: InputProps,
   ref: any
 ) {
   const {
-    placeholder,
-    value,
     defaultValue,
     onChangeText,
     label,
@@ -39,14 +21,19 @@ export const Input = React.forwardRef(function Input(
     labelStyle: labelStyleOverride,
     keyboardType,
     password,
-    multiline,
     numberOfLines,
     error,
+    preset,
+    ...rest
   } = props;
 
   const themeColors = useThemeColors();
+  const { inputPresets, labelPresets } = useInputPresets();
+  const myPreset = !preset ? 'native' : preset; //set default
+  const INPUT = myPreset == 'native' ? inputPresets.native : inputPresets.round;
+  const LABEL = myPreset == 'native' ? labelPresets.native : labelPresets.round;
 
-  const labelStyles = [ LABEL, { color: themeColors.input.label }, labelStyleOverride ]
+  const labelStyles = [LABEL, labelStyleOverride];
   const containerStyles = [CONTAINER, styleOverride];
   const inputStyles = [INPUT, { color: themeColors.text }, inputStyleOverride];
 
@@ -54,18 +41,20 @@ export const Input = React.forwardRef(function Input(
     <View style={containerStyles}>
       {label ? <Text style={labelStyles} text={label} /> : null}
       <TextInput
-        placeholder={placeholder}
         placeholderTextColor={themeColors.input.placeholderColor}
-        underlineColorAndroid={themeColors.input.underlineColor}
+        underlineColorAndroid={
+          myPreset == 'native'
+            ? themeColors.input.underlineColor
+            : 'transparent'
+        }
         style={inputStyles}
         ref={ref}
-        keyboardType={keyboardType ?? "default"}
+        keyboardType={keyboardType ?? 'default'}
         secureTextEntry={password}
-        value={value}
         onChangeText={onChangeText ? (text) => onChangeText(text) : undefined}
-        multiline={!!multiline}
         numberOfLines={numberOfLines ?? 1}
-        defaultValue={defaultValue || ""}
+        defaultValue={defaultValue || ''}
+        {...rest}
       />
     </View>
   );
