@@ -26,6 +26,9 @@ export type RootStackParamList = {
     uri: string;
     name?: string;
   };
+  EditDocumentScreen: {
+    document: IDocument;
+  };
   GalleryScreen: {
     type: GalleryType;
   };
