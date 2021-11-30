@@ -3,6 +3,7 @@ import { TextStyle, View, ViewStyle } from 'react-native';
 import { Text, useThemeColors } from '../Themed';
 import { Picker as RNPicker } from '@react-native-picker/picker';
 import { PickerProps } from './PickerProps';
+import Typography from '../../constants/Typography';
 
 const CONTAINER: ViewStyle = {
   borderBottomWidth: 1,
@@ -12,6 +13,8 @@ const CONTAINER: ViewStyle = {
 };
 
 const LABEL: TextStyle = {
+  fontFamily: Typography.fontFamily.semiBold,
+  fontSize: Typography.fontSize.previewDocumentInputLabel,
   marginLeft: '-0.7%',
 };
 

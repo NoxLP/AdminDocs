@@ -26,11 +26,12 @@ import { addDocument } from '../services/api';
 import { RootStackScreenProps } from '../types';
 import { useThemeColors } from '../components/Themed';
 import { BottomTabs } from '../components/BottomTabs/BottomTabs';
-import { FlatListCustom } from '../components/FlatListCustom/FlatListCustom';
 
 //#region styles
-const CONTAINER: ViewStyle = {
-  paddingTop: '5%',
+const SCROLL_CONTAINER: ViewStyle = {
+  flex: 1,
+  width: Layout.window.width,
+  minHeight: Layout.window.height * 0.46,
 };
 const INNER_CONTENT: ViewStyle = {
   flex: 1,
@@ -38,12 +39,13 @@ const INNER_CONTENT: ViewStyle = {
   minHeight: Layout.window.height,
 };
 const CONTAINER_CONTENT: ViewStyle = {
-  justifyContent: 'flex-start',
+  flex: 1,
   alignItems: 'center',
 };
 const IMAGE_CONTAINER: ViewStyle = {
-  height: '30%',
+  height: '33%',
   width: Layout.window.width,
+  marginBottom: '3%',
   paddingVertical: '3%',
   alignContent: 'center',
   justifyContent: 'center',
@@ -79,19 +81,14 @@ const COMMENTS_INPUT_CONTAINER: ViewStyle = {
   marginBottom: 0,
 };
 const PICKER_CONTAINER: ViewStyle = {
-  flex: 1,
-  width: '88%',
-  minWidth: '88%',
   paddingVertical: '1%',
   marginTop: '4%',
-  marginLeft: '6%',
 };
 const SUBMIT_BUTTONS_CONTAINER: ViewStyle = {
   flexDirection: 'row',
   justifyContent: 'space-around',
   width: '100%',
-  marginTop: '10%',
-  marginBottom: '15%',
+  marginTop: '6%',
 };
 const SUBMIT_BUTTONS: ViewStyle = {
   width: '40%',
@@ -218,64 +215,60 @@ export default function NewDocumentScreen({
           <Image source={documentImage} style={IMAGE} />
         )}
       </View>
-      <FlatListCustom
-        style={CONTAINER}
-        renderItem={({ item }) => item}
-        items={[
-          <Form register={register} setValue={setValue} errors={errors}>
-            <Input
-              label="Nombre*"
-              style={[INPUT_CONTAINER, { marginTop: 0 }]}
-              inputStyle={[INPUT, { marginTop: 0 }]}
-              name="name"
-              defaultValue={document.name}
-              placeholder="Nombre"
-              multiline={true}
-              numberOfLines={2}
-            />
-            <Controller
-              control={control}
-              name="category"
-              defaultValue={defaultCategory}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <Picker
-                  label="Categoría*"
-                  name="category"
-                  style={PICKER_CONTAINER}
-                  items={categoryItems}
-                  defaultValue={defaultCategory}
-                  selectedValue={value}
-                  onValueChange={onChange}
-                />
-              )}
-            />
-            <Input
-              label="Comentarios"
-              style={COMMENTS_INPUT_CONTAINER}
-              inputStyle={INPUT}
-              name="comments"
-              defaultValue={document.comments}
-              placeholder="Comentarios"
-              multiline={true}
-              numberOfLines={4}
-            />
-          </Form>,
-          <View style={SUBMIT_BUTTONS_CONTAINER}>
-            <Button
-              style={SUBMIT_BUTTONS}
-              preset="success"
-              text="Aceptar"
-              onPress={handleSubmit(onSubmit)}
-            />
-            <Button
-              style={SUBMIT_BUTTONS}
-              preset="error"
-              text="Cancelar"
-              onPress={cancelButtonOnPress}
-            />
-          </View>,
-        ]}
-      />
+      <ScrollView style={SCROLL_CONTAINER}>
+        <Form register={register} setValue={setValue} errors={errors}>
+          <Input
+            label="Nombre*"
+            style={INPUT_CONTAINER}
+            inputStyle={INPUT}
+            name="name"
+            defaultValue={document.name}
+            placeholder="Nombre"
+            multiline={true}
+            numberOfLines={2}
+          />
+          <Controller
+            control={control}
+            name="category"
+            defaultValue={defaultCategory}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <Picker
+                label="Categoría*"
+                name="category"
+                style={PICKER_CONTAINER}
+                items={categoryItems}
+                defaultValue={defaultCategory}
+                selectedValue={value}
+                onValueChange={onChange}
+              />
+            )}
+          />
+          <Input
+            label="Comentarios"
+            style={COMMENTS_INPUT_CONTAINER}
+            inputStyle={INPUT}
+            name="comments"
+            defaultValue={document.comments}
+            placeholder="Comentarios"
+            multiline={true}
+            numberOfLines={4}
+          />
+        </Form>
+        <View style={SUBMIT_BUTTONS_CONTAINER}>
+          <Button
+            style={SUBMIT_BUTTONS}
+            preset="success"
+            text="Aceptar"
+            onPress={handleSubmit(onSubmit)}
+          />
+          <Button
+            style={SUBMIT_BUTTONS}
+            preset="error"
+            text="Cancelar"
+            onPress={cancelButtonOnPress}
+          />
+        </View>
+      </ScrollView>
       <BottomTabs navigation={navigation} />
     </>
   );

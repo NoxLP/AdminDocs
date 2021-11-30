@@ -25,12 +25,12 @@ export default function useInputPresets() {
   };
 
   const LABEL: TextStyle = {
+    fontFamily: Typography.fontFamily.semiBold,
+    fontSize: Typography.fontSize.previewDocumentInputLabel,
     marginLeft: '1%',
     color: themeColors.input.label,
   };
   const LABEL_ROUND: TextStyle = {
-    fontFamily: Typography.fontFamily.semiBold,
-    fontSize: Typography.fontSize.previewDocumentInputLabel,
     fontWeight: '600',
     marginLeft: '7%',
     marginBottom: '1%',

@@ -15,6 +15,7 @@ import BottomTabsProps from './BottomTabsProps';
 const CONTAINER: ViewStyle = {
   height: Layout.window.height * 0.1,
   maxHeight: Layout.window.height * 0.1,
+  minHeight: Layout.window.height * 0.1,
   backgroundColor: '#81C0FA',
   paddingHorizontal: '3%',
   paddingVertical: 0,
