@@ -142,6 +142,39 @@ export const addDocument = async (data: IDocument) => {
   }
 };
 
+export const editDocument = async (data: IDocument) => {
+  console.log('API DATA:');
+  console.log(data);
+
+  try {
+    const formData = new FormData();
+
+    formData.append('image', {
+      uri: data.uri,
+      name: data.name,
+      type: data.contentType,
+    });
+    formData.append('contentType', data.contentType);
+    formData.append('date', data.date.toString());
+    formData.append('category', data.category);
+    formData.append('name', data.name);
+    formData.append('comments', data.comments);
+    console.log('API FORM DATA:');
+    console.log(formData);
+
+    const token = await getToken();
+    api.setHeader('token', token!);
+    const response: ApiResponse<any> = await api.post(
+      `/documents/${data.id}`,
+      formData
+    );
+
+    return getRequestResult(response);
+  } catch (err) {
+    return getError(err);
+  }
+};
+
 export const getUserDocuments = async (): Promise<RequestResult> => {
   try {
     const token = await getToken();
