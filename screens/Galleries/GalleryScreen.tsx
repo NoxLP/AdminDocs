@@ -16,12 +16,15 @@ import { RootStackScreenProps } from '../../types';
 import IDocument from '../../models/Document';
 import GallerySideMenu from '../../components/GallerySideMenu/GallerySideMenu';
 import { GalleryType } from './GalleryType';
+import { useQueryClient } from 'react-query';
 
 export default function GalleryScreen({
   navigation,
   route,
 }: RootStackScreenProps<'GalleryScreen'>) {
   const themeColors = useThemeColors();
+  const queryClient = useQueryClient();
+
   let isLoading: boolean,
     error,
     isError,
@@ -80,6 +83,13 @@ export default function GalleryScreen({
       //TODO: notification no documents or no documents selected
     }
   };
+  const sideMenuReloadButtonOnPressHandler = () => {
+    if (route.params.type === GalleryType.UserDocuments) {
+      queryClient.invalidateQueries('userDocs');
+    } else {
+      queryClient.invalidateQueries('commDocs');
+    }
+  };
   const sideMenuShareButtonOnPressHandler = () => {};
   const sideMenuDeleteButtonOnPressHandler = () => {};
 
@@ -113,6 +123,7 @@ export default function GalleryScreen({
       <GallerySideMenu
         show={isSelecting}
         editButtonOnPressHandler={sideMenuEditButtonOnPressHandler}
+        reloadButtonOnPressHandler={sideMenuReloadButtonOnPressHandler}
         shareButtonOnPressHandler={sideMenuShareButtonOnPressHandler}
         deleteButtonOnPressHandler={sideMenuDeleteButtonOnPressHandler}
       />

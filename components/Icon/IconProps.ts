@@ -8,5 +8,4 @@ import {
 export interface IconProps {
   icon: ImageSourcePropType;
   style?: StyleProp<ImageStyle>;
-  containerStyle?: StyleProp<ViewStyle>;
 }

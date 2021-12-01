@@ -8,16 +8,18 @@ import GallerySideMenuProps from './GallerySideMenuProps';
 
 const BUTTON: ViewStyle = {
   elevation: 0,
-  width: '63%',
+  width: '25%',
 };
 const ICON: ImageStyle = {
-  width: '63%',
+  width: '50%',
+  height: '50%',
 };
 
 export default function GallerySideMenu(props: GallerySideMenuProps) {
   const {
     show,
     editButtonOnPressHandler,
+    reloadButtonOnPressHandler,
     shareButtonOnPressHandler,
     deleteButtonOnPressHandler,
   } = props;
@@ -30,7 +32,7 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
     justifyContent: 'space-around',
     flexShrink: 2,
     height: '12%',
-    width: '60%',
+    width: '70%',
     position: 'absolute',
     top: hideAnim,
     right: -2,
@@ -49,6 +51,12 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
 
   return (
     <Animated.View style={CONTAINER}>
+      <Button
+        style={BUTTON}
+        preset="icon"
+        children={<Icon style={ICON} icon={icons.gallerySideMenuReload} />}
+        onPress={reloadButtonOnPressHandler}
+      />
       <Button
         style={BUTTON}
         preset="icon"

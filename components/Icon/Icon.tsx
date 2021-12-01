@@ -7,7 +7,7 @@ const ROOT: ImageStyle = {
 };
 
 export function Icon(props: IconProps) {
-  const { style: styleOverride, icon, containerStyle } = props;
+  const { style: styleOverride, icon } = props;
 
   return <Image source={icon} style={[ROOT, styleOverride]} />;
 }

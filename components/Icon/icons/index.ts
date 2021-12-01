@@ -10,6 +10,7 @@ export const icons = {
   bottomTabsCommunityDocs: require('./bottom-tab-comm-docs.png'),
   bottomTabsLogout: require('./bottom-tab-logout.png'),
   gallerySideMenuEdit: require('./gallery-side-edit.png'),
+  gallerySideMenuReload: require('./gallery-side-reload.png'),
   gallerySideMenuShare: require('./gallery-side-share.png'),
   gallerySideMenuDelete: require('./gallery-side-delete.png'),
 };
