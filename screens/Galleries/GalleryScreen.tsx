@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
-import { ViewStyle } from 'react-native';
+import { Alert, ViewStyle } from 'react-native';
 import {
   AutocompleteDropdown,
   TAutocompleteDropdownItem,
 } from 'react-native-autocomplete-dropdown';
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 import { BottomTabs } from '../../components/BottomTabs/BottomTabs';
 import { FlatListCustom } from '../../components/FlatListCustom/FlatListCustom';
 import { Text, useThemeColors, View } from '../../components/Themed';
@@ -29,8 +31,6 @@ export default function GalleryScreen({
     error,
     isError,
     documents: Array<IDocument> | undefined;
-  console.log('>>> ROUTE TYPE:');
-  console.log(route.params.type);
 
   if (route.params.type === GalleryType.UserDocuments) {
     console.log('User docs');
@@ -70,15 +70,61 @@ export default function GalleryScreen({
     filterDocuments(documents!, '');
   };
 
+  //#region helpers
+  const getFirstSelectedDocument = (): IDocument | undefined => {
+    const index = selectedItems.indexOf(true);
+    if (index !== -1) return documents[index];
+    return undefined;
+  };
+  const shareExistingFile = async (document: IDocument, filePath: string) => {
+    await Sharing.shareAsync(filePath, {
+      UTI: document.contentType,
+      mimeType: document.contentType,
+      dialogTitle: `Compartir ${document.name}`,
+    });
+  };
+  const writeDocumentImageToFileAndShare = async (
+    document: IDocument,
+    filePath: string
+  ) => {
+    await FileSystem.writeAsStringAsync(filePath, document.data!, {
+      encoding: 'base64',
+    });
+    await shareExistingFile(document, filePath);
+  };
+  const existingDocumentAlert = (document: IDocument, filePath: string) => {
+    Alert.alert(
+      'El archivo ya existe',
+      'Necesitamos guardar el fichero en su dispositivo para poder compartirlo, pero ya existe un fichero con este nombre en su dispositivo, ¿quiere compartir el archivo existente o sobreescribir?:',
+      [
+        {
+          text: 'Existente',
+          onPress: async () => await shareExistingFile(document, filePath),
+          style: 'default',
+        },
+        {
+          text: 'Sobreescribir',
+          onPress: async () =>
+            await writeDocumentImageToFileAndShare(document, filePath),
+        },
+        {
+          text: 'Cancelar',
+          onPress: () => Alert.alert('No se compartió el archivo'),
+          style: 'cancel',
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => Alert.alert('No se compartió el archivo'),
+      }
+    );
+  };
+  //#endregion
+
   const sideMenuEditButtonOnPressHandler = () => {
     if (documents && selectedItems.length > 0) {
-      const index = selectedItems.indexOf(true);
-
-      if (index !== -1) {
-        navigation.navigate('EditDocumentScreen', {
-          document: documents[index],
-        });
-      }
+      const document = getFirstSelectedDocument();
+      if (document) navigation.navigate('EditDocumentScreen', { document });
     } else {
       //TODO: notification no documents or no documents selected
     }
@@ -90,11 +136,38 @@ export default function GalleryScreen({
       queryClient.invalidateQueries('commDocs');
     }
   };
-  const sideMenuShareButtonOnPressHandler = () => {};
+  const sideMenuShareButtonOnPressHandler = async () => {
+    console.log('>>> SHARE');
+
+    if (documents && selectedItems.length > 0) {
+      console.log('documents ok');
+      // TODO: check if admin setted document as shareable
+
+      const sharingReady = await Sharing.isAvailableAsync();
+      if (sharingReady) {
+        console.log('sharing ready');
+        const document = getFirstSelectedDocument();
+        if (document) {
+          console.log('document ready');
+          const filePath = `${FileSystem.documentDirectory}/${document.name}`;
+          const fileInfo = await FileSystem.getInfoAsync(filePath);
+
+          if (fileInfo.exists) {
+            existingDocumentAlert(document, filePath);
+          } else {
+            await writeDocumentImageToFileAndShare(document, filePath);
+          }
+          console.log('shared');
+        }
+      } else {
+        //TODO: notification try later
+        console.log('sharing not ready');
+      }
+    }
+  };
   const sideMenuDeleteButtonOnPressHandler = () => {};
 
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
-    //console.log(`data:${item.contentType};base64,${item.data}`);
     return (
       <GalleryItem
         item={item}

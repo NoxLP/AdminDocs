@@ -67,11 +67,13 @@ export default function GallerySideMenu(props: GallerySideMenuProps) {
         style={BUTTON}
         preset="icon"
         children={<Icon style={ICON} icon={icons.gallerySideMenuShare} />}
+        onPress={shareButtonOnPressHandler}
       />
       <Button
         style={BUTTON}
         preset="icon"
         children={<Icon style={ICON} icon={icons.gallerySideMenuDelete} />}
+        onPress={deleteButtonOnPressHandler}
       />
     </Animated.View>
   );
