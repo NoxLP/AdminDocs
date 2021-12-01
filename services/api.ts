@@ -167,7 +167,7 @@ export const editDocumentById = async (data: IDocument) => {
 
     const token = await getToken();
     api.setHeader('token', token!);
-    const response: ApiResponse<any> = await api.post(
+    const response: ApiResponse<any> = await api.put(
       `/documents/${data.id}`,
       formData
     );
