@@ -8,17 +8,21 @@ import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { BottomTabs } from '../../components/BottomTabs/BottomTabs';
 import { FlatListCustom } from '../../components/FlatListCustom/FlatListCustom';
-import { Text, useThemeColors, View } from '../../components/Themed';
+import { Text, useThemeColors } from '../../components/Themed';
 import { GalleryItem } from '../../components/GalleryItem/GalleryItem';
 import useUserDocuments from '../../hooks/DocumentsGalleries/useUserDocuments';
 import useCommunityDocuments from '../../hooks/DocumentsGalleries/useCommunityDocuments';
 import useGallery from '../../hooks/DocumentsGalleries/useGallery';
-import { useKeyboard } from '../../hooks/useKeyboard';
 import { RootStackScreenProps } from '../../types';
 import IDocument from '../../models/Document';
 import GallerySideMenu from '../../components/GallerySideMenu/GallerySideMenu';
 import { GalleryType } from './GalleryType';
 import { useQueryClient } from 'react-query';
+import useRemoveDocument from '../../hooks/Documents/useRemoveDocument';
+
+const FLATLIST_CONTENT_CONTAINER: ViewStyle = {
+  justifyContent: 'flex-start',
+};
 
 export default function GalleryScreen({
   navigation,
@@ -53,6 +57,14 @@ export default function GalleryScreen({
     filterDocuments,
   } = useGallery();
   console.log(isLoading ? 'loading' : documents!.length);
+  const {
+    isLoading: removeLoading,
+    isSuccess: removeDocumentSuccess,
+    mutate: removeDocument,
+    isError: removeDocumentIsError,
+    error: removeDocumentError,
+    data: removeDocumentData,
+  } = useRemoveDocument();
 
   const FLATLIST_CONTAINER: ViewStyle = {
     flex: 1,
@@ -119,6 +131,63 @@ export default function GalleryScreen({
       }
     );
   };
+  const removeDocumentDialog = () => {
+    const documentsToRemove = documents!.filter(
+      (doc, idx) => selectedItems[idx]
+    );
+    console.log(documentsToRemove.map((doc) => doc.name).join('\n'));
+    Alert.alert(
+      'Borrar documento',
+      `Va a borrar los siguientes documentos:
+      ${documentsToRemove.map((doc) => doc.name).join('\n')}`,
+      [
+        {
+          text: 'Aceptar',
+          onPress: async () => {
+            if (selectedItems.length > 1) {
+              const removedDocuments: Array<IDocument> = [];
+              let index;
+              for (index = 0; index < documentsToRemove.length; index++) {
+                await removeDocument(documentsToRemove[index]);
+                if (removeDocumentIsError) {
+                  Alert.alert(
+                    'Error',
+                    `El documento no fue borrado: ${removeDocumentError}`
+                  );
+                  break;
+                } else {
+                  removedDocuments.push();
+                }
+              }
+              if (removedDocuments.length > 0) {
+                Alert.alert(
+                  'Documentos borrados',
+                  `Documentos borrados: 
+                  ${removedDocuments.map((doc) => doc.name).join('\n')}`
+                );
+              }
+            } else {
+              await removeDocument(documentsToRemove[0]);
+              if (removeDocumentIsError) {
+                Alert.alert(
+                  'Error',
+                  `El documento no fue borrado: ${removeDocumentError}`
+                );
+              } else {
+                Alert.alert('El documento fue borrado');
+              }
+            }
+          },
+          style: 'default',
+        },
+        {
+          text: 'Cancelar',
+          onPress: () => Alert.alert('No se borró ningún documento'),
+          style: 'cancel',
+        },
+      ]
+    );
+  };
   //#endregion
 
   const sideMenuEditButtonOnPressHandler = () => {
@@ -165,7 +234,13 @@ export default function GalleryScreen({
       }
     }
   };
-  const sideMenuDeleteButtonOnPressHandler = () => {};
+  const sideMenuDeleteButtonOnPressHandler = async () => {
+    if (documents && selectedItems.length > 0) {
+      removeDocumentDialog();
+    } else {
+      //TODO: notification no documents or no documents selected
+    }
+  };
 
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
     return (
@@ -207,6 +282,7 @@ export default function GalleryScreen({
           items={filteredDocuments ? filteredDocuments : []}
           renderItem={renderItem}
           style={FLATLIST_CONTAINER}
+          contentStyle={FLATLIST_CONTENT_CONTAINER}
           numColumns={2}
         />
       )}

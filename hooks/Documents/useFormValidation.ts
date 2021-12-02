@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { PickerItemProps } from '../../components/Picker/PickerProps';
-import useYupValidationResolver from './useYupValidationResolver';
+import useYupValidationResolver from '../useYupValidationResolver';
 
 export type FormFields = {
   name: string;
