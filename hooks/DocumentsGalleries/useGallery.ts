@@ -25,6 +25,7 @@ export default function useGallery() {
       setSelectedItems(newSelectedItems);
     }
   };
+  const clearSelectedItems = () => setSelectedItems([]);
 
   const documentAutocompleteString = (doc: IDocument) => {
     return `${doc.name}
@@ -81,6 +82,7 @@ ${doc.category}`;
     setIsSelecting,
     selectedItems,
     setIsSelected,
+    clearSelectedItems,
     buildAutocompleteItems,
     autocompleteItems,
     filteredDocuments,

@@ -51,6 +51,7 @@ export default function GalleryScreen({
     setIsSelecting,
     selectedItems,
     setIsSelected,
+    clearSelectedItems,
     buildAutocompleteItems,
     autocompleteItems,
     filteredDocuments,
@@ -70,16 +71,6 @@ export default function GalleryScreen({
     flex: 1,
     padding: '3%',
     backgroundColor: themeColors.background,
-  };
-
-  const onFilterTextChangeHandler = (text: string) => {
-    filterDocuments(documents!, text);
-  };
-  const onFilterSelectItemHandler = (item: TAutocompleteDropdownItem) => {
-    if (item) filterDocuments(documents!, item.id, true);
-  };
-  const onFilterClearHandler = () => {
-    filterDocuments(documents!, '');
   };
 
   //#region helpers
@@ -144,7 +135,9 @@ export default function GalleryScreen({
         {
           text: 'Aceptar',
           onPress: async () => {
+            console.log('>>> removeDocumentDialog');
             if (selectedItems.length > 1) {
+              console.log('>>> IF removeDocumentDialog');
               const removedDocuments: Array<IDocument> = [];
               let index;
               for (index = 0; index < documentsToRemove.length; index++) {
@@ -165,15 +158,20 @@ export default function GalleryScreen({
                   `Documentos borrados: 
                   ${removedDocuments.map((doc) => doc.name).join('\n')}`
                 );
+                clearSelectedItems();
               }
             } else {
+              console.log('>>> ELSE removeDocumentDialog');
               await removeDocument(documentsToRemove[0]);
+              console.log('>>> removeDocumentIsError');
+              console.log(removeDocumentIsError);
               if (removeDocumentIsError) {
                 Alert.alert(
                   'Error',
                   `El documento no fue borrado: ${removeDocumentError}`
                 );
               } else {
+                clearSelectedItems();
                 Alert.alert('El documento fue borrado');
               }
             }
@@ -190,6 +188,15 @@ export default function GalleryScreen({
   };
   //#endregion
 
+  const onFilterTextChangeHandler = (text: string) => {
+    filterDocuments(documents!, text);
+  };
+  const onFilterSelectItemHandler = (item: TAutocompleteDropdownItem) => {
+    if (item) filterDocuments(documents!, item.id, true);
+  };
+  const onFilterClearHandler = () => {
+    filterDocuments(documents!, '');
+  };
   const sideMenuEditButtonOnPressHandler = () => {
     if (documents && selectedItems.length > 0) {
       const document = getFirstSelectedDocument();
@@ -262,8 +269,12 @@ export default function GalleryScreen({
     if (!isLoading) {
       buildAutocompleteItems(documents!);
       filterDocuments(documents!, '');
+      clearSelectedItems();
     }
   }, [isLoading, documents]);
+  useEffect(() => {
+    clearSelectedItems();
+  }, []);
 
   // TODO: isloading and error ui
   return (
