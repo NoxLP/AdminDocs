@@ -179,6 +179,18 @@ export const editDocumentById = async (data: IDocument) => {
   }
 };
 
+export const removeDocumentById = async (data: IDocument) => {
+  try {
+    const response: ApiResponse<any> = await api.delete(
+      `/documents/${data.id}`
+    );
+
+    return getRequestResult(response);
+  } catch (err) {
+    return getError(err);
+  }
+};
+
 export const getUserDocuments = async (): Promise<RequestResult> => {
   try {
     const token = await getToken();
