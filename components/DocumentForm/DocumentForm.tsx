@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { TextStyle, View, ViewStyle } from 'react-native';
-import useFormValidation from '../../hooks/New-EditDocument/useFormValidation';
+import useFormValidation from '../../hooks/Documents/useFormValidation';
 import DocumentCategory from '../../models/DocumentCategory';
 import { Button } from '../Button/Button';
 import { FlatListCustom } from '../FlatListCustom/FlatListCustom';

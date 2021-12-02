@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FormFields } from '../../hooks/New-EditDocument/useFormValidation';
+import { FormFields } from '../../hooks/Documents/useFormValidation';
 import IDocument from '../../models/Document';
 import { RootStackParamList } from '../../types';
 

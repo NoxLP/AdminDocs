@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Image, ImageStyle, ViewStyle, View, Alert } from 'react-native';
 import Layout from '../../constants/Layout';
-import useUserNewDocument from '../../hooks/New-EditDocument/useUserNewDocument';
+import useUserNewDocument from '../../hooks/Documents/useUserNewDocument';
 import { RootStackScreenProps } from '../../types';
 import { BottomTabs } from '../../components/BottomTabs/BottomTabs';
-import { FormFields } from '../../hooks/New-EditDocument/useFormValidation';
+import { FormFields } from '../../hooks/Documents/useFormValidation';
 import DocumentForm from '../../components/DocumentForm/DocumentForm';
-import useEditDocument from '../../hooks/New-EditDocument/useEditDocument';
+import useEditDocument from '../../hooks/Documents/useEditDocument';
 import { Text } from '../../components/Themed';
 
 const IMAGE_CONTAINER: ViewStyle = {
