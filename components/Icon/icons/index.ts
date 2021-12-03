@@ -13,6 +13,7 @@ export const icons = {
   gallerySideMenuReload: require('./gallery-side-reload.png'),
   gallerySideMenuShare: require('./gallery-side-share.png'),
   gallerySideMenuDelete: require('./gallery-side-delete.png'),
+  chevronDown: require('./chevron-down.png'),
 };
 
 export type IconTypes = keyof typeof icons;

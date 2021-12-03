@@ -19,18 +19,21 @@ import GallerySideMenu from '../../components/GallerySideMenu/GallerySideMenu';
 import { GalleryType } from './GalleryType';
 import { useQueryClient } from 'react-query';
 import useRemoveDocument from '../../hooks/Documents/useRemoveDocument';
+import { Icon } from '../../components/Icon/Icon';
+import { icons } from '../../components/Icon/icons';
+import { useKeyboard } from '../../hooks/useKeyboard';
 
 const FLATLIST_CONTENT_CONTAINER: ViewStyle = {
   justifyContent: 'flex-start',
+};
+const FILTER_BACKGROUND: ViewStyle = {
+  backgroundColor: '#405E7A',
 };
 
 export default function GalleryScreen({
   navigation,
   route,
 }: RootStackScreenProps<'GalleryScreen'>) {
-  const themeColors = useThemeColors();
-  const queryClient = useQueryClient();
-
   let isLoading: boolean,
     error,
     isError,
@@ -43,7 +46,9 @@ export default function GalleryScreen({
     console.log('Comm docs');
     ({ isLoading, error, isError, documents } = useCommunityDocuments());
   }
-
+  const themeColors = useThemeColors();
+  const queryClient = useQueryClient();
+  const isKeyboardVisible = useKeyboard();
   const {
     imageWidth,
     setImageWidth,
@@ -57,7 +62,6 @@ export default function GalleryScreen({
     filteredDocuments,
     filterDocuments,
   } = useGallery();
-  console.log(isLoading ? 'loading' : documents!.length);
   const {
     isLoading: removeLoading,
     isSuccess: removeDocumentSuccess,
@@ -71,6 +75,12 @@ export default function GalleryScreen({
     flex: 1,
     padding: '3%',
     backgroundColor: themeColors.background,
+  };
+  const AUTOCOMPLETE_CONTAINER: ViewStyle = {
+    backgroundColor: '#405E7A',
+    marginBottom: isKeyboardVisible ? 0 : '-1%',
+    height: 57,
+    justifyContent: 'center',
   };
 
   //#region helpers
@@ -188,15 +198,20 @@ export default function GalleryScreen({
   };
   //#endregion
 
+  //#region filter events
   const onFilterTextChangeHandler = (text: string) => {
     filterDocuments(documents!, text);
   };
   const onFilterSelectItemHandler = (item: TAutocompleteDropdownItem) => {
+    console.log('onFilterSelectItemHandler');
+
     if (item) filterDocuments(documents!, item.id, true);
   };
   const onFilterClearHandler = () => {
     filterDocuments(documents!, '');
   };
+  //#endregion
+  //#region side menu events
   const sideMenuEditButtonOnPressHandler = () => {
     if (documents && selectedItems.length > 0) {
       const document = getFirstSelectedDocument();
@@ -248,6 +263,7 @@ export default function GalleryScreen({
       //TODO: notification no documents or no documents selected
     }
   };
+  //#endregion
 
   const renderItem = ({ item, index }: { item: IDocument; index: number }) => {
     return (
@@ -299,9 +315,15 @@ export default function GalleryScreen({
       )}
       <AutocompleteDropdown
         loading={isLoading}
-        textInputProps={{ placeholder: 'Filtro' }}
+        textInputProps={{
+          placeholder: 'Filtro',
+          style: FILTER_BACKGROUND,
+        }}
+        rightButtonsContainerStyle={FILTER_BACKGROUND}
+        containerStyle={AUTOCOMPLETE_CONTAINER}
         dataSet={autocompleteItems}
         emptyResultText="No se encontraron resultados"
+        ChevronIconComponent={<Icon icon={icons.chevronDown} />}
         onChangeText={onFilterTextChangeHandler}
         onSelectItem={onFilterSelectItemHandler}
         onClear={onFilterClearHandler}
