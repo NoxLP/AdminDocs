@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { Animated } from 'react-native';
 import { Easing } from 'react-native-reanimated';
 
-export default function useItemsAnimations() {
+export default function useGalleryMenuAnimations() {
   const hideAnim = useRef(new Animated.Value(-70)).current;
   const doShowAnim = () => {
     Animated.timing(hideAnim, {
